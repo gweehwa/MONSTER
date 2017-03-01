@@ -139,7 +139,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         best = 0;
         
         for (i = 0; right_n > edge; i++) {
-                printf("::::::%f\n", edge);
             left_wt += wt[i];
             right_wt -= wt[i];
             left_tr += wt[i] * treatment[i];
