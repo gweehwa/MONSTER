@@ -175,8 +175,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_z_sum -= *y[i];
 
                 left_temp = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
-                    printf("%f, ", n);
-                    printf("%f, ", left_n);
+                    printf("%d, ", left_n);
                 //left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -188,7 +187,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                     * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
                 
                 right_temp = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-                    printf("%f, ", right_n);
+                    printf("%d, ", right_n);
                 //right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
