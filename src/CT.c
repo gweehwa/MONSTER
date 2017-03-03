@@ -140,7 +140,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     }
 
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-    effect = alpha_1;
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
     beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
     beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
