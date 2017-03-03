@@ -46,8 +46,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double tr_var, con_var;
     double con_sqr_sum = 0., tr_sqr_sum = 0.;
     double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
-    double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
-    double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
+    double xx_sum = 0., alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
@@ -83,7 +82,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //(1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
     numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
-        *value = denominator;
+        *value = numerator / denominator;
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 }
 
