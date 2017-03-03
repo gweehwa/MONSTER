@@ -156,25 +156,25 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             temp = (*y[i]) * (*y[i]) * wt[i] * treatment[i];
             left_tr_sqr_sum += temp;
             right_tr_sqr_sum -= temp;
+                
+            left_xz_sum += *y[i] * IV[i];
+            right_xz_sum -= *y[i] * IV[i];
+            left_xy_sum += treatment[i] * IV[i];
+            right_xy_sum -= treatment[i] * IV[i];
+            left_x_sum += IV[i];
+            right_x_sum -= IV[i];
+            left_y_sum += treatment[i];
+                printf("%f, %f\n", treatment[i], left_y_sum);
+            right_y_sum -= treatment[i];
+            left_z_sum += *y[i];
+            right_z_sum -= *y[i];
+                    //printf("%f, %f, %f\n", IV[i], treatment[i], *y[i]);
             
             if (x[i + 1] != x[i] && left_n >= edge &&
                 (int) left_tr >= min_node_size &&
                 (int) left_wt - (int) left_tr >= min_node_size &&
                 (int) right_tr >= min_node_size &&
-                (int) right_wt - (int) right_tr >= min_node_size) {
-                
-                left_xz_sum += *y[i] * IV[i];
-                right_xz_sum -= *y[i] * IV[i];
-                left_xy_sum += treatment[i] * IV[i];
-                right_xy_sum -= treatment[i] * IV[i];
-                left_x_sum += IV[i];
-                right_x_sum -= IV[i];
-                left_y_sum += treatment[i];
-                    printf("%f, %f\n", treatment[i], left_y_sum);
-                right_y_sum -= treatment[i];
-                left_z_sum += *y[i];
-                right_z_sum -= *y[i];
-                    //printf("%f, %f, %f\n", IV[i], treatment[i], *y[i]);
+                (int) right_wt - (int) right_tr >= min_node_size) {                             
                     
                 if (left_n * left_xy_sum - left_x_sum * left_y_sum == 0){
                         left_temp = 0;
