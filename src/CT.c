@@ -164,25 +164,17 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             left_x_sum += IV[i];
             right_x_sum -= IV[i];
             left_y_sum += treatment[i];
-                printf("%f, %f\n", treatment[i], left_y_sum);
             right_y_sum -= treatment[i];
             left_z_sum += *y[i];
             right_z_sum -= *y[i];
-                    //printf("%f, %f, %f\n", IV[i], treatment[i], *y[i]);
             
             if (x[i + 1] != x[i] && left_n >= edge &&
                 (int) left_tr >= min_node_size &&
                 (int) left_wt - (int) left_tr >= min_node_size &&
                 (int) right_tr >= min_node_size &&
                 (int) right_wt - (int) right_tr >= min_node_size) {                             
-                    
-                if (left_n * left_xy_sum - left_x_sum * left_y_sum == 0){
-                        left_temp = 0;
-                        //printf("%d, %f, %f, %f\n", left_n, left_xy_sum, left_x_sum, left_y_sum);
-                }
-                else{                          
-                        left_temp = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
-                }
+                                            
+                left_temp = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 //left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -193,12 +185,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                         - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
                     * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
                 
-                if (right_n * right_xy_sum - right_x_sum * right_y_sum == 0){
-                        right_temp = 0;
-                }
-                else{
-                        right_temp = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-                }
+                right_temp = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 //right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
@@ -224,11 +211,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         }
         
         *improve = best;
-            printf(":::%f\n", *improve);
         if (best > 0) {         /* found something */
         csplit[0] = direction;
             *split = (x[where] + x[where + 1]) / 2; 
-                printf("%f\n", *split);
         }
     }
     
