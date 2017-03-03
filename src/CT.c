@@ -60,7 +60,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x_sum += IV[i];
         y_sum += treatment[i];
         z_sum += *y[i];
+        yz_sum += *y[i] * treatment[i];
         xx_sum += IV[i] * IV[i];
+        yy_sum = y_sum;
+        zz_sum += *y[i] * *y[i];
     }
 
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
