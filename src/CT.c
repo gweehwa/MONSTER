@@ -170,10 +170,11 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 left_x_sum += IV[i];
                 right_x_sum -= IV[i];
                 left_y_sum += treatment[i];
+                    printf(", %f\n", treatment[i]);
                 right_y_sum -= treatment[i];
                 left_z_sum += *y[i];
                 right_z_sum -= *y[i];
-                    printf("%f, %f, %f\n", IV[i], treatment[i], *y[i]);
+                    //printf("%f, %f, %f\n", IV[i], treatment[i], *y[i]);
                     
                 if (left_n * left_xy_sum - left_x_sum * left_y_sum == 0){
                         left_temp = 0;
