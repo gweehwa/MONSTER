@@ -63,7 +63,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         z_sum += *y[i];
         yz_sum += *y[i] * treatment[i];
         xx_sum += IV[i] * IV[i];
-        yy_sum = treatment[i] * treatment[i];
+        yy_sum += treatment[i] * treatment[i];
         zz_sum += *y[i] * *y[i];
     }
 
