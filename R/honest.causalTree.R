@@ -8,7 +8,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 							  HonestSampleSize, split.Bucket, bucketNum = 10,
 							  bucketMax = 40, cv.option, cv.Honest, minsize = 2L, model = FALSE,
 							  x = FALSE, y = TRUE, propensity, control, split.alpha = 0.5, 
-							  cv.alpha = 0.5,cv.gamma=0.5,split.gamma=0.5, cost, ...)  { 
+							  cv.alpha = 0.5,cv.gamma=0.5,split.gamma=0.5, cost, IV, est_IV, ...)  { 
 
 	Call <- match.call()
 
@@ -359,6 +359,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 					   X, # X features for model data
 					   wt, # for model data
 					   treatment, # for model data
+			       		   IV,
 					   as.integer(init$numy),
 					   as.double(cost),
 					   as.double(xvar), # for model daa
