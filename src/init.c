@@ -18,7 +18,7 @@ SEXP honest_estimate_causalTree(SEXP dimx, SEXP nnode,
                                SEXP vnum, 
                                SEXP split2,
                                SEXP csplit2, SEXP usesur, 
-                               SEXP xdata2, SEXP wt2, SEXP treatment2, SEXP y2,
+                               SEXP xdata2, SEXP wt2, SEXP treatment2, SEXP IV2, SEXP y2,
                                SEXP xmiss2);
 SEXP honest_estimate_rparttree(SEXP dimx, SEXP nnode, SEXP nsplit, SEXP dimc,
                            SEXP nnum, SEXP nodes2, SEXP n1, SEXP wt1, SEXP dev1, SEXP yval1,
