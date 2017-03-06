@@ -340,6 +340,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 		storage.mode(X) <- "double"
 		storage.mode(wt) <- "double"
 		storage.mode(treatment) <- "double"
+		storage.mode(IV) <- "double"
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
 
 		ctfit <- .Call(C_causalTree,
