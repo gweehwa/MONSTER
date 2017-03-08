@@ -2,8 +2,8 @@
 #  The honest re-estimation function.
 #
 
-honest.causalTree <- function(formula, data, weights, treatment, subset, 
-							  est_data, est_weights, est_treatment, est_subset,
+honest.causalTree <- function(formula, data, weights, treatment, IV, subset, 
+							  est_data, est_weights, est_treatment, est_IV, est_subset,
 							  na.action = na.causalTree, split.Rule, split.Honest,
 							  HonestSampleSize, split.Bucket, bucketNum = 10,
 							  bucketMax = 40, cv.option, cv.Honest, minsize = 2L, model = FALSE,
@@ -340,6 +340,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 		storage.mode(X) <- "double"
 		storage.mode(wt) <- "double"
 		storage.mode(treatment) <- "double"
+		storage.mode(IV) <- "double"
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
 
 		ctfit <- .Call(C_causalTree,
@@ -359,6 +360,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 					   X, # X features for model data
 					   wt, # for model data
 					   treatment, # for model data
+			       		   IV,
 					   as.integer(init$numy),
 					   as.double(cost),
 					   as.double(xvar), # for model daa
@@ -473,7 +475,7 @@ honest.causalTree <- function(formula, data, weights, treatment, subset,
 		if(ncol(ans$cptable) >= 4) {
 			ans$cptable[,4]  <- ans$cptable[,4] / ans$cptable[1, 4]
 		}
-		ans <- honest.est.causalTree(ans, est_X, est_wts, est_treatment, est_Y)
+		ans <- honest.est.causalTree(ans, est_X, est_wts, est_treatment, est_IV, est_Y)
 		#estimate honest causaltree with train X and compare with est.causaltree after pruning
 		ans
 }
