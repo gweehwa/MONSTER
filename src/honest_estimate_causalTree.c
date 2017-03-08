@@ -31,6 +31,15 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     double *consums = NULL;
     double *trsqrsums = NULL;
     double *consqrsums = NULL;
+    double *x_sum = NULL;
+    double *y_sum = NULL;
+    double *z_sum = NULL;
+    double *xy_sum = NULL;
+    double *xz_sum = NULL;
+    double *yz_sum = NULL;
+    double *xx_sum = NULL;
+    double *yy_sum = NULL;
+    double *zz_sum = NULL;
     int nnodemax = -1;
     int *invertdx = NULL;
     
@@ -40,6 +49,15 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     consums = (double *) ALLOC(nnode, sizeof(double));
     trsqrsums = (double *) ALLOC(nnode, sizeof(double));
     consqrsums = (double *) ALLOC(nnode, sizeof(double));
+    x_sum = (double *) ALLOC(nnode, sizeof(double));
+    y_sum = (double *) ALLOC(nnode, sizeof(double));
+    z_sum = (double *) ALLOC(nnode, sizeof(double));
+    xy_sum = (double *) ALLOC(nnode, sizeof(double));
+    xz_sum = (double *) ALLOC(nnode, sizeof(double));
+    yz_sum = (double *) ALLOC(nnode, sizeof(double));
+    xx_sum = (double *) ALLOC(nnode, sizeof(double));
+    yy_sum = (double *) ALLOC(nnode, sizeof(double));
+    zz_sum = (double *) ALLOC(nnode, sizeof(double));
 
     
     // initialize:
@@ -50,6 +68,15 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
         consums[i] = 0.;
         trsqrsums[i] = 0.;
         consqrsums[i] = 0.;
+        x_sum[i] = 0.;
+        y_sum[i] = 0.;
+        z_sum[i] = 0.;
+        xy_sum[i] = 0.;
+        xz_sum[i] = 0.;
+        yz_sum[i] = 0.;
+        xx_sum[i] = 0.;
+        yy_sum[i] = 0.;
+        zz_sum[i] = 0.;
         n1[i] = 0;
         wt1[i] = 0.;
         if (nnum[i] > nnodemax) {
@@ -101,7 +128,16 @@ next:
         consums[npos] += wt2[i] * (1 - treatment2[i]) * y2[i];
         trsqrsums[npos] +=  wt2[i] * treatment2[i] * y2[i] * y2[i];
         consqrsums[npos] += wt2[i] * (1 - treatment2[i]) * y2[i] * y2[i];
-        
+        x_sum[npos] += IV2[i];
+        y_sum[npos] += treatment2[i];
+        z_sum[npos] += y2[i];
+        xy_sum[npos] += IV2[i] * treatment2[i];
+        xz_sum[npos] += IV2[i] * y2[i];
+        yz_sum[npos] += treatment2[i] * y2[i];
+        xx_sum[npos] += IV2[i] * IV2[i];
+        yy_sum[npos] += treatment2[i] * treatment2[i];
+        zz_sum[npos] += y2[i] * y2[i];
+     
         /* walk down the tree */
         nspl = nodes[2][npos] - 1;      /* index of primary split */
         if (nspl >= 0) {        /* not a leaf node */
@@ -169,11 +205,19 @@ next:
         int origindx = invertdx[i];
         //base case
         if (trs[origindx] != 0 && cons[origindx] != 0) {
-            double tr_mean = trsums[origindx] * 1.0 / trs[origindx];
-            double con_mean = consums[origindx] * 1.0 / cons[origindx];
-            yval1[origindx] = tr_mean - con_mean;
-            dev1[origindx] = trsqrsums[origindx] - trs[origindx] * tr_mean * tr_mean 
-                + consqrsums[origindx] - cons[origindx] * con_mean * con_mean;
+            //double tr_mean = trsums[origindx] * 1.0 / trs[origindx];
+            //double con_mean = consums[origindx] * 1.0 / cons[origindx];
+            //yval1[origindx] = tr_mean - con_mean;            
+            //dev1[origindx] = trsqrsums[origindx] - trs[origindx] * tr_mean * tr_mean 
+            //    + consqrsums[origindx] - cons[origindx] * con_mean * con_mean;
+            double alpha_1 = (n1[origindx] * xz_sum[origindx] - x_sum[origindx] * z_sum[origindx]) / (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]);
+            double alpha_0 = (z_sum[origindx] - alpha_1 * y_sum[origindx]) / n1[origindx];
+            double beta_1 = (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]) / (n1[origindx] * xx_sum[origindx] - x_sum[origindx] * x_sum[origindx]);
+            double beta_0 = (y_sum[origindx] - beta_1 * x_sum[origindx]) / n1[origindx];
+            yval1[origindx] = alpha_1;
+            double numerator = zz_sum[origindx] + n1[origindx] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[origindx] - 2 * alpha_0 * z_sum[origindx] - 2 * alpha_1 * yz_sum[origindx] + 2 * alpha_0 * alpha_1 * y_sum[origindx];
+            double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
+            dev1[origindx] = numerator / denominator;
         } else {
             int parentdx = invertdx[i / 2];
             yval1[origindx] = yval1[parentdx];
