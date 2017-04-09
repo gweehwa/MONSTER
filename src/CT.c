@@ -236,7 +236,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
                 beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
                 right_temp = alpha_1;
-                    if(right_n * right_xy_sum - right_x_sum * right_y_sum)
+                    if(right_n * right_xy_sum - right_x_sum * right_y_sum < 0.3)
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 /*right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
