@@ -40,7 +40,7 @@ extern int CTDinit(int n, double *y[], int maxcat, char **error, int *size,
                    double *train_to_est_ratio);
 
 extern void CTDss(int n, double *y[], double *value, double *tr_mean, double *con_mean, double *risk, double *wt, 
-                  double *treatment, double max_y, double alpha, double train_to_est_ratio);
+                  double *treatment, double *IV, double max_y, double alpha, double train_to_est_ratio);
 extern void CTD(int n, double *y[], double *x, int nclass,
         int edge, double *improve, double *split, int *csplit,
         double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha, int bucketnum,
