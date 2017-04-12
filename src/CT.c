@@ -216,40 +216,44 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
                 beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
                 left_temp = alpha_1;
-                if(left_xy_sum - left_x_sum * left_y_sum / left_n < 0.3)
+                numerator = left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum;
+                denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
+                left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
+                    * left_wt * (numerator / denominator);
+                    
+                if(left_xy_sum - left_x_sum * left_y_sum / left_n < 0.3){
                         left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
-                /*left_tr_var = left_tr_sqr_sum / left_tr - 
+                left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
                 left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
                     - (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
                     / ((left_wt - left_tr) * (left_wt - left_tr));        
                 left_effect = alpha * left_temp * left_temp * left_wt
                         - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
-                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));*/
-                numerator = left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum;
-                denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
-                left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * left_wt * (numerator / denominator);
+                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));}
+                
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
                 beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
                 right_temp = alpha_1;
-                    if(right_xy_sum - right_x_sum * right_y_sum / right_n < 0.3)
+                numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
+                denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
+                right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
+                    * right_wt * (numerator / denominator);
+                    
+                if(right_xy_sum - right_x_sum * right_y_sum / right_n < 0.3){
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-                /*right_tr_var = right_tr_sqr_sum / right_tr -
+                right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
                 right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
                     - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
                     / ((right_wt - right_tr) * (right_wt - right_tr));
                 right_effect = alpha * right_temp * right_temp * right_wt
                         - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
-                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));*/
-                numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
-                denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-                right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * right_wt * (numerator / denominator);
+                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));}
+                
 
                 
                 temp = left_effect + right_effect - node_effect;
