@@ -81,7 +81,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
     if(n * xy_sum - x_sum * y_sum < 0.3 * n * n){
-        effect = temp1 / ttreat - temp0 / (twt - ttreat);        
+        effect = temp1 / ttreat - temp0 / (twt - ttreat);  
+        *value = effect;
         tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
         con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
         *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
