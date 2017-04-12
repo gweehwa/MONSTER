@@ -63,7 +63,7 @@ CTDinit(int n, double *y[], int maxcat, char **error,
 
 
 void
-CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean, 
+CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean, 
      double *risk, double *wt, double *treatment, double *IV, double max_y,
      double alpha, double train_to_est_ratio)
 {
