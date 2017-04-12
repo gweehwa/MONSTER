@@ -249,15 +249,15 @@ CTD(int n, double *y[], double *x, int nclass,
 		tr_end_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 		con_end_bucket = (double *) ALLOC (Numbuckets + 1, sizeof(double));
 		
-		double xz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-        	double xy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double x_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double yz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double xx_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *xz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        	double *xy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *x_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *yz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *xx_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		double *zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 
 		for (j = 0; j < Numbuckets + 1; j++) {
 			n_bucket[j] = 0;
