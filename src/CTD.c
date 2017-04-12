@@ -308,15 +308,15 @@ CTD(int n, double *y[], double *x, int nclass,
 			wtsqrsums_bucket[j] = 0.;
 			trsqrsums_bucket[j] = 0.;
 			
-			xz_sum_bucket[j] = 0;
-			xy_sum_bucket[j] = 0;
-			x_sum_bucket[j] = 0;
-			y_sum_bucket[j] = 0;
-			z_sum_bucket[j] = 0;
-			yz_sum_bucket[j] = 0;
-			xx_sum_bucket[j] = 0;
-			yy_sum_bucket[j] = 0;
-			zz_sum_bucket[j] = 0;
+			xz_sum_bucket[j] = 0.;
+			xy_sum_bucket[j] = 0.;
+			x_sum_bucket[j] = 0.;
+			y_sum_bucket[j] = 0.;
+			z_sum_bucket[j] = 0.;
+			yz_sum_bucket[j] = 0.;
+			xx_sum_bucket[j] = 0.;
+			yy_sum_bucket[j] = 0.;
+			zz_sum_bucket[j] = 0.;
 		}
 
 		for (i = 0; i < n; i++) {
