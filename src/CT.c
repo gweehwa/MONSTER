@@ -217,7 +217,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
                 left_temp = alpha_1;
                     printf("haha");
-                if(left_n * left_xy_sum - left_x_sum * left_y_sum < 0.3)
+                if(left_xy_sum - left_x_sum * left_y_sum / left_n < 0.3)
                         left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 /*left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -237,7 +237,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
                 beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
                 right_temp = alpha_1;
-                    if(right_n * right_xy_sum - right_x_sum * right_y_sum < 0.3)
+                    if(right_xy_sum - right_x_sum * right_y_sum / right_n < 0.3)
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 /*right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
