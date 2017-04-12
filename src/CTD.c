@@ -63,33 +63,60 @@ CTDinit(int n, double *y[], int maxcat, char **error,
 
 
 void
-CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean, double *risk, double *wt, double *treatment, 
-		double max_y, double alpha, double train_to_est_ratio)
+CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean, 
+     double *risk, double *wt, double *treatment, double *IV, double max_y,
+     double alpha, double train_to_est_ratio)
 {
-	int i;
-	double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
-	double ttreat = 0.;
-	double effect;
-	double tr_var, con_var;
-	double con_sqr_sum = 0., tr_sqr_sum = 0.;
-	for (i = 0; i < n; i++) {
-		temp1 += *y[i] * wt[i] * treatment[i];
-		temp0 += *y[i] * wt[i] * (1 - treatment[i]);
-		twt += wt[i];
-		ttreat += wt[i] * treatment[i];
-		tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
-		con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
-	}
+    int i;
+    double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
+    double ttreat = 0.;
+    double effect;
+    double tr_var, con_var;
+    double con_sqr_sum = 0., tr_sqr_sum = 0.;
+    double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
+    double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
+    double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
+    double numerator, denominator;
+    for (i = 0; i < n; i++) {
+        temp1 += *y[i] * wt[i] * treatment[i];
+        temp0 += *y[i] * wt[i] * (1 - treatment[i]);
+        twt += wt[i];
+        ttreat += wt[i] * treatment[i];
+        tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+        con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
+        xz_sum += *y[i] * IV[i];
+        xy_sum += treatment[i] * IV[i];
+        x_sum += IV[i];
+        y_sum += treatment[i];
+        z_sum += *y[i];
+        yz_sum += *y[i] * treatment[i];
+        xx_sum += IV[i] * IV[i];
+        yy_sum += treatment[i] * treatment[i];
+        zz_sum += *y[i] * *y[i];
+    }
 
-	effect = temp1 / ttreat - temp0 / (twt - ttreat);
-	tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
-	con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
+    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
+    effect = alpha_1;
+    alpha_0 = (z_sum - alpha_1 * y_sum) / n;
+    beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+    beta_0 = (y_sum - beta_1 * x_sum) / n;
 
-	*tr_mean = temp1 / ttreat;
-	*con_mean = temp0 / (twt - ttreat);
-	*value = effect;
-	*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
-		(1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
+    *tr_mean = temp1 / ttreat;
+    *con_mean = temp0 / (twt - ttreat);
+    *value = effect;
+    
+    numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
+    denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
+    if(n * xy_sum - x_sum * y_sum < 0.3 * n * n){
+        effect = temp1 / ttreat - temp0 / (twt - ttreat);  
+        *value = effect;
+        tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
+        con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
+        *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
+        (1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
+    }
+            
 }
 
 void
@@ -98,6 +125,7 @@ CTD(int n, double *y[], double *x, int nclass,
 		double myrisk, double *wt, double *treatment, double *IV, int minsize, 
 		double alpha, int bucketnum, int bucketMax, double train_to_est_ratio)
 {
+	printf("sdf");
 	int i, j;
 	double temp;
 	double left_sum, right_sum;
@@ -169,14 +197,14 @@ CTD(int n, double *y[], double *x, int nclass,
 	node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
 		* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));*/
 	alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-    alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
-    beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
-    beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
-    temp = alpha_1;
+    	alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
+    	beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
+    	beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
+    	temp = alpha_1;
 	numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
-    denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-    node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-        * right_wt * (numerator / denominator);
+    	denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
+    	node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
+        	* right_wt * (numerator / denominator);
 	
 	if (nclass == 0) {
 		/* continuous predictor */
