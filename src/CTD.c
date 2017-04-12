@@ -25,6 +25,16 @@ static double *wtsums_bucket, *trsums_bucket;
 static double *wtsqrsums_bucket, *trsqrsums_bucket; 
 static double *tr_end_bucket, *con_end_bucket;
 
+static double *xz_sum_bucket;
+static double *xy_sum_bucket;
+static double *x_sum_bucket;
+static double *y_sum_bucket;
+static double *z_sum_bucket;
+static double *yz_sum_bucket;
+static double *xx_sum_bucket;
+static double *yy_sum_bucket;
+static double *zz_sum_bucket;
+
 
 int
 CTDinit(int n, double *y[], int maxcat, char **error,
@@ -249,15 +259,15 @@ CTD(int n, double *y[], double *x, int nclass,
 		tr_end_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 		con_end_bucket = (double *) ALLOC (Numbuckets + 1, sizeof(double));
 		
-		double *xz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-        	double *xy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *x_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *yz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *xx_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		double *zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		xz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        	xy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		x_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		yz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		xx_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+		zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 
 		for (j = 0; j < Numbuckets + 1; j++) {
 			n_bucket[j] = 0;
