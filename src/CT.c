@@ -216,7 +216,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
                 beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
                 left_temp = alpha_1;
-                    printf('haha');
+                    printf("haha");
                 if(left_n * left_xy_sum - left_x_sum * left_y_sum < 0.3)
                         left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 /*left_tr_var = left_tr_sqr_sum / left_tr - 
