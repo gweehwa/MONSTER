@@ -122,10 +122,9 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 void
 CTD(int n, double *y[], double *x, int nclass,
 		int edge, double *improve, double *split, int *csplit,
-		double myrisk, double *wt, double *treatment, double *IV, int minsize, 
+		double myrisk, double *wt, double *treatment, int minsize, 
 		double alpha, int bucketnum, int bucketMax, double train_to_est_ratio)
 {
-	printf("sdf");
 	int i, j;
 	double temp;
 	double left_sum, right_sum;
@@ -162,14 +161,6 @@ CTD(int n, double *y[], double *x, int nclass,
 	right_sqr_sum = 0;
 	right_tr_sqr_sum = 0;
 	right_n = n;
-	
-	double right_xz_sum = 0., right_xy_sum = 0., right_x_sum = 0., right_y_sum = 0., right_z_sum = 0.;
-    	double left_xz_sum = 0., left_xy_sum = 0., left_x_sum = 0., left_y_sum = 0., left_z_sum = 0.;
-    	double right_yz_sum = 0., right_xx_sum = 0., right_yy_sum = 0., right_zz_sum = 0.;
-    	double left_yz_sum = 0., left_xx_sum = 0., left_yy_sum = 0., left_zz_sum = 0.;
-    	double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
-    	double numerator, denominator;
-	
 	for (i = 0; i < n; i++) {
 		right_wt += wt[i];
 		right_tr += wt[i] * treatment[i];
@@ -178,34 +169,16 @@ CTD(int n, double *y[], double *x, int nclass,
 		right_sqr_sum += (*y[i]) * (*y[i]) * wt[i];
 		right_tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
 		trsum += treatment[i];
-		right_xz_sum += *y[i] * IV[i];
-        	right_xy_sum += treatment[i] * IV[i];
-        	right_x_sum += IV[i];
-        	right_y_sum += treatment[i];
-        	right_z_sum += *y[i];
-        	right_yz_sum += *y[i] * treatment[i];
-        	right_xx_sum += IV[i] * IV[i];
-        	right_yy_sum += treatment[i] * treatment[i];
-        	right_zz_sum += *y[i] * *y[i];
 	}
 
-	/*temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
+	temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
 	tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
 	con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
 		- (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
 		/ ((right_wt - right_tr) * (right_wt - right_tr));
 	node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-		* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));*/
-	alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-    	alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
-    	beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
-    	beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
-    	temp = alpha_1;
-	numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
-    	denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-    	node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-        	* right_wt * (numerator / denominator);
-	
+		* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));
+
 	if (nclass == 0) {
 		/* continuous predictor */
 		cum_wt = (double *) ALLOC(n, sizeof(double));
@@ -287,15 +260,6 @@ CTD(int n, double *y[], double *x, int nclass,
 		tr_end_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 		con_end_bucket = (double *) ALLOC (Numbuckets + 1, sizeof(double));
 		
-		xz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-        	xy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		x_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		yz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		xx_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-		zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 
 		for (j = 0; j < Numbuckets + 1; j++) {
 			n_bucket[j] = 0;
@@ -307,16 +271,6 @@ CTD(int n, double *y[], double *x, int nclass,
 			trsums_bucket[j] = 0.;
 			wtsqrsums_bucket[j] = 0.;
 			trsqrsums_bucket[j] = 0.;
-			
-			xz_sum_bucket[j] = 0.;
-			xy_sum_bucket[j] = 0.;
-			x_sum_bucket[j] = 0.;
-			y_sum_bucket[j] = 0.;
-			z_sum_bucket[j] = 0.;
-			yz_sum_bucket[j] = 0.;
-			xx_sum_bucket[j] = 0.;
-			yy_sum_bucket[j] = 0.;
-			zz_sum_bucket[j] = 0.;
 		}
 
 		for (i = 0; i < n; i++) {
@@ -328,17 +282,6 @@ CTD(int n, double *y[], double *x, int nclass,
 			trsums_bucket[j] += *y[i] * wt[i] * treatment[i];
 			wtsqrsums_bucket[j] += (*y[i]) * (*y[i]) * wt[i];
 			trsqrsums_bucket[j] += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
-			
-			xz_sum_bucket[j] += *y[i] * IV[i];
-        		xy_sum_bucket[j] += treatment[i] * IV[i];
-		        x_sum_bucket[j] += IV[i];
-		        y_sum_bucket[j] += treatment[i];
-		        z_sum_bucket[j] += *y[i];
-		        yz_sum_bucket[j] += *y[i] * treatment[i];
-		        xx_sum_bucket[j] += IV[i] * IV[i];
-		        yy_sum_bucket[j] += treatment[i] * treatment[i];
-		        zz_sum_bucket[j] += *y[i] * *y[i];
-			
 			if (treatment[i] == 1) {
 				tr_end_bucket[j] = x[i];
 			} else {
@@ -377,25 +320,6 @@ CTD(int n, double *y[], double *x, int nclass,
 
 			left_tr_sqr_sum += trsqrsums_bucket[j];
 			right_tr_sqr_sum -= trsqrsums_bucket[j];
-			
-			left_xz_sum += xz_sum_bucket[j];
-            		right_xz_sum -= xz_sum_bucket[j];
-            		left_xy_sum += xy_sum_bucket[j];
-            		right_xy_sum -= xy_sum_bucket[j];
-            		left_x_sum += x_sum_bucket[j];
-            		right_x_sum -= x_sum_bucket[j];
-            		left_y_sum += y_sum_bucket[j];
-            		right_y_sum -= y_sum_bucket[j];
-            		left_z_sum += z_sum_bucket[j];
-            		right_z_sum -= z_sum_bucket[j];
-            		left_yz_sum += yz_sum_bucket[j];
-            		right_yz_sum -= yz_sum_bucket[j];
-            		left_xx_sum += xx_sum_bucket[j];
-            		right_xx_sum -= xx_sum_bucket[j];
-            		left_yy_sum += yy_sum_bucket[j];
-            		right_yy_sum -= yy_sum_bucket[j];
-            		left_zz_sum += zz_sum_bucket[j];
-	        	right_zz_sum -= zz_sum_bucket[j];
             
             cut_point = (tr_end_bucket[j] + con_end_bucket[j]) / 2.0;
 			if (left_n >= edge && right_n >= edge &&
@@ -404,50 +328,27 @@ CTD(int n, double *y[], double *x, int nclass,
 					(int) right_tr >= min_node_size &&
 					(int) right_wt - (int) right_tr >= min_node_size &&
 					cut_point < right_bd && cut_point > left_bd) {
-				
-		alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
-                alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
-                beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
-                beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
-                left_temp = alpha_1;
-                numerator = left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum;
-                denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
-                left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * left_wt * (numerator / denominator);
-                    
-                if(left_xy_sum - left_x_sum * left_y_sum / left_n < 0.3 * left_n){
-                left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
-                left_tr_var = left_tr_sqr_sum / left_tr - 
-                    left_tr_sum  * left_tr_sum / (left_tr * left_tr);
-                left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
-                    - (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
-                    / ((left_wt - left_tr) * (left_wt - left_tr));        
-                left_effect = alpha * left_temp * left_temp * left_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
-                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));}
-                
+				left_temp = left_tr_sum / left_tr - 
+					(left_sum - left_tr_sum) / (left_wt - left_tr);
+				left_tr_var = left_tr_sqr_sum / left_tr - 
+					left_tr_sum  * left_tr_sum / (left_tr * left_tr);
+				left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
+					- (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
+					/ ((left_wt - left_tr) * (left_wt - left_tr));        
+				left_effect = alpha * left_temp * left_temp * left_wt
+					- (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
+					* (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
 
-                alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
-                alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
-                beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
-                beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
-                right_temp = alpha_1;
-                numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
-                denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-                right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * right_wt * (numerator / denominator);
-                    
-                if(right_xy_sum - right_x_sum * right_y_sum / right_n < 0.3 * right_n){
-                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-                right_tr_var = right_tr_sqr_sum / right_tr -
-                    right_tr_sum * right_tr_sum / (right_tr * right_tr);
-                right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-                    - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
-                    / ((right_wt - right_tr) * (right_wt - right_tr));
-                right_effect = alpha * right_temp * right_temp * right_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
-                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));}
-				
+				right_temp = right_tr_sum / right_tr -
+					(right_sum - right_tr_sum) / (right_wt - right_tr);
+				right_tr_var = right_tr_sqr_sum / right_tr -
+					right_tr_sum * right_tr_sum / (right_tr * right_tr);
+				right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
+					- (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
+					/ ((right_wt - right_tr) * (right_wt - right_tr));
+				right_effect = alpha * right_temp * right_temp * right_wt
+					- (1 - alpha) * (1 + train_to_est_ratio) * right_wt 
+					* (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
 				temp = left_effect + right_effect - node_effect;
 				if (temp > best) {
 					best = temp;                  
