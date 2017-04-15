@@ -360,7 +360,6 @@ CTD(int n, double *y[], double *x, int nclass,
         best = 0;
         
         for (j = 0; j < Numbuckets; j++) {
-		printf("%d", Numbuckets);
             left_n += n_bucket[j];
             right_n -= n_bucket[j];
             left_wt += wts_bucket[j];
