@@ -25,7 +25,15 @@ static double *wtsums_bucket, *trsums_bucket;
 static double *wtsqrsums_bucket, *trsqrsums_bucket; 
 static double *tr_end_bucket, *con_end_bucket;
 
-
+static double *xz_sum_bucket;
+static double *xy_sum_bucket;
+static double *x_sum_bucket;
+static double *y_sum_bucket;
+static double *z_sum_bucket;
+static double *yz_sum_bucket;
+static double *xx_sum_bucket;
+static double *yy_sum_bucket;
+static double *zz_sum_bucket;
 
 int
 CTDinit(int n, double *y[], int maxcat, char **error,
