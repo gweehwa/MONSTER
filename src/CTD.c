@@ -107,7 +107,7 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
-    if(0>1){
+    if(n * xy_sum - x_sum * y_sum < 0.3 * n * n){
         effect = temp1 / ttreat - temp0 / (twt - ttreat);  
         *value = effect;
         tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
@@ -187,13 +187,7 @@ CTD(int n, double *y[], double *x, int nclass,
         right_zz_sum += *y[i] * *y[i];
     }
     
-    /*temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-     tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
-     con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-     - (right_sum - right_tr_sum) * (right_sum - right_tr_sum)
-     / ((right_wt - right_tr) * (right_wt - right_tr));
-     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
-     * right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));*/
+    
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
     beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
@@ -203,6 +197,15 @@ CTD(int n, double *y[], double *x, int nclass,
     denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
     * right_wt * (numerator / denominator);
+    
+    if (right_n * right_xy_sum - right_x_sum * right_y_sum < 0.3 * right_n * right_n){
+    temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
+    tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
+    con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
+    	- (right_sum - right_tr_sum) * (right_sum - right_tr_sum)
+     	/ ((right_wt - right_tr) * (right_wt - right_tr));
+    node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
+    	* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));}
     
     if (nclass == 0) {
         /* continuous predictor */
@@ -413,7 +416,7 @@ CTD(int n, double *y[], double *x, int nclass,
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio)
                 * left_wt * (numerator / denominator);
                 
-                if(0>1){
+                if(left_n * left_xy_sum - left_x_sum * left_y_sum < 0.3 * left_n * left_n){
                     left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                     left_tr_var = left_tr_sqr_sum / left_tr -
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -435,7 +438,7 @@ CTD(int n, double *y[], double *x, int nclass,
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
                 * right_wt * (numerator / denominator);
                 
-                if(0>1){
+                if(right_n * right_xy_sum - right_x_sum * right_y_sum < 0.3 * right_n * right_n){
                     right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                     right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
