@@ -20,6 +20,7 @@ typedef struct split {
 /* The real 'nodesize' is set in causalTree.c */
 typedef struct node {
     int id;
+    double effect;
     double risk;                /* risk for the node */
     double complexity;          /* complexity at which it will collapse */
     double sum_wt;              /* sum of the weights for the node  */
