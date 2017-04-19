@@ -100,7 +100,7 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], 
         //            tr_mean, con_mean, tree_tr_mean, tree_con_mean, alpha);
 	double effect_te = ((cons + trs) * sum_ivy - sum_iv * sum_y) / ((cons + trs) * sum_ivt - sum_iv * sum_t);
-	double effect_tr = tree->response_set[0];
+	double effect_tr = tree->response_est[0];
 	xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * effect_te;
     }
     return;
