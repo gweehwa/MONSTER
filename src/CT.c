@@ -42,7 +42,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     int i;
     double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
     double ttreat = 0.;
-    double effect;
+    //double effect;
     double tr_var, con_var;
     double con_sqr_sum = 0., tr_sqr_sum = 0.;
     double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
