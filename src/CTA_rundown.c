@@ -24,8 +24,8 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     int tmp_obs, tmp_id;
     double tr_mean, con_mean;
     double consums, trsums, cons, trs;
-    double sum_ivy, sum_iv, sum_y;
-    double sum_ivt, sum_t;
+    double sum_ivy = 0., sum_iv = 0., sum_y = 0.;
+    double sum_ivt = 0., sum_t = 0.;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
