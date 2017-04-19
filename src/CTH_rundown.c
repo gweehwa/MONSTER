@@ -27,6 +27,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double tr_sqr_sum, con_sqr_sum;
     double consums, trsums, cons, trs;
     double tr_var, con_var;
+    double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
+    double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
@@ -69,6 +71,13 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                     trsums += *ct.ydata[tmp_obs] * ct.wt[tmp_obs];
                     tr_sqr_sum += (*ct.ydata[tmp_obs]) * (*ct.ydata[tmp_obs]) * ct.wt[tmp_obs];
                 }
+		x_sum += ct.IV[tmp_obs];
+                y_sum += ct.treatment[tmp_obs];
+                z_sum += *ct.ydata[tmp_obs];
+                yz_sum += *ct.ydata[tmp_obs] * ct.treatment[tmp_obs];
+                xx_sum += ct.IV[tmp_obs] * ct.IV[tmp_obs];
+                yy_sum += ct.treatment[tmp_obs] * ct.treatment[tmp_obs];
+                zz_sum += *ct.ydata[tmp_obs] * *ct.ydata[tmp_obs];
             }
         }
 
@@ -90,8 +99,18 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
             con_var = con_sqr_sum / cons - con_mean * con_mean;
         }
         
-        xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
-                    con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
+        //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
+        //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
+	double n = (trs + cons);
+	double alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
+        double effect = alpha_1;
+        double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
+        double beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+        double beta_0 = (y_sum - beta_1 * x_sum) / n;
+
+        double numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
+        double denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+        xtemp[i] = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * twt * (numerator / denominator);
     }
     return;
 
