@@ -24,6 +24,8 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     int tmp_obs, tmp_id;
     double tr_mean, con_mean;
     double consums, trsums, cons, trs;
+    double sum_ivy, sum_iv, sum_y;
+    double sum_ivt, sum_t;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
@@ -63,10 +65,16 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                 if (ct.treatment[j] == 0) {
                     cons += ct.wt[j];
                     consums += *ct.ydata[j] * ct.wt[j];
+		    
                 } else {
                     trs += ct.wt[j];
                     trsums += *ct.ydata[j] * ct.wt[j];
                 }
+		sum_ivy += ct.IV[j] * *ct.ydata[j];
+	        sum_iv += ct.IV[j];
+	        sum_y += *ct.ydata[j];
+		sum_ivt += ct.IV[j] * ct.treatment[j];
+		sum_t += ct.treatment[j];
             }
         }
         
@@ -89,8 +97,11 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         double tree_tr_mean = tree->treatMean[0];
         double tree_con_mean = tree->controlMean[0];
 
-        xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], 
-                    tr_mean, con_mean, tree_tr_mean, tree_con_mean, alpha);
+        //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], 
+        //            tr_mean, con_mean, tree_tr_mean, tree_con_mean, alpha);
+	double effect_te = ((cons + trs) * sum_ivy - sum_iv * sum_y) / ((cons + trs) * sum_ivt - sum_iv * sum_t);
+	double effect_tr = tree->effect[0];
+	xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * effect_te;
     }
     return;
 
