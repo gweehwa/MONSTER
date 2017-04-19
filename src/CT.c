@@ -68,7 +68,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     }
 
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
-    effect = alpha_1;
+    *effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
     beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
     beta_0 = (y_sum - beta_1 * x_sum) / n;
@@ -78,7 +78,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 
     *tr_mean = temp1 / ttreat;
     *con_mean = temp0 / (twt - ttreat);
-    *value = effect;
+    *value = *effect;
     //*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
     //(1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
     numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
