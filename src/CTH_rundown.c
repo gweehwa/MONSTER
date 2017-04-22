@@ -83,6 +83,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                     tr_sqr_sum += (*ct.ydata[tmp_obs]) * (*ct.ydata[tmp_obs]) * ct.wt[tmp_obs];
                 }
 		n++;
+		xz_sum += ct.IV[tmp_obs] * *ct.ydata[tmp_obs];
+                xy_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs];
 		x_sum += ct.IV[tmp_obs];
                 y_sum += ct.treatment[tmp_obs];
                 z_sum += *ct.ydata[tmp_obs];
