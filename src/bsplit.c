@@ -86,7 +86,7 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
         } else if (split_Rule == 6) {
             //CTD
             (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve, 
-             &split, ct.csplit, me->risk, wtemp, trtemp, minsize, alpha,
+             &split, ct.csplit, me->risk, wtemp, trtemp, IVtemp, minsize, alpha,
              bucketnum, bucketMax, train_to_est_ratio);
         } else if (split_Rule == 7) {
             //fitD
