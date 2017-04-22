@@ -27,9 +27,9 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double tr_sqr_sum, con_sqr_sum;
     double consums, trsums, cons, trs;
     double tr_var, con_var;
-    double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
-    double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
-    int n = 0;
+    double xz_sum, xy_sum, x_sum, y_sum, z_sum;
+    double yz_sum, xx_sum, yy_sum, zz_sum;
+    int n;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
@@ -44,6 +44,16 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         trsums = 0.;
         tr_sqr_sum = 0.;
         con_sqr_sum = 0.;
+	n = 0;
+	xz_sum = 0.;
+	xy_sum = 0.;
+	x_sum = 0.;
+	y_sum = 0.;
+	z_sum = 0.;
+        yz_sum = 0.;
+	xx_sum = 0.;
+	yy_sum = 0.;
+	zz_sum = 0.;
         
         while (cp[i] < tree->complexity) {
 	        tree = branch(tree, obs);
