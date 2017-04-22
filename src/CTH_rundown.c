@@ -124,7 +124,13 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	}
         double effect = alpha_1;
         double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
-        double beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+	double beta_1;
+	if (n * xx_sum - x_sum * x_sum == 0){
+		beta_1 = 0.;
+	}
+	else{
+		beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+	}    
         double beta_0 = (y_sum - beta_1 * x_sum) / n;
 
 	double numerator = (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]) * (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]);
