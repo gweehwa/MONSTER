@@ -115,7 +115,10 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         
         //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
         //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
-	double alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
+	if (n * xy_sum - x_sum * y_sum == 0)
+		double alpha_1 = 0.;
+	else
+		double alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
         double effect = alpha_1;
         double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
         double beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
