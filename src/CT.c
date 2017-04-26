@@ -239,7 +239,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                     / ((left_wt - left_tr) * (left_wt - left_tr));        
                 left_effect = alpha * left_temp * left_temp * left_wt
                         - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
-                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));}
+                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
+                continue;}
                 
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -261,7 +262,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                     / ((right_wt - right_tr) * (right_wt - right_tr));
                 right_effect = alpha * right_temp * right_temp * right_wt
                         - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
-                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));}
+                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
+                continue;}
                 
 
                 
