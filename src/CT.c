@@ -230,7 +230,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * left_wt * (numerator / denominator);
 // PARAMETER!                    
-                if(left_n * left_xy_sum - left_x_sum * left_y_sum <= 0 * left_n * left_n){
+                if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
                 left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -252,7 +252,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * right_wt * (numerator / denominator);
 // PARAMETER!                    
-                if(right_n * right_xy_sum - right_x_sum * right_y_sum <= 0 * right_n * right_n){
+                if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
