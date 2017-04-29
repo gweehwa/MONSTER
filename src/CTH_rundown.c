@@ -117,7 +117,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
 	double alpha_1;
 // PARAMETER!	    
-	if (abs(n * xy_sum - x_sum * y_sum) <= 0.1 * n * n){
+	if (abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
 		alpha_1 = 0.;
 	}
 	else{
