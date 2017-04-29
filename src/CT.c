@@ -96,7 +96,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
 {
-    printf("EnterCT");
     int i, j;
     double temp;
     double left_sum, right_sum;
@@ -155,8 +154,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (numerator / denominator);
-    printf("IV");
-    Rprintf("IVr");
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
@@ -169,7 +166,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     }
     
     if (nclass == 0) {
-        printf("Enter Continous");
         /* continuous predictor */
         left_wt = 0;
         left_tr = 0;
@@ -296,7 +292,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     * Categorical predictor
     */
     else {
-        printf("Enter Categorical");
         for (i = 0; i < nclass; i++) {
             countn[i] = 0;
             wts[i] = 0;
@@ -418,7 +413,6 @@ double
     {
         double ystar;
         double temp;
-        printf("Enter CTpred");
         ystar = y[0] * (treatment - propensity) / (propensity * (1 - propensity));
         temp = ystar - *yhat;
         return temp * temp * wt;
