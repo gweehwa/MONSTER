@@ -275,6 +275,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     * Categorical predictor
     */
     else {
+            printf("HAHA");
         for (i = 0; i < nclass; i++) {
             countn[i] = 0;
             wts[i] = 0;
