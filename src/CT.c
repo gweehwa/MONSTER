@@ -156,7 +156,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (numerator / denominator);
     printf("IV");
-    Rprintf("IVr")
+    Rprintf("IVr");
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
