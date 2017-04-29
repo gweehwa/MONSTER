@@ -302,10 +302,6 @@ causalTree <- function(formula, data, weights, treatment, IV, subset,
 
 		labs <- sub("^`(.*)`$", "\\1", attr(Terms, "term.labels")) # beware backticks
 		isord <- unlist(lapply(m[labs], tfun))
-	        Sys.sleep(0.1)
-                print(isord)
-	        print(cats)
-	        flush.console()
 		storage.mode(X) <- "double"
 		storage.mode(wt) <- "double"
 		storage.mode(treatment) <- "double"
