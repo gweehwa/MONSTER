@@ -166,6 +166,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     }
     
     if (nclass == 0) {
+        printf("HEHE");
         /* continuous predictor */
         left_wt = 0;
         left_tr = 0;
