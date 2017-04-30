@@ -10,6 +10,7 @@ static double *wts, *trs, *trsums;
 static int *countn;
 static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
+static double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
 
 int
 CTinit(int n, double *y[], int maxcat, char **error,
@@ -127,7 +128,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     double left_yz_sum = 0., left_xx_sum = 0., left_yy_sum = 0., left_zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
+    //double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
     for (i = 0; i < n; i++) {
         right_wt += wt[i];
         right_tr += wt[i] * treatment[i];
@@ -340,16 +341,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
-        alpha_1 = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]);
-        alpha_0 = (z_sum[j] - alpha_1 * y_sum[j]) / wtsums[j];
-        beta_1 = (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]) / (countn[j] * xx_sum[j] - x_sum[j] * x_sum[j]);
-        beta_0 = (y_sum[j] - beta_1 * x_sum[j]) / countn[j];
-        temp = alpha_1;
-        numerator = zz_sum[j] + countn[j] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[j] - 2 * alpha_0 * z_sum[j] - 2 * alpha_1 * yz_sum[j] + 2 * alpha_0 * alpha_1 * y_sum[j];
-        denominator = countn[j] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[j] + y_sum[j] * y_sum[j] / countn[j] + 2 * beta_0 * beta_1 * x_sum[j] - 2 * beta_0 * y_sum[j] - 2 * beta_1 * x_sum[j] * y_sum[j] / countn[j];
-        //treatment_effect[i] = alpha * temp * temp * wts[j] - (1 - alpha) * (1 + train_to_est_ratio) 
-        //      * wts[j] * (numerator / denominator);
-        treatment_effect[i] = temp;
+        treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
         //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
             } else
                 tsplit[i] = 0;
