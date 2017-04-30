@@ -11,6 +11,8 @@ static int *countn;
 static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
 
+static double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum;
+
 int
 CTinit(int n, double *y[], int maxcat, char **error,
         int *size, int who, double *wt, double *treatment, 
