@@ -392,25 +392,25 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             
             left_tr_sqr_sum += trsqrsums[j];
             right_tr_sqr_sum -= trsqrsums[j];
-            
-            left_xz_sum += *y[j] * IV[j];
-            right_xz_sum -= *y[j] * IV[j];
-            left_xy_sum += treatment[j] * IV[j];
-            right_xy_sum -= treatment[j] * IV[j];
-            left_x_sum += IV[j];
-            right_x_sum -= IV[j];
-            left_y_sum += treatment[j];
-            right_y_sum -= treatment[j];
-            left_z_sum += *y[j];
-            right_z_sum -= *y[j];
-            left_yz_sum += *y[j] * treatment[j];
-            right_yz_sum -= *y[j] * treatment[j];
-            left_xx_sum += IV[j] * IV[j];
-            right_xx_sum -= IV[j] * IV[j];
-            left_yy_sum += treatment[j] * treatment[j];
-            right_yy_sum -= treatment[j] * treatment[j];
-            left_zz_sum += *y[j] * *y[j];
-            right_zz_sum -= *y[j] * *y[j];
+//need to update below codes, because j looks to be class index.             
+            left_xz_sum += xz_sum[j];
+            right_xz_sum -= xz_sum[j];
+            left_xy_sum += xy_sum[j];
+            right_xy_sum -= xy_sum[j];
+            left_x_sum += x_sum[j];
+            right_x_sum -= x_sum[j];
+            left_y_sum += y_sum[j];
+            right_y_sum -= y_sum[j];
+            left_z_sum += z_sum[j];
+            right_z_sum -= z_sum[j];
+            left_yz_sum += yz_sum[j];
+            right_yz_sum -= yz_sum[j];
+            left_xx_sum += xx_sum[j];
+            right_xx_sum -= xx_sum[j];
+            left_yy_sum += yy_sum[j];
+            right_yy_sum -= yy_sum[j];
+            left_zz_sum += zz_sum[j];
+            right_zz_sum -= zz_sum[j];
                 
             if (left_n >= edge && right_n >= edge &&
                 (int) left_tr >= min_node_size &&
