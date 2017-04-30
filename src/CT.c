@@ -341,7 +341,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
-        treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
+        //treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
+        treatment_effect[i] = (countn[i] * xz_sum[i] - x_sum[i] * z_sum[i]) / (countn[i] * xy_sum[i] - x_sum[i] * y_sum[i]);
         //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
             } else
                 tsplit[i] = 0;
