@@ -10,7 +10,7 @@ static double *wts, *trs, *trsums;
 static int *countn;
 static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
-static double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
+static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 
 int
 CTinit(int n, double *y[], int maxcat, char **error,
@@ -304,15 +304,15 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             wtsqrsums[i] = 0;
             trsqrsums[i] = 0;
                 
-            xz_sum[i] = 0;
-            xy_sum[i] = 0;
-            x_sum[i] = 0;
-            y_sum[i] = 0;
-            z_sum[i] = 0;
-            yz_sum[i] = 0;
-            xx_sum[i] = 0;
-            yy_sum[i] = 0;
-            zz_sum[i] = 0;     
+            xz_sumc[i] = 0;
+            xy_sumc[i] = 0;
+            x_sumc[i] = 0;
+            y_sumc[i] = 0;
+            z_sumc[i] = 0;
+            yz_sumc[i] = 0;
+            xx_sumc[i] = 0;
+            yy_sumc[i] = 0;
+            zz_sumc[i] = 0;     
         }
         
         /* rank the classes by treatment effect */
@@ -327,22 +327,22 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             wtsqrsums[j] += (*y[i]) * (*y[i]) * wt[i];
             trsqrsums[j] +=  (*y[i]) * (*y[i]) * wt[i] * treatment[i];
                 
-            xz_sum[j] += *y[i] * IV[i];
-            xy_sum[j] += treatment[i] * IV[i];
-            x_sum[j] += IV[i];
-            y_sum[j] += treatment[i];
-            z_sum[j] += *y[i];
-            yz_sum[j] += *y[i] * treatment[i];
-            xx_sum[j] += IV[i] * IV[i];
-            yy_sum[j] += treatment[i] * treatment[i];
-            zz_sum[j] += *y[i] * *y[i];
+            xz_sumc[j] += *y[i] * IV[i];
+            xy_sumc[j] += treatment[i] * IV[i];
+            x_sumc[j] += IV[i];
+            y_sumc[j] += treatment[i];
+            z_sumc[j] += *y[i];
+            yz_sumc[j] += *y[i] * treatment[i];
+            xx_sumc[j] += IV[i] * IV[i];
+            yy_sumc[j] += treatment[i] * treatment[i];
+            zz_sumc[j] += *y[i] * *y[i];
         }
             
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
         //treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
-        treatment_effect[i] = (countn[i] * xz_sum[i] - x_sum[i] * z_sum[i]) / (countn[i] * xy_sum[i] - x_sum[i] * y_sum[i]); //is j or i?
+        treatment_effect[i] = (countn[i] * xz_sumc[i] - x_sumc[i] * z_sumc[i]) / (countn[i] * xy_sumc[i] - x_sumc[i] * y_sumc[i]); //is j or i?
                     //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
             } else
                 tsplit[i] = 0;
@@ -386,24 +386,24 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             left_tr_sqr_sum += trsqrsums[j];
             right_tr_sqr_sum -= trsqrsums[j];
 //updated below codes, because j looks to be class index.             
-            left_xz_sum += xz_sum[j];
-            right_xz_sum -= xz_sum[j];
-            left_xy_sum += xy_sum[j];
-            right_xy_sum -= xy_sum[j];
-            left_x_sum += x_sum[j];
-            right_x_sum -= x_sum[j];
-            left_y_sum += y_sum[j];
-            right_y_sum -= y_sum[j];
-            left_z_sum += z_sum[j];
-            right_z_sum -= z_sum[j];
-            left_yz_sum += yz_sum[j];
-            right_yz_sum -= yz_sum[j];
-            left_xx_sum += xx_sum[j];
-            right_xx_sum -= xx_sum[j];
-            left_yy_sum += yy_sum[j];
-            right_yy_sum -= yy_sum[j];
-            left_zz_sum += zz_sum[j];
-            right_zz_sum -= zz_sum[j];
+            left_xz_sum += xz_sumc[j];
+            right_xz_sum -= xz_sumc[j];
+            left_xy_sum += xy_sumc[j];
+            right_xy_sum -= xy_sumc[j];
+            left_x_sum += x_sumc[j];
+            right_x_sum -= x_sumc[j];
+            left_y_sum += y_sumc[j];
+            right_y_sum -= y_sumc[j];
+            left_z_sum += z_sumc[j];
+            right_z_sum -= z_sumc[j];
+            left_yz_sum += yz_sumc[j];
+            right_yz_sum -= yz_sumc[j];
+            left_xx_sum += xx_sumc[j];
+            right_xx_sum -= xx_sumc[j];
+            left_yy_sum += yy_sumc[j];
+            right_yy_sum -= yy_sumc[j];
+            left_zz_sum += zz_sumc[j];
+            right_zz_sum -= zz_sumc[j];
                 
             if (left_n >= edge && right_n >= edge &&
                 (int) left_tr >= min_node_size &&
