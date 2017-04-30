@@ -393,6 +393,25 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             left_tr_sqr_sum += trsqrsums[j];
             right_tr_sqr_sum -= trsqrsums[j];
             
+            left_xz_sum += *y[j] * IV[j];
+            right_xz_sum -= *y[j] * IV[j];
+            left_xy_sum += treatment[j] * IV[j];
+            right_xy_sum -= treatment[j] * IV[j];
+            left_x_sum += IV[j];
+            right_x_sum -= IV[j];
+            left_y_sum += treatment[j];
+            right_y_sum -= treatment[j];
+            left_z_sum += *y[j];
+            right_z_sum -= *y[j];
+            left_yz_sum += *y[j] * treatment[j];
+            right_yz_sum -= *y[j] * treatment[j];
+            left_xx_sum += IV[j] * IV[j];
+            right_xx_sum -= IV[j] * IV[j];
+            left_yy_sum += treatment[j] * treatment[j];
+            right_yy_sum -= treatment[j] * treatment[j];
+            left_zz_sum += *y[j] * *y[j];
+            right_zz_sum -= *y[j] * *y[j];
+                
             if (left_n >= edge && right_n >= edge &&
                 (int) left_tr >= min_node_size &&
                 (int) left_wt - (int) left_tr >= min_node_size &&
