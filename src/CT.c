@@ -314,12 +314,31 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             trsums[j] += *y[i] * wt[i] * treatment[i];
             wtsqrsums[j] += (*y[i]) * (*y[i]) * wt[i];
             trsqrsums[j] +=  (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+                
+            xz_sum[j] += *y[i] * IV[i];
+            xy_sum[j] += treatment[i] * IV[i];
+            x_sum[j] += IV[i];
+            y_sum[j] += treatment[i];
+            z_sum[j] += *y[i];
+            yz_sum[j] += *y[i] * treatment[i];
+            xx_sum[j] += IV[i] * IV[i];
+            yy_sum[j] += treatment[i] * treatment[i];
+            zz_sum[j] += *y[i] * *y[i];
         }
-        
+               
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
-                treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
+        alpha_1 = (wtsums[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (wtsums[j] * xy_sum[j] - x_sum[j] * y_sum[j]);
+        alpha_0 = (z_sum[j] - alpha_1 * y_sum[j]) / wtsums[j];
+        beta_1 = (wtsums[j] * xy_sum[j] - x_sum[j] * y_sum[j]) / (wtsums[j] * xx_sum[j] - x_sum[j] * x_sum[j]);
+        beta_0 = (y_sum[j] - beta_1 * x_sum[j]) / wtsums[j];
+        temp = alpha_1;
+        numerator = zz_sum[j] + wtsums[j] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[j] - 2 * alpha_0 * z_sum[j] - 2 * alpha_1 * yz_sum[j] + 2 * alpha_0 * alpha_1 * y_sum[j];
+        denominator = wtsums[j] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[j] + y_sum[j] * y_sum[j] / wtsums[j] + 2 * beta_0 * beta_1 * x_sum[j] - 2 * beta_0 * y_sum[j] - 2 * beta_1 * x_sum[j] * y_sum[j] / wtsums[j];
+        treatment_effect[i] = alpha * temp * temp * wts[j] - (1 - alpha) * (1 + train_to_est_ratio) 
+              * wts[j] * (numerator / denominator);
+        //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
             } else
                 tsplit[i] = 0;
         }
