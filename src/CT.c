@@ -337,7 +337,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             yy_sum[j] += treatment[i] * treatment[i];
             zz_sum[j] += *y[i] * *y[i];
         }
-        printf("j");       
+            
+        Rprintf("test print\n");
+        printf("test print2\n");
+            
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
