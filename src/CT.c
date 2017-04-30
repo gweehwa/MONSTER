@@ -338,14 +338,12 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             zz_sum[j] += *y[i] * *y[i];
         }
             
-        Rprintf("test print\n");
-        printf("test print2\n");
-            
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
-        treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
-        //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
+        //treatment_effect[i] = (countn[j] * xz_sum[j] - x_sum[j] * z_sum[j]) / (countn[j] * xy_sum[j] - x_sum[j] * y_sum[j]); //alpha_1
+        treatment_effect[i] = (countn[i] * xz_sum[i] - x_sum[i] * z_sum[i]) / (countn[i] * xy_sum[i] - x_sum[i] * y_sum[i]); //is j or i?
+                    //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
             } else
                 tsplit[i] = 0;
         }
@@ -387,7 +385,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             
             left_tr_sqr_sum += trsqrsums[j];
             right_tr_sqr_sum -= trsqrsums[j];
-//need to update below codes, because j looks to be class index.             
+//updated below codes, because j looks to be class index.             
             left_xz_sum += xz_sum[j];
             right_xz_sum -= xz_sum[j];
             left_xy_sum += xy_sum[j];
