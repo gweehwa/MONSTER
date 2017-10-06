@@ -4,7 +4,6 @@
 #include <math.h>
 #include "causalTree.h"
 #include "causalTreeproto.h"
-#include <iostream>
 
 static double *sums, *wtsums, *treatment_effect;
 static double *wts, *trs, *trsums;
@@ -52,7 +51,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    int mat[3][3], j;
+    int mat[3][3], mat_inv[3][3], j;
     float determinant = 0;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
@@ -94,12 +93,9 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     mat[2][2] = x3x3_sum;
     for(i = 0; i < 3; i++)
         determinant = determinant + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3])); 
-    cout<<"\n\ndeterminant: "<<determinant;
-    cout<<"\n\nInverse of matrix is: \n";
     for(i = 0; i < 3; i++){
         for(j = 0; j < 3; j++)
-            cout<<((mat[(j+1)%3][(i+1)%3] * mat[(j+2)%3][(i+2)%3]) - (mat[(j+1)%3][(i+2)%3] * mat[(j+2)%3][(i+1)%3]))/ determinant<<"\t";    
-        cout<<"\n";
+            mat_inv[(j+1)%3][(i+1)%3]<<((mat[(j+1)%3][(i+1)%3] * mat[(j+2)%3][(i+2)%3]) - (mat[(j+1)%3][(i+2)%3] * mat[(j+2)%3][(i+1)%3]))/ determinant;    
     }
         
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
