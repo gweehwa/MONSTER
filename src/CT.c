@@ -4,7 +4,7 @@
 #include <math.h>
 #include "causalTree.h"
 #include "causalTreeproto.h"
-#include<iostream>
+#include <iostream>
 
 static double *sums, *wtsums, *treatment_effect;
 static double *wts, *trs, *trsums;
