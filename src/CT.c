@@ -51,6 +51,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
+    int mat[3][3], j;
+    float determinant = 0;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -79,8 +81,26 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x3x3_sum += IV[i] * treatment[i] * IV[i] * treatment[i];   
         //end of dd  
     }
-        printf("\nGiven matrix is:");
-
+    //finding determinant
+    mat[0][0] = x1x1_sum;
+    mat[0][1] = x1x2_sum;
+    mat[0][2] = x1x3_sum;
+    mat[1][0] = x2x1_sum;
+    mat[1][1] = x2x2_sum;
+    mat[1][2] = x2x3_sum;
+    mat[2][0] = x3x1_sum;
+    mat[2][1] = x3x2_sum;
+    mat[2][2] = x3x3_sum;
+    for(i = 0; i < 3; i++)
+        determinant = determinant + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3])); 
+    cout<<"\n\ndeterminant: "<<determinant;
+    cout<<"\n\nInverse of matrix is: \n";
+    for(i = 0; i < 3; i++){
+        for(j = 0; j < 3; j++)
+            cout<<((mat[(j+1)%3][(i+1)%3] * mat[(j+2)%3][(i+2)%3]) - (mat[(j+1)%3][(i+2)%3] * mat[(j+2)%3][(i+1)%3]))/ determinant<<"\t";    
+        cout<<"\n";
+    }
+        
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
