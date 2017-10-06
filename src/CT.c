@@ -79,6 +79,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x3x3_sum += IV[i] * treatment[i] * IV[i] * treatment[i];   
         //end of dd  
     }
+        printf("\nGiven matrix is:");
 
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
