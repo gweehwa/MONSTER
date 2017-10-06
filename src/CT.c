@@ -48,6 +48,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double con_sqr_sum = 0., tr_sqr_sum = 0.;
     double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
+    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
     for (i = 0; i < n; i++) {
@@ -66,6 +67,17 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         xx_sum += IV[i] * IV[i];
         yy_sum += treatment[i] * treatment[i];
         zz_sum += *y[i] * *y[i];
+        //begin of dd
+        x1x1_sum += treatment[i] * treatment[i];
+        x1x2_sum += treatment[i] * IV[i];   
+        x1x3_sum += treatment[i] * IV[i] * treatment[i];    
+        x2x1_sum += IV[i] * treatment[i];
+        x2x2_sum += IV[i] * IV[i];   
+        x2x3_sum += IV[i] * IV[i] * treatment[i];  
+        x3x1_sum += IV[i] * treatment[i] * treatment[i];
+        x3x2_sum += IV[i] * treatment[i] * IV[i];   
+        x3x3_sum += IV[i] * treatment[i] * IV[i] * treatment[i];   
+        //end of dd  
     }
 
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
@@ -156,6 +168,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (numerator / denominator);
+      
+        
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
