@@ -48,10 +48,11 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double con_sqr_sum = 0., tr_sqr_sum = 0.;
     double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
-    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0.;
+    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
+    double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    float mat[3][3], mat_inv[3][3];
+    float mat[4][4], mat_inv[4][4];
     int j;
     float determinant = 0;
     for (i = 0; i < n; i++) {
@@ -71,32 +72,48 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         yy_sum += treatment[i] * treatment[i];
         zz_sum += *y[i] * *y[i];
         //begin of dd
-        x1x1_sum += treatment[i] * treatment[i];
-        x1x2_sum += treatment[i] * IV[i];   
-        x1x3_sum += treatment[i] * IV[i] * treatment[i];    
-        x2x1_sum += IV[i] * treatment[i];
-        x2x2_sum += IV[i] * IV[i];   
-        x2x3_sum += IV[i] * IV[i] * treatment[i];  
-        x3x1_sum += IV[i] * treatment[i] * treatment[i];
-        x3x2_sum += IV[i] * treatment[i] * IV[i];   
-        x3x3_sum += IV[i] * treatment[i] * IV[i] * treatment[i];   
-        //end of dd  
-    }
+        x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * treatment[i];
+        x1x3_sum += 1 * IV[i];   
+        x1x4_sum += 1 * IV[i] * treatment[i]; 
+        x2x1_sum += treatment[i] * 1;
+        x2x2_sum += treatment[i] * treatment[i];
+        x2x3_sum += treatment[i] * IV[i];   
+        x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        x3x1_sum += IV[i] * 1;
+        x3x2_sum += IV[i] * treatment[i];
+        x3x3_sum += IV[i] * IV[i];   
+        x3x4_sum += IV[i] * IV[i] * treatment[i];  
+        x4x1_sum += IV[i] * treatment[i] * 1; 
+        x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        x1y_sum += *y[i];
+        x2y_sum += *y[i] * treatment[i];
+        x3y_sum += *y[i] * IV[i];  
+        x4y_sum += *y[i] * IV[i] * treatment[i];  
     //finding determinant
     mat[0][0] = x1x1_sum;
     mat[0][1] = x1x2_sum;
     mat[0][2] = x1x3_sum;
+    mat[0][3] = x1x4_sum;
     mat[1][0] = x2x1_sum;
     mat[1][1] = x2x2_sum;
     mat[1][2] = x2x3_sum;
+    mat[1][3] = x2x4_sum;
     mat[2][0] = x3x1_sum;
     mat[2][1] = x3x2_sum;
     mat[2][2] = x3x3_sum;
-    for(i = 0; i < 3; i++)
-        determinant = determinant + (mat[0][i] * (mat[1][(i+1)%3] * mat[2][(i+2)%3] - mat[1][(i+2)%3] * mat[2][(i+1)%3])); 
-    for(i = 0; i < 3; i++){
+    mat[2][3] = x3x4_sum;
+    mat[3][0] = x4x1_sum;
+    mat[3][1] = x4x2_sum;
+    mat[3][2] = x4x3_sum;     
+    mat[3][3] = x4x4_sum;   
+    for(i = 0; i < 4; i++)
+        determinant = determinant + (mat[0][i] * (mat[1][(i+1)%4] * mat[2][(i+2)%4] - mat[1][(i+2)%4] * mat[2][(i+1)%4])); 
+    for(i = 0; i < 4; i++){
         for(j = 0; j < 3; j++)
-            mat_inv[(j+1)%3][(i+1)%3] = ((mat[(j+1)%3][(i+1)%3] * mat[(j+2)%3][(i+2)%3]) - (mat[(j+1)%3][(i+2)%3] * mat[(j+2)%3][(i+1)%3]))/ determinant;    
+            mat_inv[(j+1)%3][(i+1)%3] = ((mat[(j+1)%4][(i+1)%4] * mat[(j+2)%4][(i+2)%4]) - (mat[(j+1)%4][(i+2)%4] * mat[(j+2)%4][(i+1)%4]))/ determinant;    
     }
         
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
