@@ -30,6 +30,12 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double xz_sum, xy_sum, x_sum, y_sum, z_sum;
     double yz_sum, xx_sum, yy_sum, zz_sum;
     int n;
+    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
+    double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
@@ -53,8 +59,28 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         yz_sum = 0.;
 	xx_sum = 0.;
 	yy_sum = 0.;
-	zz_sum = 0.;
-        
+	zz_sum = 0.;    
+	x1x1_sum = 0.;
+	x1x2_sum = 0.;
+	x1x3_sum = 0.;
+	x1x4_sum = 0.;
+	x2x1_sum = 0.;
+	x2x2_sum = 0.;
+	x2x3_sum = 0.;
+	x2x4_sum = 0.;
+	x3x1_sum = 0.;
+	x3x2_sum = 0.;
+	x3x3_sum = 0.;
+	x3x4_sum = 0.;
+	x4x1_sum = 0.;
+	x4x2_sum = 0.;
+	x4x3_sum = 0.;
+	x4x4_sum = 0.;
+        x1y_sum = 0.;
+	x2y_sum = 0.;
+	x3y_sum = 0.;
+	x4y_sum = 0.;
+
         while (cp[i] < tree->complexity) {
 	        tree = branch(tree, obs);
 	        if (tree == 0)
@@ -92,6 +118,26 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                 xx_sum += ct.IV[tmp_obs] * ct.IV[tmp_obs];
                 yy_sum += ct.treatment[tmp_obs] * ct.treatment[tmp_obs];
                 zz_sum += *ct.ydata[tmp_obs] * *ct.ydata[tmp_obs];
+	x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * ct.treatment[tmp_obs];
+        x1x3_sum += 1 * ct.IV[tmp_obs];   
+        x1x4_sum += 1 * ct.IV[tmp_obs] * ct.treatment[tmp_obs]; 
+        x2x1_sum += ct.treatment[tmp_obs] * 1;
+        x2x2_sum += ct.treatment[tmp_obs] * treatment[i];
+        x2x3_sum += ct.treatment[tmp_obs] * ct.IV[tmp_obs];   
+        x2x4_sum += ct.treatment[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs]; 
+        x3x1_sum += ct.IV[tmp_obs] * 1;
+        x3x2_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs];
+        x3x3_sum += ct.IV[tmp_obs] * ct.IV[tmp_obs];   
+        x3x4_sum += ct.IV[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs];  
+        x4x1_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs] * 1; 
+        x4x2_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs] * ct.treatment[tmp_obs];
+        x4x3_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs] * ct.IV[tmp_obs];   
+        x4x4_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs];  
+        x1y_sum += *ct.ydata[tmp_obs];
+        x2y_sum += *ct.ydata[tmp_obs] * ct.treatment[tmp_obs];
+        x3y_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs];  
+        x4y_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs];  
             }
         }
 
