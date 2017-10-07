@@ -52,7 +52,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    float mat[4][4], mat_inv[4][4];
+    float m[16], inv[16], invOut[6];
     int j;
     float determinant = 0;
     for (i = 0; i < n; i++) {
@@ -93,29 +93,146 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
     //finding determinant
-    mat[0][0] = x1x1_sum;
-    mat[0][1] = x1x2_sum;
-    mat[0][2] = x1x3_sum;
-    mat[0][3] = x1x4_sum;
-    mat[1][0] = x2x1_sum;
-    mat[1][1] = x2x2_sum;
-    mat[1][2] = x2x3_sum;
-    mat[1][3] = x2x4_sum;
-    mat[2][0] = x3x1_sum;
-    mat[2][1] = x3x2_sum;
-    mat[2][2] = x3x3_sum;
-    mat[2][3] = x3x4_sum;
-    mat[3][0] = x4x1_sum;
-    mat[3][1] = x4x2_sum;
-    mat[3][2] = x4x3_sum;     
-    mat[3][3] = x4x4_sum;   
-    for(i = 0; i < 4; i++)
-        determinant = determinant + (mat[0][i] * (mat[1][(i+1)%4] * mat[2][(i+2)%4] - mat[1][(i+2)%4] * mat[2][(i+1)%4])); 
-    for(i = 0; i < 4; i++){
-        for(j = 0; j < 3; j++)
-            mat_inv[(j+1)%3][(i+1)%3] = ((mat[(j+1)%4][(i+1)%4] * mat[(j+2)%4][(i+2)%4]) - (mat[(j+1)%4][(i+2)%4] * mat[(j+2)%4][(i+1)%4]))/ determinant;    
-    }
-        
+    m[1] = x1x1_sum;
+    m[2] = x1x2_sum;
+    m[3] = x1x3_sum;
+    m[4] = x1x4_sum;
+    m[5] = x2x1_sum;
+    m[6] = x2x2_sum;
+    m[7] = x2x3_sum;
+    m[8] = x2x4_sum;
+    m[9] = x3x1_sum;
+    m[10] = x3x2_sum;
+    m[11] = x3x3_sum;
+    m[12] = x3x4_sum;
+    m[13] = x4x1_sum;
+    m[14] = x4x2_sum;
+    m[15] = x4x3_sum;     
+    m[16] = x4x4_sum;   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    if (det == 0)
+        return false;
+
+    det = 1.0 / det;
+
+    for (i = 0; i < 16; i++)
+        invOut[i] = inv[i] * det;
+
+    return true;
+            
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
