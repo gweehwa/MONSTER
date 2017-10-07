@@ -189,7 +189,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         } else {
             tmp = 0.;
         }  
-	    m[0] = x1x1_sum;
+    m[0] = x1x1_sum;
     m[1] = x1x2_sum;
     m[2] = x1x3_sum;
     m[3] = x1x4_sum;
@@ -328,9 +328,10 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
     bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
     bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
-    for (i = 0; i < n; i++) {
-        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
-    }
+    error2 = (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2]) * (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2]); 
+    //for (i = 0; i < n; i++) {
+    //    error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
+    //}
     var3 = error2 * invOut[15];   
 	
         xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * bhat_3 * bhat_3 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * var3;
