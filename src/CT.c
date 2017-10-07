@@ -91,6 +91,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
+    }
     //finding determinant
     m[1] = x1x1_sum;
     m[2] = x1x2_sum;
