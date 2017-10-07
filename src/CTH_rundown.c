@@ -123,7 +123,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         x1x3_sum += 1 * ct.IV[tmp_obs];   
         x1x4_sum += 1 * ct.IV[tmp_obs] * ct.treatment[tmp_obs]; 
         x2x1_sum += ct.treatment[tmp_obs] * 1;
-        x2x2_sum += ct.treatment[tmp_obs] * treatment[i];
+        x2x2_sum += ct.treatment[tmp_obs] * ct.treatment[tmp_obs];
         x2x3_sum += ct.treatment[tmp_obs] * ct.IV[tmp_obs];   
         x2x4_sum += ct.treatment[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs]; 
         x3x1_sum += ct.IV[tmp_obs] * 1;
