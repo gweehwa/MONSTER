@@ -52,7 +52,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    float m[16], inv[16], invOut[6];
+    float m[16], inv[16], invOut[16];
     double det;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
