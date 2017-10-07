@@ -54,6 +54,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double numerator, denominator;
     float m[16], inv[16], invOut[16];
     double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0.;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -93,22 +95,22 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
     //finding determinant
-    m[1] = x1x1_sum;
-    m[2] = x1x2_sum;
-    m[3] = x1x3_sum;
-    m[4] = x1x4_sum;
-    m[5] = x2x1_sum;
-    m[6] = x2x2_sum;
-    m[7] = x2x3_sum;
-    m[8] = x2x4_sum;
-    m[9] = x3x1_sum;
-    m[10] = x3x2_sum;
-    m[11] = x3x3_sum;
-    m[12] = x3x4_sum;
-    m[13] = x4x1_sum;
-    m[14] = x4x2_sum;
-    m[15] = x4x3_sum;     
-    m[16] = x4x4_sum;   
+    m[0] = x1x1_sum;
+    m[1] = x1x2_sum;
+    m[2] = x1x3_sum;
+    m[3] = x1x4_sum;
+    m[4] = x2x1_sum;
+    m[5] = x2x2_sum;
+    m[6] = x2x3_sum;
+    m[7] = x2x4_sum;
+    m[8] = x3x1_sum;
+    m[9] = x3x2_sum;
+    m[10] = x3x3_sum;
+    m[11] = x3x4_sum;
+    m[12] = x4x1_sum;
+    m[13] = x4x2_sum;
+    m[14] = x4x3_sum;     
+    m[15] = x4x4_sum;   
     inv[0] = m[5]  * m[10] * m[15] - 
              m[5]  * m[11] * m[14] - 
              m[9]  * m[6]  * m[15] + 
@@ -228,7 +230,15 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     for (i = 0; i < 16; i++){
         invOut[i] = inv[i] * det;
     }
-            
+    bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
+    bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
+    bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
+    bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
+    for (i = 0; i < n; i++) {
+        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4) 
+    }
+        
+        
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
