@@ -82,25 +82,25 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 		sum_ivt += ct.IV[j] * ct.treatment[j];
 		sum_t += ct.treatment[j];
 	x1x1_sum += 1 * 1;
-        x1x2_sum += 1 * treatment[j];
-        x1x3_sum += 1 * IV[j];   
-        x1x4_sum += 1 * IV[j] * treatment[j]; 
-        x2x1_sum += treatment[j] * 1;
-        x2x2_sum += treatment[j] * treatment[j];
-        x2x3_sum += treatment[j] * IV[j];   
-        x2x4_sum += treatment[j] * IV[j] * treatment[j]; 
-	x3x1_sum += IV[j] * 1;
-        x3x2_sum += IV[j] * treatment[j];
-        x3x3_sum += IV[j] * IV[j];   
-        x3x4_sum += IV[j] * IV[j] * treatment[j];  
-        x4x1_sum += IV[j] * treatment[j] * 1; 
-        x4x2_sum += IV[j] * treatment[j] * treatment[j];
-        x4x3_sum += IV[j] * treatment[j] * IV[j];   
-        x4x4_sum += IV[j] * treatment[j] * IV[j] * treatment[j];  
-        x1y_sum += *y[j];
-        x2y_sum += *y[j] * treatment[j];
-        x3y_sum += *y[j] * IV[j];  
-        x4y_sum += *y[j] * IV[j] * treatment[j];  
+        x1x2_sum += 1 * ct.treatment[j];
+        x1x3_sum += 1 * ct.IV[j];   
+        x1x4_sum += 1 * ct.IV[j] * ct.treatment[j]; 
+        x2x1_sum += ct.treatment[j] * 1;
+        x2x2_sum += ct.treatment[j] * ct.treatment[j];
+        x2x3_sum += ct.treatment[j] * ct.IV[j];   
+        x2x4_sum += ct.treatment[j] * ct.IV[j] * ct.treatment[j]; 
+	x3x1_sum += ct.IV[j] * 1;
+        x3x2_sum += ct.IV[j] * ct.treatment[j];
+        x3x3_sum += ct.IV[j] * ct.IV[j];   
+        x3x4_sum += ct.IV[j] * ct.IV[j] * ct.treatment[j];  
+        x4x1_sum += ct.IV[j] * ct.treatment[j] * 1; 
+        x4x2_sum += ct.IV[j] * ct.treatment[j] * ct.treatment[j];
+        x4x3_sum += ct.IV[j] * ct.treatment[j] * ct.IV[j];   
+        x4x4_sum += ct.IV[j] * ct.treatment[j] * ct.IV[j] * ct.treatment[j];  
+        x1y_sum += *ct.ydata[j];
+        x2y_sum += *ct.ydata[j] * ct.treatment[j];
+        x3y_sum += *ct.ydata[j] * ct.IV[j];  
+        x4y_sum += *ct.ydata[j] * ct.IV[j] * ct.treatment[j];  
             }
         }
         
