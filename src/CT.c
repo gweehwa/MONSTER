@@ -55,7 +55,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
-    double error2 = 0.;
+    double error2 = 0., var3 = 0.;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -237,7 +237,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     for (i = 0; i < n; i++) {
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
-        
+    var3 = error2 * invOut[15];   
         
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
