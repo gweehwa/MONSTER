@@ -26,6 +26,12 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double consums, trsums, cons, trs;
     double sum_ivy = 0., sum_iv = 0., sum_y = 0.;
     double sum_ivt = 0., sum_t = 0.;
+    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
+    double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0.;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
@@ -75,6 +81,26 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	        sum_y += *ct.ydata[j];
 		sum_ivt += ct.IV[j] * ct.treatment[j];
 		sum_t += ct.treatment[j];
+	x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * treatment[j];
+        x1x3_sum += 1 * IV[j];   
+        x1x4_sum += 1 * IV[j] * treatment[j]; 
+        x2x1_sum += treatment[j] * 1;
+        x2x2_sum += treatment[j] * treatment[j];
+        x2x3_sum += treatment[j] * IV[j];   
+        x2x4_sum += treatment[j] * IV[j] * treatment[j]; 
+	x3x1_sum += IV[j] * 1;
+        x3x2_sum += IV[j] * treatment[j];
+        x3x3_sum += IV[j] * IV[j];   
+        x3x4_sum += IV[j] * IV[j] * treatment[j];  
+        x4x1_sum += IV[j] * treatment[j] * 1; 
+        x4x2_sum += IV[j] * treatment[j] * treatment[j];
+        x4x3_sum += IV[j] * treatment[j] * IV[j];   
+        x4x4_sum += IV[j] * treatment[j] * IV[j] * treatment[j];  
+        x1y_sum += *y[j];
+        x2y_sum += *y[j] * treatment[j];
+        x3y_sum += *y[j] * IV[j];  
+        x4y_sum += *y[j] * IV[j] * treatment[j];  
             }
         }
         
@@ -101,7 +127,149 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //            tr_mean, con_mean, tree_tr_mean, tree_con_mean, alpha);
 	double effect_te = ((cons + trs) * sum_ivy - sum_iv * sum_y) / ((cons + trs) * sum_ivt - sum_iv * sum_t);
 	double effect_tr = tree->response_est[0];
-	xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * effect_te;
+	    
+	        //finding determinant
+    m[0] = x1x1_sum;
+    m[1] = x1x2_sum;
+    m[2] = x1x3_sum;
+    m[3] = x1x4_sum;
+    m[4] = x2x1_sum;
+    m[5] = x2x2_sum;
+    m[6] = x2x3_sum;
+    m[7] = x2x4_sum;
+    m[8] = x3x1_sum;
+    m[9] = x3x2_sum;
+    m[10] = x3x3_sum;
+    m[11] = x3x4_sum;
+    m[12] = x4x1_sum;
+    m[13] = x4x2_sum;
+    m[14] = x4x3_sum;     
+    m[15] = x4x4_sum;   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    det = 1.0 / det;
+
+    for (i = 0; i < 16; i++){
+        invOut[i] = inv[i] * det;
+    }
+    bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
+    bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
+    bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
+    bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
+   //xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * effect_te;
+     xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * bhat_3;
     }
     return;
 
