@@ -224,8 +224,9 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 
     det = 1.0 / det;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < 16; i++){
         invOut[i] = inv[i] * det;
+    }
             
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
