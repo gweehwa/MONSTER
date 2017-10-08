@@ -829,7 +829,7 @@ CTD(int n, double *y[], double *x, int nclass,
             right_x1x3_sum -= x1x3_sum_bucket[j];  
             left_x1x4_sum += x1x4_sum_bucket[j];   
             right_x1x4_sum -= x1x4_sum_bucket[j]; 
-            left_x2x1_sum += x2x1_sum_bucket[j]
+            left_x2x1_sum += x2x1_sum_bucket[j];
             right_x2x1_sum -= x2x1_sum_bucket[j];
             left_x2x2_sum += x2x2_sum_bucket[j];
             right_x2x2_sum -= x2x2_sum_bucket[j];
