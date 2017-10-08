@@ -34,6 +34,26 @@ static double *yz_sum_bucket;
 static double *xx_sum_bucket;
 static double *yy_sum_bucket;
 static double *zz_sum_bucket;
+static double *x1x1_sum_bucket;
+static double *x1x2_sum_bucket;
+static double *x1x3_sum_bucket;
+static double *x1x4_sum_bucket;
+static double *x2x1_sum_bucket;
+static double *x2x2_sum_bucket;
+static double *x2x3_sum_bucket;
+static double *x2x4_sum_bucket;
+static double *x3x1_sum_bucket;
+static double *x3x2_sum_bucket;
+static double *x3x3_sum_bucket;
+static double *x3x4_sum_bucket;
+static double *x4x1_sum_bucket;
+static double *x4x2_sum_bucket;
+static double *x4x3_sum_bucket;
+static double *x4x4_sum_bucket;
+static double *x1y_sum_bucket;
+static double *x2y_sum_bucket; 
+static double *x3y_sum_bucket;
+static double *x4y_sum_bucket;
 
 int
 CTDinit(int n, double *y[], int maxcat, char **error,
@@ -338,7 +358,14 @@ CTD(int n, double *y[], double *x, int nclass,
     double left_yz_sum = 0., left_xx_sum = 0., left_yy_sum = 0., left_zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
-    
+    double right_x1x1_sum = 0., right_x1x2_sum = 0., right_x1x3_sum = 0., right_x1x4_sum = 0., right_x2x1_sum = 0., right_x2x2_sum = 0., right_x2x3_sum = 0., right_x2x4_sum = 0., right_x3x1_sum = 0., right_x3x2_sum = 0., right_x3x3_sum = 0., right_x3x4_sum = 0., right_x4x1_sum = 0., right_x4x2_sum = 0., right_x4x3_sum = 0., right_x4x4_sum = 0.;
+    double right_x1y_sum = 0., right_x2y_sum = 0., right_x3y_sum = 0., right_x4y_sum = 0.;
+    double left_x1x1_sum = 0., left_x1x2_sum = 0., left_x1x3_sum = 0., left_x1x4_sum = 0., left_x2x1_sum = 0., left_x2x2_sum = 0., left_x2x3_sum = 0., left_x2x4_sum = 0., left_x3x1_sum = 0., left_x3x2_sum = 0., left_x3x3_sum = 0., left_x3x4_sum = 0., left_x4x1_sum = 0., left_x4x2_sum = 0., left_x4x3_sum = 0., left_x4x4_sum = 0.;
+    double left_x1y_sum = 0., left_x2y_sum = 0., left_x3y_sum = 0., left_x4y_sum = 0.;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.;
     for (i = 0; i < n; i++) {
         right_wt += wt[i];
         right_tr += wt[i] * treatment[i];
@@ -356,8 +383,172 @@ CTD(int n, double *y[], double *x, int nclass,
         right_xx_sum += IV[i] * IV[i];
         right_yy_sum += treatment[i] * treatment[i];
         right_zz_sum += *y[i] * *y[i];
+	right_x1x1_sum += 1 * 1;
+        right_x1x2_sum += 1 * treatment[i];
+        right_x1x3_sum += 1 * IV[i];   
+        right_x1x4_sum += 1 * IV[i] * treatment[i]; 
+        right_x2x1_sum += treatment[i] * 1;
+        right_x2x2_sum += treatment[i] * treatment[i];
+        right_x2x3_sum += treatment[i] * IV[i];   
+        right_x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        right_x3x1_sum += IV[i] * 1;
+        right_x3x2_sum += IV[i] * treatment[i];
+        right_x3x3_sum += IV[i] * IV[i];   
+        right_x3x4_sum += IV[i] * IV[i] * treatment[i];  
+        right_x4x1_sum += IV[i] * treatment[i] * 1; 
+        right_x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        right_x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        right_x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        right_x1y_sum += *y[i];
+        right_x2y_sum += *y[i] * treatment[i];
+        right_x3y_sum += *y[i] * IV[i];  
+        right_x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
     
+    //finding determinant
+    m[0] = right_x1x1_sum;
+    m[1] = right_x1x2_sum;
+    m[2] = right_x1x3_sum;
+    m[3] = right_x1x4_sum;
+    m[4] = right_x2x1_sum;
+    m[5] = right_x2x2_sum;
+    m[6] = right_x2x3_sum;
+    m[7] = right_x2x4_sum;
+    m[8] = right_x3x1_sum;
+    m[9] = right_x3x2_sum;
+    m[10] = right_x3x3_sum;
+    m[11] = right_x3x4_sum;
+    m[12] = right_x4x1_sum;
+    m[13] = right_x4x2_sum;
+    m[14] = right_x4x3_sum;     
+    m[15] = right_x4x4_sum;   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    det = 1.0 / det;
+
+    for (i = 0; i < 16; i++){
+        invOut[i] = inv[i] * det;
+    }
+    bhat_0 = invOut[0] * right_x1y_sum + invOut[1] * right_x2y_sum + invOut[2] * right_x3y_sum + invOut[3] * right_x4y_sum;
+    bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
+    bhat_2 = invOut[8] * right_x1y_sum + invOut[9] * right_x2y_sum + invOut[10] * right_x3y_sum + invOut[11] * right_x4y_sum;
+    bhat_3 = invOut[12] * right_x1y_sum + invOut[13] * right_x2y_sum + invOut[14] * right_x3y_sum + invOut[15] * right_x4y_sum;
+    for (i = 0; i < n; i++) {
+        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
+    }
+    var3 = error2 * invOut[15];   
     
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
@@ -366,17 +557,17 @@ CTD(int n, double *y[], double *x, int nclass,
     temp = alpha_1;
     numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
     denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-    node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
-    * right_wt * (numerator / denominator);
+    node_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
+    * right_wt * (var3);
     
-    if (right_n * right_xy_sum - right_x_sum * right_y_sum < 0.6 * right_n * right_n){
-    temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-    tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
-    con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-    	- (right_sum - right_tr_sum) * (right_sum - right_tr_sum)
-     	/ ((right_wt - right_tr) * (right_wt - right_tr));
-    node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
-    	* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));}
+    //if (right_n * right_xy_sum - right_x_sum * right_y_sum < 0.6 * right_n * right_n){
+    //temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
+    //tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
+    //con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
+    //	- (right_sum - right_tr_sum) * (right_sum - right_tr_sum)
+    // 	/ ((right_wt - right_tr) * (right_wt - right_tr));
+    //node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)
+    //	* right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));}
     
     if (nclass == 0) {
         /* continuous predictor */
@@ -469,6 +660,27 @@ CTD(int n, double *y[], double *x, int nclass,
         yy_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
         zz_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
         
+	x1x1_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x1x2_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x1x3_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x1x4_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x2x1_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x2x2_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x2x3_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x2x4_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x3x1_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x3x2_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x3x3_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x3x4_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x4x1_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x4x2_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x4x3_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x4x4_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x1y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x2y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double)); 
+        x3y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+        x4y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));    
+	    
         for (j = 0; j < Numbuckets + 1; j++) {
             n_bucket[j] = 0;
             n_tr_bucket[j] = 0;
@@ -489,6 +701,26 @@ CTD(int n, double *y[], double *x, int nclass,
             xx_sum_bucket[j] = 0.;
             yy_sum_bucket[j] = 0.;
             zz_sum_bucket[j] = 0.;
+	x1x1_sum_bucket[j] = 0.;
+        x1x2_sum_bucket[j] = 0.;
+        x1x3_sum_bucket[j] = 0.;
+        x1x4_sum_bucket[j] = 0.;
+        x2x1_sum_bucket[j] = 0.;
+        x2x2_sum_bucket[j] = 0.;
+        x2x3_sum_bucket[j] = 0.;
+        x2x4_sum_bucket[j] = 0.;
+        x3x1_sum_bucket[j] = 0.;
+        x3x2_sum_bucket[j] = 0.;
+        x3x3_sum_bucket[j] = 0.;
+        x3x4_sum_bucket[j] = 0.;
+        x4x1_sum_bucket[j] = 0.;
+        x4x2_sum_bucket[j] = 0.;
+        x4x3_sum_bucket[j] = 0.;
+        x4x4_sum_bucket[j] = 0.;
+        x1y_sum_bucket[j] = 0.;
+        x2y_sum_bucket[j] = 0.; 
+        x3y_sum_bucket[j] = 0.;
+        x4y_sum_bucket[j] = 0.;  
         }
         
         for (i = 0; i < n; i++) {
@@ -510,6 +742,26 @@ CTD(int n, double *y[], double *x, int nclass,
             xx_sum_bucket[j] += IV[i] * IV[i];
             yy_sum_bucket[j] += treatment[i] * treatment[i];
             zz_sum_bucket[j] += *y[i] * *y[i];
+	x1x1_sum_bucket[j] += 1 * 1;
+        x1x2_sum_bucket[j] += 1 * treatment[i];
+        x1x3_sum_bucket[j] += 1 * IV[i];   
+        x1x4_sum_bucket[j] += 1 * IV[i] * treatment[i]; 
+        x2x1_sum_bucket[j] += treatment[i] * 1;
+        x2x2_sum_bucket[j] += treatment[i] * treatment[i];
+        x2x3_sum_bucket[j] += treatment[i] * IV[i];   
+        x2x4_sum_bucket[j] += treatment[i] * IV[i] * treatment[i]; 
+        x3x1_sum_bucket[j] += IV[i] * 1;
+        x3x2_sum_bucket[j] += IV[i] * treatment[i];
+        x3x3_sum_bucket[j] += IV[i] * IV[i];   
+        x3x4_sum_bucket[j] += IV[i] * IV[i] * treatment[i];  
+        x4x1_sum_bucket[j] += IV[i] * treatment[i] * 1; 
+        x4x2_sum_bucket[j] += IV[i] * treatment[i] * treatment[i];
+        x4x3_sum_bucket[j] += IV[i] * treatment[i] * IV[i];   
+        x4x4_sum_bucket[j] += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        x1y_sum_bucket[j] += *y[i];
+        x2y_sum_bucket[j] += *y[i] * treatment[i];
+        x3y_sum_bucket[j] += *y[i] * IV[i];  
+        x4y_sum_bucket[j] += *y[i] * IV[i] * treatment[i];  
             
             if (treatment[i] == 1) {
                 tr_end_bucket[j] = x[i];
@@ -568,6 +820,47 @@ CTD(int n, double *y[], double *x, int nclass,
             right_yy_sum -= yy_sum_bucket[j];
             left_zz_sum += zz_sum_bucket[j];
             right_zz_sum -= zz_sum_bucket[j];
+            
+	    left_x1x1_sum += x1x1_sum_bucket[j];
+            right_x1x1_sum -= x1x1_sum_bucket[j];
+            left_x1x2_sum += x1x2_sum_bucket[j];
+            right_x1x2_sum -= x1x2_sum_bucket[j];
+            left_x1x3_sum += x1x3_sum_bucket[j];  
+            right_x1x3_sum -= x1x3_sum_bucket[j];  
+            left_x1x4_sum += x1x4_sum_bucket[j];   
+            right_x1x4_sum -= x1x4_sum_bucket[j]; 
+            left_x2x1_sum += x2x1_sum_bucket[j]
+            right_x2x1_sum -= x2x1_sum_bucket[j];
+            left_x2x2_sum += x2x2_sum_bucket[j];
+            right_x2x2_sum -= x2x2_sum_bucket[j];
+            left_x2x3_sum += x2x3_sum_bucket[j];    
+            right_x2x3_sum -= x2x3_sum_bucket[j]; 
+            left_x2x4_sum += x2x4_sum_bucket[j]; 
+            right_x2x4_sum -= x2x4_sum_bucket[j]; 
+            left_x3x1_sum += x3x1_sum_bucket[j];
+            right_x3x1_sum -= x3x1_sum_bucket[j];
+            left_x3x2_sum += x3x2_sum_bucket[j];
+            right_x3x2_sum -= x3x2_sum_bucket[j];
+            left_x3x3_sum += x3x3_sum_bucket[j]; 
+            right_x3x3_sum -= x3x3_sum_bucket[j]; 
+            left_x3x4_sum += x3x4_sum_bucket[j];
+            right_x3x4_sum -= x3x4_sum_bucket[j];  
+            left_x4x1_sum += x4x1_sum_bucket[j]; 
+            right_x4x1_sum -= x4x1_sum_bucket[j];
+            left_x4x2_sum += x4x2_sum_bucket[j];
+            right_x4x2_sum -= x4x2_sum_bucket[j];
+            left_x4x3_sum += x4x3_sum_bucket[j];
+            right_x4x3_sum -= x4x3_sum_bucket[j];
+            left_x4x4_sum += x4x4_sum_bucket[j]; 
+            right_x4x4_sum -= x4x4_sum_bucket[j];  
+            left_x1y_sum += x1y_sum_bucket[j];
+            right_x1y_sum -= x1y_sum_bucket[j];
+            left_x2y_sum += x2y_sum_bucket[j];
+            right_x2y_sum -= x2y_sum_bucket[j];
+            left_x3y_sum += x3y_sum_bucket[j];
+            right_x3y_sum -= x3y_sum_bucket[j];
+            left_x4y_sum += x4y_sum_bucket[j];
+            right_x4y_sum -= x4y_sum_bucket[j];
             
             cut_point = (tr_end_bucket[j] + con_end_bucket[j]) / 2.0;
             if (left_n >= edge && right_n >= edge &&
