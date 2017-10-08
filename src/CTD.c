@@ -76,6 +76,12 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
+    double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
+    double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.;	
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -92,8 +98,172 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         xx_sum += IV[i] * IV[i];
         yy_sum += treatment[i] * treatment[i];
         zz_sum += *y[i] * *y[i];
+	x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * treatment[i];
+        x1x3_sum += 1 * IV[i];   
+        x1x4_sum += 1 * IV[i] * treatment[i]; 
+        x2x1_sum += treatment[i] * 1;
+        x2x2_sum += treatment[i] * treatment[i];
+        x2x3_sum += treatment[i] * IV[i];   
+        x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        x3x1_sum += IV[i] * 1;
+        x3x2_sum += IV[i] * treatment[i];
+        x3x3_sum += IV[i] * IV[i];   
+        x3x4_sum += IV[i] * IV[i] * treatment[i];  
+        x4x1_sum += IV[i] * treatment[i] * 1; 
+        x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        x1y_sum += *y[i];
+        x2y_sum += *y[i] * treatment[i];
+        x3y_sum += *y[i] * IV[i];  
+        x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
 
+    m[0] = x1x1_sum;
+    m[1] = x1x2_sum;
+    m[2] = x1x3_sum;
+    m[3] = x1x4_sum;
+    m[4] = x2x1_sum;
+    m[5] = x2x2_sum;
+    m[6] = x2x3_sum;
+    m[7] = x2x4_sum;
+    m[8] = x3x1_sum;
+    m[9] = x3x2_sum;
+    m[10] = x3x3_sum;
+    m[11] = x3x4_sum;
+    m[12] = x4x1_sum;
+    m[13] = x4x2_sum;
+    m[14] = x4x3_sum;     
+    m[15] = x4x4_sum;   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+
+    det = 1.0 / det;
+
+    for (i = 0; i < 16; i++){
+        invOut[i] = inv[i] * det;
+    }
+    bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
+    bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
+    bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
+    bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
+    for (i = 0; i < n; i++) {
+        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
+    }
+    var3 = error2 * invOut[15];   
+	
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
@@ -106,15 +276,16 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     
     numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
-    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
-    if(n * xy_sum - x_sum * y_sum < 0.6 * n * n){
-        effect = temp1 / ttreat - temp0 / (twt - ttreat);  
-        *value = effect;
-        tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
-        con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
-        *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
-        (1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
-    }
+    *risk = 4 * twt * max_y * max_y - alpha * twt * bhat_3 * bhat_3 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
+    //*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
+    //if(n * xy_sum - x_sum * y_sum < 0.6 * n * n){
+    //    effect = temp1 / ttreat - temp0 / (twt - ttreat);  
+    //    *value = effect;
+    //    tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
+    //    con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
+    //    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
+    //    (1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
+    //}
             
 }
 
