@@ -478,7 +478,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-    det = 1.0 / det;
+    det = 1.0 / det; //may need to have if(det = 0)
 
     for (i = 0; i < 16; i++){
         invOut[i] = inv[i] * det;
@@ -505,15 +505,15 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
       
         
 // PARAMETER!        
-    if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
-            temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-            tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
-            con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-                - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
-                / ((right_wt - right_tr) * (right_wt - right_tr));
-            node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                * right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));
-    }
+//    if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
+//            temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
+//            tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
+//            con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
+//                - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
+//                / ((right_wt - right_tr) * (right_wt - right_tr));
+//            node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
+//                * right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));
+//    }
     
     if (nclass == 0) {
         /* continuous predictor */
@@ -740,7 +740,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-    det = 1.0 / det;
+    det = 1.0 / det; //may need if(det = 0)
 
     for (i = 0; i < 16; i++){
         invOut[i] = inv[i] * det;
@@ -766,17 +766,17 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 left_effect = alpha * bhat_3 * bhat_3 * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * left_wt * (var3);
 // PARAMETER!                    
-                if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
-                left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
-                left_tr_var = left_tr_sqr_sum / left_tr - 
-                    left_tr_sum  * left_tr_sum / (left_tr * left_tr);
-                left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
-                    - (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
-                    / ((left_wt - left_tr) * (left_wt - left_tr));        
-                left_effect = alpha * left_temp * left_temp * left_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
-                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
-                continue;}
+//                if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
+//                left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
+//                left_tr_var = left_tr_sqr_sum / left_tr - 
+//                    left_tr_sum  * left_tr_sum / (left_tr * left_tr);
+//                left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
+//                    - (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
+//                    / ((left_wt - left_tr) * (left_wt - left_tr));        
+//                left_effect = alpha * left_temp * left_temp * left_wt
+//                        - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
+//                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
+//                continue;}
                 
 //finding determinant
     m[0] = right_x1x1_sum;
@@ -935,17 +935,17 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * right_wt * (var3);
 // PARAMETER!                    
-                if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
-                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-                right_tr_var = right_tr_sqr_sum / right_tr -
-                    right_tr_sum * right_tr_sum / (right_tr * right_tr);
-                right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-                    - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
-                    / ((right_wt - right_tr) * (right_wt - right_tr));
-                right_effect = alpha * right_temp * right_temp * right_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
-                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
-                continue;}
+//                if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
+//                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
+//                right_tr_var = right_tr_sqr_sum / right_tr -
+//                    right_tr_sum * right_tr_sum / (right_tr * right_tr);
+//                right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
+//                    - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
+//                    / ((right_wt - right_tr) * (right_wt - right_tr));
+//                right_effect = alpha * right_temp * right_temp * right_wt
+//                        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
+//                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
+//                continue;}
                 
 
                 
