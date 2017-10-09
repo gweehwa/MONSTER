@@ -161,34 +161,34 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         
         //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
         //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
-	double alpha_1;
+//	double alpha_1;
 // PARAMETER!	    
-	if (abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
-		alpha_1 = 0.;
-	}
-	else{
-		alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
-	}
-        double effect = alpha_1;
-        double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
-	double beta_1;
-	if (n * xx_sum - x_sum * x_sum == 0){
-		beta_1 = 0.;
-	}
-	else{
-		beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
-	}    
-        double beta_0 = (y_sum - beta_1 * x_sum) / n;
+//	if (abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
+//		alpha_1 = 0.;
+//	}
+//	else{
+//		alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
+//	}
+//        double effect = alpha_1;
+//        double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
+//	  double beta_1;
+//	if (n * xx_sum - x_sum * x_sum == 0){
+//		beta_1 = 0.;
+//	}
+//	else{
+//		beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+//	}    
+//        double beta_0 = (y_sum - beta_1 * x_sum) / n;
 
-	double numerator = (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]) * (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]);
+//	double numerator = (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]) * (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]);
         //double numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
-        double denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
-	double tmp;
-	if (n > 2 && denominator!=0) {
-            tmp = numerator / denominator / (n - 2);
-        } else {
-            tmp = 0.;
-        }  
+//        double denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+//	double tmp;
+//	if (n > 2 && denominator!=0) {
+//            tmp = numerator / denominator / (n - 2);
+//        } else {
+//            tmp = 0.;
+//        }  
     m[0] = x1x1_sum;
     m[1] = x1x2_sum;
     m[2] = x1x3_sum;
@@ -318,7 +318,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
+    if (det != 0){
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -333,7 +333,10 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     //    error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     //}
     var3 = error2 * invOut[15];   
-	
+    } else{
+    bhat_3 = 0;
+    var3 = 0;
+    }	
         xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * bhat_3 * bhat_3 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * var3;
     //    xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
     }
