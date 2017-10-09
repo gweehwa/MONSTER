@@ -32,7 +32,7 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
     double error2 = 0.;
-
+       Rprintf("Warning message--see rundown.c");
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
      *   until I find a node with smaller complexity.  The parent node will
@@ -287,5 +287,5 @@ oops:;
   return;
     }
     warning("Warning message--see rundown.c");
-    Rprintf("Warning message--see rundown.c");
+
 }
