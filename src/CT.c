@@ -97,7 +97,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
        
-        rprintf("Warning message--see rundown.c");
+        Rprintf("Warning message--see rundown.c");
         
     //finding determinant
     m[0] = x1x1_sum;
