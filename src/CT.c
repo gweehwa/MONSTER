@@ -990,6 +990,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             *split = (x[where] + x[where + 1]) / 2; 
         }
 
+            Rprintf("Exited CT.c\n");
+
     }
     
     /*
