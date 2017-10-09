@@ -126,7 +126,8 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], 
         //            tr_mean, con_mean, tree_tr_mean, tree_con_mean, alpha);
 	//double effect_te = ((cons + trs) * sum_ivy - sum_iv * sum_y) / ((cons + trs) * sum_ivt - sum_iv * sum_t);
-	double effect_tr = tree->response_est[0];
+	//double effect_tr = tree->response_est[0];
+	  double effect_tr = 0.;
 	    
 	        //finding determinant
     m[0] = x1x1_sum;
