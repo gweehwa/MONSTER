@@ -989,7 +989,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         csplit[0] = direction;
             *split = (x[where] + x[where + 1]) / 2; 
         }
-             Rprintf("Warning message--see rundown.c");
+
     }
     
     /*
