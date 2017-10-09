@@ -269,7 +269,8 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
+    
+    if (det !=0 ){
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -283,7 +284,10 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-	
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }	
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
@@ -536,6 +540,7 @@ CTD(int n, double *y[], double *x, int nclass,
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
+    if (det != 0){	
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -549,7 +554,11 @@ CTD(int n, double *y[], double *x, int nclass,
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-    
+    } else {
+    bhat_3 = 0;
+    var3 = 0; 
+    }
+	
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
     beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
@@ -1000,6 +1009,7 @@ CTD(int n, double *y[], double *x, int nclass,
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
+    if (det != 0){	    
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -1013,7 +1023,10 @@ CTD(int n, double *y[], double *x, int nclass,
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];  
-		    
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }   
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
@@ -1166,7 +1179,7 @@ CTD(int n, double *y[], double *x, int nclass,
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
+    if (det != 0){
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -1180,7 +1193,10 @@ CTD(int n, double *y[], double *x, int nclass,
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-                
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
@@ -1296,7 +1312,7 @@ CTD(int n, double *y[], double *x, int nclass,
             right_tr_sqr_sum -= wttrsqrsums[j];
             
             
-            if (left_n >= edge && right_n >= edge &&
+            if (left_n >= edge && right_n >= edge && 
                 (int) left_tr >= min_node_size &&
                 (int) left_wt - (int) left_tr >= min_node_size &&
                 (int) right_tr >= min_node_size &&
@@ -1317,7 +1333,8 @@ CTD(int n, double *y[], double *x, int nclass,
                 right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
                 - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
                 / ((right_wt - right_tr) * (right_wt - right_tr));
-                right_effect = alpha * right_temp * right_temp * right_wt
+		// may need to update below
+                right_effect = alpha * right_temp * right_temp * right_wt 
                 - (1 - alpha) * (1 + train_to_est_ratio) * right_wt 
                 * (right_tr_var / right_tr + right_con_var / (right_wt - right_tr)); 
                 
