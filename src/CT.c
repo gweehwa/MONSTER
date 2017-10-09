@@ -12,7 +12,7 @@ static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
 static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 
-warning("Warning message--see rundown.c");
+
 
 int
 CTinit(int n, double *y[], int maxcat, char **error,
@@ -96,6 +96,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
+        warning("Warning message--see rundown.c");
     //finding determinant
     m[0] = x1x1_sum;
     m[1] = x1x2_sum;
