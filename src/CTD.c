@@ -86,6 +86,7 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
      double *risk, double *wt, double *treatment, double *IV, double max_y,
      double alpha, double train_to_est_ratio)
 {
+Rprintf("Entered CTD.c.");
     int i;
     double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
     double ttreat = 0.;
