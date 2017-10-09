@@ -224,7 +224,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-
+   
+    if (det != 0){
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -238,7 +239,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-        
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
@@ -254,14 +258,14 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *risk = 4 * twt * max_y * max_y - alpha * twt * bhat_3 * bhat_3 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
 //  *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
-    if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
-        effect = temp1 / ttreat - temp0 / (twt - ttreat);  
-        *value = effect;
-        tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
-        con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
-        *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
-        (1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
-    }
+//    if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
+//        effect = temp1 / ttreat - temp0 / (twt - ttreat);  
+//        *value = effect;
+//        tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
+//        con_var = con_sqr_sum / (twt - ttreat) - temp0 * temp0 / ((twt - ttreat) * (twt - ttreat));
+//        *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + 
+//        (1 - alpha) * (1 + train_to_est_ratio) * twt * (tr_var /ttreat  + con_var / (twt - ttreat));
+//    }
             
 }
 
@@ -478,6 +482,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
+    if (det != 0){    
     det = 1.0 / det; //may need to have if(det = 0)
 
     for (i = 0; i < 16; i++){
@@ -491,7 +496,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-        
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }    
         
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
@@ -740,6 +748,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
+    if (det != 0){ 
     det = 1.0 / det; //may need if(det = 0)
 
     for (i = 0; i < 16; i++){
@@ -753,7 +762,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-                                    
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }                    
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
@@ -909,6 +921,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
+    if (det != 0){
     det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -922,7 +935,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
-                    
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }                
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
