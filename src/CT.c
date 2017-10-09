@@ -12,8 +12,6 @@ static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
 static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 
-Rprintf("Inside CT\n");
-
 int
 CTinit(int n, double *y[], int maxcat, char **error,
         int *size, int who, double *wt, double *treatment, 
