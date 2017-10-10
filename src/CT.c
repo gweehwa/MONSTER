@@ -491,22 +491,23 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     if (det != 0){    
     det = 1.0 / det; //may need to have if(det = 0)
-
+    Rprintf("det_inv is %d.", det);
     for (i = 0; i < 16; i++){
         invOut[i] = inv[i] * det;
+    Rprintf("invOut is %d.", invOut[i]);
     }
     bhat_0 = invOut[0] * right_x1y_sum + invOut[1] * right_x2y_sum + invOut[2] * right_x3y_sum + invOut[3] * right_x4y_sum;
     bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
     bhat_2 = invOut[8] * right_x1y_sum + invOut[9] * right_x2y_sum + invOut[10] * right_x3y_sum + invOut[11] * right_x4y_sum;
     bhat_3 = invOut[12] * right_x1y_sum + invOut[13] * right_x2y_sum + invOut[14] * right_x3y_sum + invOut[15] * right_x4y_sum;
-    Rprintf("bhat_3 is %d.", bhat_3);
+//    Rprintf("bhat_3 is %d.", bhat_3);
 //    for (i = 0; i < n; i++) {
 //        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
 //    }
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum;
            
     var3 = error2 * invOut[15]; 
-    Rprintf("var3 is %d.",var3);
+//    Rprintf("var3 is %d.",var3);
     } else {
     bhat_3 = 0;
     var3 = 0;
