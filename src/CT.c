@@ -59,7 +59,6 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
     double error2 = 0., var3 = 0.;
     for (i = 0; i < n; i++) {
- 
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
         twt += wt[i];
@@ -95,8 +94,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x1y_sum += *y[i];
         x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
-        x4y_sum += *y[i] * IV[i] * treatment[i]; 
-        Rprintf("y, treatment, IV is %d., %d., %d.", y[i], treatment[i], IV[i]);    
+        x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
        
     
