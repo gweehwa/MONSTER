@@ -96,7 +96,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i]; 
-        Rprintf("xy is %d., %d., %d., %d.", x1y_sum, x2y_sum, x3y_sum, x4y_sum);    
+        Rprintf("y, treatment, IV is %d., %d., %d.", y[i], treatment[i], IV[i]);    
     }
        
     
