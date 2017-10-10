@@ -50,6 +50,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
+    Rprintf("y, treatment and IV are %d., %d., %d.,", *y[1], IV[1], treatment[1]);
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
