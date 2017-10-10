@@ -60,10 +60,10 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     double *x2y_sum = NULL;
     double *x3y_sum = NULL;
     double *x4y_sum = NULL;
-    float *m[16] = 0., *inv[16] = 0., *invOut[16] = 0.;
-    double *det = NULL;
-    double *bhat_0 = NULL, *bhat_1 = NULL, *bhat_2 = NULL, *bhat_3 = NULL;
-    double *error2 = NULL, *var3 = NULL;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.;
     int nnodemax = -1;
     int *invertdx = NULL;
     
