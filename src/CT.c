@@ -494,7 +494,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 //    Rprintf("det_inv is %d.", det);
     for (i = 0; i < 16; i++){
 //        invOut[i] = inv[i] * det;
-    Rprintf("invOut is %d.", invOut[i]);
+//   Rprintf("invOut is %d.", invOut[i]);
     }
     bhat_0 = invOut[0] * right_x1y_sum + invOut[1] * right_x2y_sum + invOut[2] * right_x3y_sum + invOut[3] * right_x4y_sum;
     bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
