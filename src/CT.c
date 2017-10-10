@@ -231,10 +231,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
    
     if (det != 0){
-    det = 1.0 / det;
+//    det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
-        invOut[i] = inv[i] * det;
+        invOut[i] = inv[i] / det;
     }
     bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
@@ -490,10 +490,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
     if (det != 0){    
-    det = 1.0 / det; //may need to have if(det = 0)
+//    det = 1.0 / det; //may need to have if(det = 0)
 //    Rprintf("det_inv is %d.", det);
     for (i = 0; i < 16; i++){
-//        invOut[i] = inv[i] * det;
+        invOut[i] = inv[i] / det;
 //   Rprintf("invOut is %d.", invOut[i]);
     }
     bhat_0 = invOut[0] * right_x1y_sum + invOut[1] * right_x2y_sum + invOut[2] * right_x3y_sum + invOut[3] * right_x4y_sum;
@@ -761,10 +761,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
     if (det != 0){ 
-    det = 1.0 / det; //may need if(det = 0)
+//    det = 1.0 / det; //may need if(det = 0)
 
     for (i = 0; i < 16; i++){
-        invOut[i] = inv[i] * det;
+        invOut[i] = inv[i] / det;
     }
     bhat_0 = invOut[0] * left_x1y_sum + invOut[1] * left_x2y_sum + invOut[2] * left_x3y_sum + invOut[3] * left_x4y_sum;
     bhat_1 = invOut[4] * left_x1y_sum + invOut[5] * left_x2y_sum + invOut[6] * left_x3y_sum + invOut[7] * left_x4y_sum;
@@ -932,10 +932,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
     if (det != 0){
-    det = 1.0 / det;
+//    det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
-        invOut[i] = inv[i] * det;
+        invOut[i] = inv[i] / det;
     }
     bhat_0 = invOut[0] * right_x1y_sum + invOut[1] * right_x2y_sum + invOut[2] * right_x3y_sum + invOut[3] * right_x4y_sum;
     bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
