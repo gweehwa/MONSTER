@@ -58,9 +58,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
     double error2 = 0., var3 = 0.;
-    Rprintf("y1 to y3 is %.2f, %.2f, %.2f", *y[1], *y[2], *y[3]);
-    Rprintf("tr1 to tr3 is %.2f, %.2f, %.2f", treatment[1], treatment[2], treatment[3]);
-    Rprintf("iv1 to iv3 is %.2f, %.2f, %.2f", IV[1], IV[2], IV[3]);
+
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -263,7 +261,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *tr_mean = temp1 / ttreat;
     *con_mean = temp0 / (twt - ttreat);
     *value = effect;
-    
+    Rprintf("bhat_3 and var3 is %.2f, %.2f", bhat_3, var3);
+        
 //    numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
 //    denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
     *risk = 4 * twt * max_y * max_y - alpha * twt * bhat_3 * bhat_3 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
