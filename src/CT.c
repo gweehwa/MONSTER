@@ -58,9 +58,9 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
     double error2 = 0., var3 = 0.;
-    Rprintf("y1 to y3 is %d., %d., %d.", *y[1], *y[2], *y[3]);
-    Rprintf("tr1 to tr3 is %d., %d., %d.", treatment[1], treatment[2], treatment[3]);
-    Rprintf("iv1 to iv3 is %d., %d., %d.", IV[1], IV[2], IV[3]);
+    Rprintf("y1 to y3 is %.2f, %.2f, %.2f", *y[1], *y[2], *y[3]);
+    Rprintf("tr1 to tr3 is %.2f, %.2f, %.2f", treatment[1], treatment[2], treatment[3]);
+    Rprintf("iv1 to iv3 is %.2f, %.2f, %.2f", IV[1], IV[2], IV[3]);
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
