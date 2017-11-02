@@ -12,24 +12,6 @@ static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
 static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 
-// [[Rcpp::depends(RcppArmadillo)]]
-
-#include <RcppArmadillo.h>
-
-// [[Rcpp::depends(RcppArmadillo)]]
-
-// [[Rcpp::export]]
-arma::vec getEigenValues(arma::mat M) {
-    return arma::eig_sym(M);
-}
-
-/*** R
-set.seed(42)
-X <- matrix(rnorm(4*4), 4, 4)
-Z <- X %*% t(X)
-getEigenValues(Z)
-*/
-
 
 //#include <RcppArmadillo.h>
 //using namespace Rcpp;
