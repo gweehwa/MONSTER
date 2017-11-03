@@ -12,16 +12,14 @@ static int *tsplit;
 static double *wtsqrsums, *trsqrsums;
 static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 
-#include <Rcpp.h>
-#include <RcppArmadillo.h>
+#include <RInside.h>                    // for the embedded R via RInside
 
-// [[Rcpp::depends(RcppArmadillo)]]
-
-// [[Rcpp::export]]
-arma::vec getEigenValues(arma::mat M) {
-    return arma::eig_sym(M);
+int main(int argc, char *argv[]) {
+    RInside R(argc, argv);              // create an embedded R instance 
+    R["txt"] = "Hello, world!\n";       // assign a char* (string) to 'txt'
+    R.parseEvalQ("cat(txt)");           // eval init string, ignoring returns
+    exit(0);
 }
-
 
 int
 CTinit(int n, double *y[], int maxcat, char **error,
