@@ -510,8 +510,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = error2 * invOut[15]; 
 
     } else {
-    bhat_3 = -inf;
-    var3 = -inf;
+    bhat_3 = 0;
+    var3 = 1000000;
     }    
         
 //    alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -774,8 +774,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*left_x1x2_sum + 2*bhat_0*bhat_2*left_x1x3_sum + 2*bhat_0*bhat_3*left_x1x4_sum - 2*bhat_0*left_x1y_sum + bhat_1*bhat_1*left_x2x2_sum + 2*bhat_1*bhat_2*left_x2x3_sum + 2*bhat_1*bhat_3*left_x2x4_sum - 2*bhat_1*left_x2y_sum + bhat_2*bhat_2*left_x3x3_sum + 2*bhat_2*bhat_3*left_x3x4_sum - 2*bhat_2*left_x3y_sum + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum;
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = -inf;
-    var3 = -inf;
+    bhat_3 = 0;
+    var3 = 1000000;
     }                    
                // alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                // alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
@@ -945,8 +945,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum;
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = -inf;
-    var3 = -inf;
+    bhat_3 = 0;
+    var3 = 1000000;
     }                
                // alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                // alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
