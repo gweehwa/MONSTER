@@ -247,8 +247,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
            
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = inf;
-    var3 = inf;
+    bhat_3 = 0;
+    var3 = 1000000;
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = bhat_3;
