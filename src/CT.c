@@ -247,6 +247,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
            
     var3 = error2 * invOut[15];   
     } else {
+    Rprintf("det is %.2f", det);
     bhat_3 = 0;
     var3 = 1000000;
     }   
@@ -259,7 +260,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *tr_mean = temp1 / ttreat;
     *con_mean = temp0 / (twt - ttreat);
     *value = effect;
-    Rprintf("bhat_1, bhat_2 and bhat_3 is %.2f, %.2f, %.2f", bhat_1, bhat_2, bhat_3);
+//    Rprintf("bhat_1, bhat_2 and bhat_3 is %.2f, %.2f, %.2f", bhat_1, bhat_2, bhat_3);
         
 //    numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
 //    denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
