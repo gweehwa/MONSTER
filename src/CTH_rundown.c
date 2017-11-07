@@ -21,7 +21,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     pNode tree_tmp = tree;
     
     int opnumber = 0;
-    int j, s;
+    int j, k, s;
     int tmp_obs, tmp_id;
     double tr_mean, con_mean;
     double tr_sqr_sum, con_sqr_sum;
