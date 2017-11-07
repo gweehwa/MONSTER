@@ -13,7 +13,7 @@
 void
 CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k, double alpha)
 {
-    int i, obs2 = (obs < 0) ? -(1 + obs) : obs;
+    int i, k, obs2 = (obs < 0) ? -(1 + obs) : obs;
     int my_leaf_id;
     pNode otree =  tree;
     pNode otree_tmp = tree;
