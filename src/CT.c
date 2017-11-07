@@ -229,7 +229,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
    
-//    if (det != 0){
+    if (det != 0){
 //    det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -246,10 +246,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum - 2*bhat_3*x4y_sum + yy_sum;
            
     var3 = error2 * invOut[15];   
-//    } else {
-//    bhat_3 = 0;
-//    var3 = 0;
-//    }   
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = bhat_3;
 //    alpha_0 = (z_sum - alpha_1 * y_sum) / n;
@@ -490,7 +490,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-//    if (det != 0){    
+    if (det != 0){    
 //    det = 1.0 / det; //may need to have if(det = 0)
 
     for (i = 0; i < 16; i++){
@@ -509,10 +509,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
            
     var3 = error2 * invOut[15]; 
 
-//    } else {
-//    bhat_3 = 0;
-//    var3 = 0;
-//    }    
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }    
         
 //    alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
 //    alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
@@ -761,7 +761,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-//    if (det != 0){ 
+    if (det != 0){ 
 //    det = 1.0 / det; //may need if(det = 0)
 
     for (i = 0; i < 16; i++){
@@ -773,10 +773,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_3 = invOut[12] * left_x1y_sum + invOut[13] * left_x2y_sum + invOut[14] * left_x3y_sum + invOut[15] * left_x4y_sum;
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*left_x1x2_sum + 2*bhat_0*bhat_2*left_x1x3_sum + 2*bhat_0*bhat_3*left_x1x4_sum - 2*bhat_0*left_x1y_sum + bhat_1*bhat_1*left_x2x2_sum + 2*bhat_1*bhat_2*left_x2x3_sum + 2*bhat_1*bhat_3*left_x2x4_sum - 2*bhat_1*left_x2y_sum + bhat_2*bhat_2*left_x3x3_sum + 2*bhat_2*bhat_3*left_x3x4_sum - 2*bhat_2*left_x3y_sum + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum;
     var3 = error2 * invOut[15];   
-//    } else {
-//    bhat_3 = 0;
-//    var3 = 1000000;
-//    }                    
+    } else {
+    bhat_3 = 0;
+    var3 = 1000000;
+    }                    
                // alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                // alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
                // beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
@@ -932,7 +932,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
 
-//    if (det != 0){
+    if (det != 0){
 //    det = 1.0 / det;
 
     for (i = 0; i < 16; i++){
@@ -944,10 +944,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_3 = invOut[12] * right_x1y_sum + invOut[13] * right_x2y_sum + invOut[14] * right_x3y_sum + invOut[15] * right_x4y_sum;
     error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum;
     var3 = error2 * invOut[15];   
-//    } else {     
-//    bhat_3 = 0;
-//    var3 = 1000000;
-//    }                
+    } else {     
+    bhat_3 = 0;
+    var3 = 1000000;
+    }                
                // alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                // alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                // beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
