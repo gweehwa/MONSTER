@@ -987,8 +987,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
                 
                 temp = left_effect + right_effect - node_effect;
-                Rprintf("left_effect, right_effect and node_effect is %.2f, %.2f, %.2f", left_effect, right_effect, node_effect);
                 if (temp > best) {
+                Rprintf("temp and best are %.2f, %.2f, %.2f", temp, best);
                     best = temp;
                     where = i;               
                     if (left_temp < right_temp){
