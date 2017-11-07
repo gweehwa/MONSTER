@@ -247,10 +247,9 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
            
     var3 = error2 * invOut[15];   
     } else {
-            return false;
 //    Rprintf("det is %.2f", det);
-//    bhat_3 = 0;
-//    var3 = 1000000;
+    bhat_3 = 0;
+    var3 = 0;
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = bhat_3;
@@ -513,7 +512,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     } else {
     bhat_3 = 0;
-    var3 = 1000000;
+    var3 = 0;
     }    
         
 //    alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
