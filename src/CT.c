@@ -243,7 +243,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 //    for (i = 0; i < n; i++) {
 //        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
 //    }
-    error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum - 2*bhat_3*x4y_sum + yy_sum;
+    error2 = (bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum 
+              - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum 
+              - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum 
+              - 2*bhat_3*x4y_sum + yy_sum)/n;
            
     var3 = error2 * invOut[15];   
     } else {
@@ -504,7 +507,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 //    for (i = 0; i < n; i++) {
 //        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
 //    }
-    error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum;
+    error2 = (bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum 
+            - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum 
+            - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum 
+            + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
            
     var3 = error2 * invOut[15]; 
 
@@ -771,7 +777,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_1 = invOut[4] * left_x1y_sum + invOut[5] * left_x2y_sum + invOut[6] * left_x3y_sum + invOut[7] * left_x4y_sum;
     bhat_2 = invOut[8] * left_x1y_sum + invOut[9] * left_x2y_sum + invOut[10] * left_x3y_sum + invOut[11] * left_x4y_sum;
     bhat_3 = invOut[12] * left_x1y_sum + invOut[13] * left_x2y_sum + invOut[14] * left_x3y_sum + invOut[15] * left_x4y_sum;
-    error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*left_x1x2_sum + 2*bhat_0*bhat_2*left_x1x3_sum + 2*bhat_0*bhat_3*left_x1x4_sum - 2*bhat_0*left_x1y_sum + bhat_1*bhat_1*left_x2x2_sum + 2*bhat_1*bhat_2*left_x2x3_sum + 2*bhat_1*bhat_3*left_x2x4_sum - 2*bhat_1*left_x2y_sum + bhat_2*bhat_2*left_x3x3_sum + 2*bhat_2*bhat_3*left_x3x4_sum - 2*bhat_2*left_x3y_sum + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum;
+    error2 = (bhat_0*bhat_0 + 2*bhat_0*bhat_1*left_x1x2_sum + 2*bhat_0*bhat_2*left_x1x3_sum + 2*bhat_0*bhat_3*left_x1x4_sum 
+              - 2*bhat_0*left_x1y_sum + bhat_1*bhat_1*left_x2x2_sum + 2*bhat_1*bhat_2*left_x2x3_sum + 2*bhat_1*bhat_3*left_x2x4_sum 
+              - 2*bhat_1*left_x2y_sum + bhat_2*bhat_2*left_x3x3_sum + 2*bhat_2*bhat_3*left_x3x4_sum - 2*bhat_2*left_x3y_sum 
+              + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum)/left_n;
     var3 = error2 * invOut[15];   
     } else {
     bhat_3 = 0;
@@ -942,7 +951,11 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
     bhat_2 = invOut[8] * right_x1y_sum + invOut[9] * right_x2y_sum + invOut[10] * right_x3y_sum + invOut[11] * right_x4y_sum;
     bhat_3 = invOut[12] * right_x1y_sum + invOut[13] * right_x2y_sum + invOut[14] * right_x3y_sum + invOut[15] * right_x4y_sum;
-    error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum;
+    error2 = (bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum 
+              - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum 
+              + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum 
+              + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum 
+              - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
     var3 = error2 * invOut[15];   
     } else {     
     bhat_3 = 0;
