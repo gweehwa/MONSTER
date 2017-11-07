@@ -263,8 +263,8 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     if (det != 0){
     det = 1.0 / det;
 
-    for (i = 0; i < 16; i++){
-        invOut[i] = inv[i] * det;
+    for (k = 0; k < 16; k++){
+        invOut[k] = inv[k] * det;
     }
     bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
