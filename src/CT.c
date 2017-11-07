@@ -40,7 +40,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
      double *risk, double *wt, double *treatment, double *IV, double max_y,
      double alpha, double train_to_est_ratio)
 {
-    int i;
+    int i, k;
     double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
     double ttreat = 0.;
     double effect;
@@ -283,7 +283,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
 {
-    int i, j;
+    int i, j, k;
     double temp;
     double left_sum, right_sum;
     double left_tr_sum, right_tr_sum;
