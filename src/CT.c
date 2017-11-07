@@ -528,7 +528,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 //    denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
        node_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (var3);
-      Rprintf("bhat0-3 are %.2f, %.2d, %.2d", bhat_0, bhat_1, bhat_2, bhat_3);
+      Rprintf("bhat0-3 are %.2f, %.2f, %.2f, %.2f", bhat_0, bhat_1, bhat_2, bhat_3);
       
         
 // PARAMETER!        
