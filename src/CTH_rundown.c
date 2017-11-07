@@ -21,7 +21,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     pNode tree_tmp = tree;
     
     int opnumber = 0;
-    int j, k, s;
+    int j, k, l, s;
     int tmp_obs, tmp_id;
     double tr_mean, con_mean;
     double tr_sqr_sum, con_sqr_sum;
@@ -321,8 +321,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     if (det != 0){
     det = 1.0 / det;
 
-    for (k = 0; k < 16; k++){
-        invOut[k] = inv[k] * det;
+    for (l = 0; l < 16; l++){
+        invOut[l] = inv[l] * det;
     }
     bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
