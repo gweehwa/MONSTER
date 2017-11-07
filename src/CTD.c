@@ -287,7 +287,7 @@ Rprintf("Entered CTD.c.");
     var3 = error2 * invOut[15];   
     } else {
     bhat_3 = 0;
-    var3 = 0;
+    var3 = 1000000;
     }	
     //alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
@@ -557,7 +557,7 @@ CTD(int n, double *y[], double *x, int nclass,
     var3 = error2 * invOut[15];   
     } else {
     bhat_3 = 0;
-    var3 = 0; 
+    var3 = 1000000; 
     }
 	
     //alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -1026,7 +1026,7 @@ CTD(int n, double *y[], double *x, int nclass,
     var3 = error2 * invOut[15];  
     } else {
     bhat_3 = 0;
-    var3 = 0;
+    var3 = 1000000;
     }   
       //          alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
       //          alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
@@ -1196,7 +1196,7 @@ CTD(int n, double *y[], double *x, int nclass,
     var3 = error2 * invOut[15];   
     } else {
     bhat_3 = 0;
-    var3 = 0;
+    var3 = 1000000;
     }
         //        alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
         //        alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
