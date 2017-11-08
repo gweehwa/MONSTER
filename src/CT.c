@@ -1,437 +1,473 @@
-#ifndef FBC_NN_LOGISTICREGRESSION_HPP_
-#define FBC_NN_LOGISTICREGRESSION_HPP_
-
+#pragma once
+#include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <string>
-#include <memory>
 #include <vector>
+#include <set>
+#include <map>
+#include <algorithm>
+#include <climits>
+#include <math.h>
+#include <time.h>
 
-namespace ANN {
+# define VERSION       "V0.10"
+# define VERSION_DATE  "2012-6-12"
 
-template<typename T>
-class LogisticRegression { // two categories
-public:
-	LogisticRegression() = default;
-	int init(const T* data, const T* labels, int train_num, int feature_length,
-		int reg_kinds = -1, T learning_rate = 0.00001, int iterations = 10000, int train_method = 0, int mini_batch_size = 1);
-	int train(const std::string& model);
-	int load_model(const std::string& model);
-	T predict(const T* data, int feature_length) const; // y = 1/(1+exp(-(wx+b)))
+using namespace std;
 
-	// Regularization kinds
-	enum RegKinds {
-		REG_DISABLE = -1, // Regularization disabled
-		REG_L1 = 0 // L1 norm
-	};
+const long  double min_threshold=1e-300;
 
-	// Training methods
-	enum Methods {
-		BATCH = 0,
-		MINI_BATCH = 1
-	};
-
-private:
-	int store_model(const std::string& model) const;
-	T calc_sigmoid(T x) const; // y = 1/(1+exp(-x))
-	T norm(const std::vector<T>& v1, const std::vector<T>& v2) const;
-	void batch_gradient_descent();
-	void mini_batch_gradient_descent();
-	void gradient_descent(const std::vector<std::vector<T>>& data_batch, const std::vector<T>& labels_batch, int length_batch);
-
-	std::vector<std::vector<T>> data;
-	std::vector<T> labels;
-	int iterations = 1000;
-	int train_num = 0; // train samples num
-	int feature_length = 0;
-	T learning_rate = 0.00001;
-	std::vector<T> thetas; // coefficient
-	//T epsilon = 0.000001; // termination condition
-	T lambda = (T)0.; // regularization method
-	int train_method = 0;
-	int mini_batch_size = 1;
+struct sparse_feat                       //稀疏特征表示结构
+{
+    vector<int> id_vec;
+    vector<float> value_vec;
 };
 
-} // namespace ANN
-
-#endif // FBC_NN_LOGISTICREGRESSION_HPP_
-
-#include "logistic_regression.hpp"
-#include <fstream>
-#include <algorithm>
-#include <functional>
-#include <numeric>
-#include "common.hpp"
-
-namespace ANN {
-
-template<typename T>
-int LogisticRegression<T>::init(const T* data, const T* labels, int train_num, int feature_length,
-	int reg_kinds, T learning_rate, int iterations, int train_method, int mini_batch_size)
+class LR                                 //logistic regression实现类
 {
-	if (train_num < 2) {
-		fprintf(stderr, "logistic regression train samples num is too little: %d\n", train_num);
-		return -1;
-	}
-	if (learning_rate <= 0) {
-		fprintf(stderr, "learning rate must be greater 0: %f\n", learning_rate);
-		return -1;
-	}
-	if (iterations <= 0) {
-		fprintf(stderr, "number of iterations cannot be zero or a negative number: %d\n", iterations);
-		return -1;
-	}
+private:
+    vector<sparse_feat> samp_feat_vec;
+    vector<int> samp_class_vec;
+    int feat_set_size;
+    int class_set_size;
+    vector< vector<float> > omega; //模型的参数矩阵omega = feat_set_size * class_set_size
+     
+public:
+    LR();
+    ~LR();
+    void save_model(string model_file);
+    void load_model(string model_file);
+    void load_training_file(string training_file);
+    void init_omega();
+    
+    int train_online(int max_loop, double loss_thrd, float learn_rate, float lambda, int avg);    //logistic regression随机梯度优化算法
+    vector<float> calc_score(sparse_feat &samp_feat);
+    vector<float> score_to_prb(vector<float> &score);
+    int score_to_class(vector<float> &score);
+    
+    float classify_testing_file(string testing_file, string output_file, int output_format);      //模型分类预测
 
-	CHECK(reg_kinds == -1 || reg_kinds == 0);
-	CHECK(train_method == 0 || train_method == 1);
-	CHECK(mini_batch_size >= 1 && mini_batch_size < train_num);
+private:
+    void read_samp_file(string samp_file, vector<sparse_feat> &samp_feat_vec, vector<int> &samp_class_vec);   //更新函数
+    void update_online_ce(int samp_class, sparse_feat &samp_feat, float learn_rate, float lambda);
+    void calc_loss_ce(double *loss, float *acc);                                                              //计算损失函数
+    float calc_acc(vector<int> &test_class_vec, vector<int> &pred_class_vec);    
+    float sigmoid(float x);
+    vector<string> string_split(string terms_str, string spliting_tag);
 
-	if (reg_kinds == REG_L1) this->lambda = (T)1.;
-	if (train_method == MINI_BATCH) this->train_method = 1;
-	this->mini_batch_size = mini_batch_size;
+};
+#include "LR.h"
 
-	this->learning_rate = learning_rate;
-	this->iterations = iterations;
+LR::LR()
+{
 
-	this->train_num = train_num;
-	this->feature_length = feature_length;
-
-	this->data.resize(train_num);
-	this->labels.resize(train_num);
-
-	for (int i = 0; i < train_num; ++i) {
-		const T* p = data + i * feature_length;
-		this->data[i].resize(feature_length+1);
-		this->data[i][0] = (T)1; // bias
-
-		for (int j = 0; j < feature_length; ++j) {
-			this->data[i][j+1] = p[j];
-		}
-
-		this->labels[i] = labels[i];
-	}
-
-	this->thetas.resize(feature_length + 1, (T)0.); // bias + feature_length
-
-	return 0;
 }
 
-template<typename T>
-int LogisticRegression<T>::train(const std::string& model)
+LR::~LR()
 {
-	CHECK(data.size() == labels.size());
-
-	if (train_method == BATCH) batch_gradient_descent();
-	else mini_batch_gradient_descent();
-
-	CHECK(store_model(model) == 0);
-
-	return 0;
 }
 
-template<typename T>
-void LogisticRegression<T>::batch_gradient_descent()
-{
-	for (int i = 0; i < iterations; ++i) {
-		gradient_descent(data, labels, train_num);
-
-		/*std::unique_ptr<T[]> z(new T[train_num]), gradient(new T[thetas.size()]);
-		for (int j = 0; j < train_num; ++j) {
-			z.get()[j] = (T)0.;
-			for (int t = 0; t < feature_length + 1; ++t) {
-				z.get()[j] += data[j][t] * thetas[t];
-			}
-		}
-
-		std::unique_ptr<T[]> pcal_a(new T[train_num]), pcal_b(new T[train_num]), pcal_ab(new T[train_num]);
-		for (int j = 0; j < train_num; ++j) {
-			pcal_a.get()[j] = calc_sigmoid(z.get()[j]) - labels[j];
-			pcal_b.get()[j] = data[j][0]; // bias
-			pcal_ab.get()[j] = pcal_a.get()[j] * pcal_b.get()[j];
-		}
-
-		gradient.get()[0] = ((T)1. / train_num) * std::accumulate(pcal_ab.get(), pcal_ab.get() + train_num, (T)0.); // bias
-
-		for (int j = 1; j < thetas.size(); ++j) {
-			for (int t = 0; t < train_num; ++t) {
-				pcal_b.get()[t] = data[t][j];
-				pcal_ab.get()[t] = pcal_a.get()[t] * pcal_b.get()[t];
-			}
-
-			gradient.get()[j] = ((T)1. / train_num) * std::accumulate(pcal_ab.get(), pcal_ab.get() + train_num, (T)0.) +
-				(lambda / train_num) * thetas[j];
-		}
-
-		for (int i = 0; i < thetas.size(); ++i) {
-			thetas[i] = thetas[i] - learning_rate / train_num * gradient.get()[i];
-		}*/
-	}
+void LR::save_model(string model_file)
+{ 
+    cout << "Saving model..." << endl;
+    ofstream fout(model_file.c_str());
+    for (int k = 0; k < feat_set_size; k++) {
+        for (int j = 0; j < class_set_size; j++) {
+            fout << omega[k][j] << " ";
+        }
+        fout << endl;
+    }
+    fout.close();
 }
 
-template<typename T>
-void LogisticRegression<T>::mini_batch_gradient_descent()
+
+void LR::load_model(string model_file)
 {
-	const int step = mini_batch_size;
-	const int iter_batch = (train_num + step - 1) / step;
-
-	for (int i = 0; i < iterations; ++i) {
-		int pos{ 0 };
-
-		for (int j = 0; j < iter_batch; ++j) {
-			std::vector<std::vector<T>> data_batch;
-			std::vector<T> labels_batch;
-			int remainder{ 0 };
-
-			if (pos + step < train_num) remainder = step;
-			else remainder = train_num - pos;
-
-			data_batch.resize(remainder);
-			labels_batch.resize(remainder, (T)0.);
-
-			for (int t = 0; t < remainder; ++t) {
-				data_batch[t].resize(thetas.size(), (T)0.);
-				for (int m = 0; m < thetas.size(); ++m) {
-					data_batch[t][m] = data[pos + t][m];
-				}
-
-				labels_batch[t] = labels[pos + t];
-			}
-
-			gradient_descent(data_batch, labels_batch, remainder);
-
-			pos += step;
-		}
-	}
+    cout << "Loading model..." << endl;
+    omega.clear();
+    ifstream fin(model_file.c_str());
+    if(!fin) {
+        cerr << "Error opening file: " << model_file << endl;
+        exit(0);
+    }
+    string line_str;
+    while (getline(fin, line_str)) {
+        vector<string> line_vec = string_split(line_str, " ");
+        vector<float>  line_omega;
+        for (vector<string>::iterator it = line_vec.begin(); it != line_vec.end(); it++) {
+            float weight = (float)atof(it->c_str());
+            line_omega.push_back(weight);
+        }
+        omega.push_back(line_omega);
+    }
+    fin.close();
+    feat_set_size = (int)omega.size();
+    class_set_size = (int)omega[0].size();
 }
 
-template<typename T>
-void LogisticRegression<T>::gradient_descent(const std::vector<std::vector<T>>& data_batch, const std::vector<T>& labels_batch, int length_batch)
-{
-	std::unique_ptr<T[]> z(new T[length_batch]), gradient(new T[this->thetas.size()]);
-	for (int j = 0; j < length_batch; ++j) {
-		z.get()[j] = (T)0.;
-		for (int t = 0; t < this->thetas.size(); ++t) {
-			z.get()[j] += data_batch[j][t] * this->thetas[t];
-		}
-	}
 
-	std::unique_ptr<T[]> pcal_a(new T[length_batch]), pcal_b(new T[length_batch]), pcal_ab(new T[length_batch]);
-	for (int j = 0; j < length_batch; ++j) {
-		pcal_a.get()[j] = calc_sigmoid(z.get()[j]) - labels_batch[j];
-		pcal_b.get()[j] = data_batch[j][0]; // bias
-		pcal_ab.get()[j] = pcal_a.get()[j] * pcal_b.get()[j];
-	}
-
-	gradient.get()[0] = ((T)1. / length_batch) * std::accumulate(pcal_ab.get(), pcal_ab.get() + length_batch, (T)0.); // bias
-
-	for (int j = 1; j < this->thetas.size(); ++j) {
-		for (int t = 0; t < length_batch; ++t) {
-			pcal_b.get()[t] = data_batch[t][j];
-			pcal_ab.get()[t] = pcal_a.get()[t] * pcal_b.get()[t];
-		}
-
-		gradient.get()[j] = ((T)1. / length_batch) * std::accumulate(pcal_ab.get(), pcal_ab.get() + length_batch, (T)0.) +
-			(this->lambda / length_batch) * this->thetas[j];
-	}
-
-	for (int i = 0; i < thetas.size(); ++i) {
-		this->thetas[i] = this->thetas[i] - this->learning_rate / length_batch * gradient.get()[i];
-	}
+void LR::read_samp_file(string samp_file, vector<sparse_feat> &samp_feat_vec, vector<int> &samp_class_vec) {
+    ifstream fin(samp_file.c_str());
+    if(!fin) {
+        cerr << "Error opening file: " << samp_file << endl;
+        exit(0);
+    }
+    string line_str;
+    while (getline(fin, line_str)) 
+    {
+        size_t class_pos = line_str.find_first_of("\t");
+        int class_id = atoi(line_str.substr(0, class_pos).c_str());
+        samp_class_vec.push_back(class_id);
+        string terms_str = line_str.substr(class_pos+1);
+        sparse_feat samp_feat;
+        samp_feat.id_vec.push_back(0); // bias
+        samp_feat.value_vec.push_back(1); // bias
+        if (terms_str != "") 
+        {
+            vector<string> fv_vec = string_split(terms_str, " ");
+            for (vector<string>::iterator it = fv_vec.begin(); it != fv_vec.end(); it++) 
+            {
+                size_t feat_pos = it->find_first_of(":");
+                int feat_id = atoi(it->substr(0, feat_pos).c_str());
+                float feat_value = (float)atof(it->substr(feat_pos+1).c_str());
+                samp_feat.id_vec.push_back(feat_id);
+                samp_feat.value_vec.push_back(feat_value);
+            }
+        }
+        samp_feat_vec.push_back(samp_feat);
+    }
+    fin.close();
 }
 
-template<typename T>
-int LogisticRegression<T>::load_model(const std::string& model)
+
+void LR::load_training_file(string training_file)
 {
-	std::ifstream file;
-	file.open(model.c_str(), std::ios::binary);
-	if (!file.is_open()) {
-		fprintf(stderr, "open file fail: %s\n", model.c_str());
-		return -1;
-	}
-
-	int length{ 0 };
-	file.read((char*)&length, sizeof(length));
-	thetas.resize(length);
-	file.read((char*)thetas.data(), sizeof(T)*thetas.size());
-
-	file.close();
-
-	return 0;
+    cout << "Loading training data..." << endl;
+    read_samp_file(training_file, samp_feat_vec, samp_class_vec);
+    feat_set_size = 0;
+    class_set_size = 0;
+    for (size_t i = 0; i < samp_class_vec.size(); i++) {
+        if (samp_class_vec[i] > class_set_size) {
+            class_set_size = samp_class_vec[i];
+        }
+        if (samp_feat_vec[i].id_vec.back() > feat_set_size) {
+            feat_set_size = samp_feat_vec[i].id_vec.back();
+        }    
+    }
+    class_set_size += 1;
+    feat_set_size += 1;
 }
 
-template<typename T>
-T LogisticRegression<T>::predict(const T* data, int feature_length) const
+void LR::init_omega()
 {
-	CHECK(feature_length + 1 == thetas.size());
-
-	T value{(T)0.};
-	for (int t = 1; t < thetas.size(); ++t) {
-		value += data[t - 1] * thetas[t];
-	}
-	return (calc_sigmoid(value + thetas[0]));
+     float init_value = 0.0;
+    //float init_value = (float)1/class_set_size;
+    for (int i = 0; i < feat_set_size; i++) 
+    {
+        vector<float> temp_vec(class_set_size, init_value);
+        omega.push_back(temp_vec);
+    }
 }
 
-template<typename T>
-int LogisticRegression<T>::store_model(const std::string& model) const
+// Stochastic Gradient Descent (SGD) optimization for the criteria of  Cross Entropy (CE)
+int LR::train_online( int max_loop, double loss_thrd, float learn_rate, float lambda, int avg)
 {
-	std::ofstream file;
-	file.open(model.c_str(), std::ios::binary);
-	if (!file.is_open()) {
-		fprintf(stderr, "open file fail: %s\n", model.c_str());
-		return -1;
-	}
+    int id = 0;
+    double loss = 0.0;
+    double loss_pre = 0.0;
+    vector< vector<float> > omega_pre=omega;
+    float acc=0.0;
 
-	int length = thetas.size();
-	file.write((char*)&length, sizeof(length));
-	file.write((char*)thetas.data(), sizeof(T) * thetas.size());
+    vector< vector<float> > omega_sum(omega);
+    
+    while (id <= max_loop*(int)samp_class_vec.size()) 
+    {
+    
+        
+        if (id%samp_class_vec.size() == 0)    // 完成一次迭代，预处理工作。
+        {
+            int loop = id/(int)samp_class_vec.size();               //check loss
+            loss = 0.0;
+            acc = 0.0;
+            
+            calc_loss_ce(&loss, &acc);    
+            cout.setf(ios::left);
+            cout << "Iter: " << setw(8) << loop << "Loss: " << setw(18) << loss << "Acc: " << setw(8) << acc << endl;
+            if ((loss_pre - loss) < loss_thrd && loss_pre >= loss && id != 0)
+            {
+                cout << "Reaching the minimal loss value decrease!" << endl;
+                break;
+            }
+            loss_pre = loss;
+                                
+            if (id)            //表示第一次不做正则项计算
+            {
+                for (int i=0;i!=omega_pre.size();i++)
+                    for (int j=0;j!=omega_pre[i].size();j++)
+                        omega[i][j]+=omega_pre[i][j]*lambda;
+            }
 
-	file.close();
+            omega_pre=omega;
+        }
 
-	return 0;
+        // update omega
+        int r = (int)(rand()%samp_class_vec.size());
+        sparse_feat samp_feat = samp_feat_vec[r];
+        int samp_class = samp_class_vec[r];
+    
+         
+       update_online_ce(samp_class, samp_feat, learn_rate, lambda);
+        
+        if (avg == 1 && id%samp_class_vec.size() == 0) 
+        {
+            for (int i = 0; i < feat_set_size; i++) 
+            {
+                for (int j = 0; j < class_set_size; j++) 
+                {
+                    omega_sum[i][j] += omega[i][j];
+                }
+            }            
+        }
+        id++;
+    }
+
+    if (avg == 1) 
+    {
+        for (int i = 0; i < feat_set_size; i++) 
+        {
+            for (int j = 0; j < class_set_size; j++)
+            {
+                omega[i][j] = (float)omega_sum[i][j] / id;
+            }
+        }        
+    }
+    return 0;
 }
 
-template<typename T>
-T LogisticRegression<T>::calc_sigmoid(T x) const
+void LR::update_online_ce(int samp_class, sparse_feat &samp_feat, float learn_rate, float lambda)
 {
-	return ((T)1 / ((T)1 + exp(-x)));
+    
+    vector<float> score=calc_score(samp_feat);//(W'*X)
+    vector<float> softMaxVec(class_set_size);
+
+    float maxScore=*(max_element(score.begin(),score.end()));
+    float softMaxSum=0;
+
+    for (int j=0;j<class_set_size;j++)
+    {
+        softMaxVec[j]=exp(score[j]-maxScore);
+        softMaxSum+=softMaxVec[j];                             //同时除最大的score;
+    }
+    for (int k=0;k<class_set_size;k++)
+        softMaxVec[k]/=softMaxSum;
+
+
+    for (int i=0;i<class_set_size;i++)                          //对于每一个类
+    {
+        float error_term=((int)(i==samp_class)-softMaxVec[i]);
+        for (int j=0;j<samp_feat.id_vec.size();j++)             //对于每个类中的
+        {
+            int feat_id=samp_feat.id_vec[j];
+            float feat_value=samp_feat.value_vec[j];
+            float delt=error_term*feat_value;
+            //float regul = lambda * omega[feat_id][i];
+            omega[feat_id][i]+=learn_rate*delt;
+
+        }
+
+    }
+    
+     
 }
 
-template<typename T>
-T LogisticRegression<T>::norm(const std::vector<T>& v1, const std::vector<T>& v2) const
+void LR::calc_loss_ce(double *loss, float *acc)
 {
-	CHECK(v1.size() == v2.size());
+    double loss_value = 0.0;
+    int err_num = 0;
 
-	T sum{ 0 };
+    for (size_t i = 0; i < samp_class_vec.size(); i++) 
+    {
+        int samp_class = samp_class_vec[i];
+        sparse_feat samp_feat = samp_feat_vec[i];
 
-	for (int i = 0; i < v1.size(); ++i) {
-		T minus = v1[i] - v2[i];
-		sum += (minus * minus);
-	}
+        vector<float> score = calc_score(samp_feat);
+        vector<float> softMaxVec(class_set_size);
+        float softMaxSum=0;
 
-	return std::sqrt(sum);
+        int pred_class = score_to_class(score);
+        if (pred_class != samp_class) 
+        {
+            err_num += 1;
+        }
+
+        float maxScore=*(max_element(score.begin(),score.end()));
+        for (int k=0;k<class_set_size;k++)
+        {
+           softMaxVec[k]=exp(score[k]-maxScore);
+           softMaxSum+=softMaxVec[k];                     //同时除最大的score;
+        }
+
+        for (int j = 0; j < class_set_size; j++)
+        {
+            if (j == samp_class) 
+            { 
+
+                double yi=softMaxVec[j]/softMaxSum;
+                long double temp=yi<min_threshold ? min_threshold:yi;
+                loss_value -= log(temp);                             
+        
+            }
+
+
+        }
+    }
+
+    *loss = loss_value ;
+    *acc = 1 - (float)err_num / samp_class_vec.size();
 }
 
-template class LogisticRegression<float>;
-template class LogisticRegression<double>;
-
-} // namespace ANN
-
-#include "funset.hpp"
-#include <iostream>
-#include "perceptron.hpp"
-#include "BP.hpp""
-#include "CNN.hpp"
-#include "linear_regression.hpp"
-#include "naive_bayes_classifier.hpp"
-#include "logistic_regression.hpp"
-#include "common.hpp"
-#include <opencv2/opencv.hpp>
-
-// ================================ logistic regression =====================
-int test_logistic_regression_train()
+vector<float> LR::calc_score(sparse_feat &samp_feat)
 {
-	const std::string image_path{ "E:/GitCode/NN_Test/data/images/digit/handwriting_0_and_1/" };
-	cv::Mat data, labels;
-
-	for (int i = 1; i < 11; ++i) {
-		const std::vector<std::string> label{ "0_", "1_" };
-
-		for (const auto& value : label) {
-			std::string name = std::to_string(i);
-			name = image_path + value + name + ".jpg";
-
-			cv::Mat image = cv::imread(name, 0);
-			if (image.empty()) {
-				fprintf(stderr, "read image fail: %s\n", name.c_str());
-				return -1;
-			}
-
-			data.push_back(image.reshape(0, 1));
-		}
-	}
-	data.convertTo(data, CV_32F);
-
-	std::unique_ptr<float[]> tmp(new float[20]);
-	for (int i = 0; i < 20; ++i) {
-		if (i % 2 == 0) tmp[i] = 0.f;
-		else tmp[i] = 1.f;
-	}
-	labels = cv::Mat(20, 1, CV_32FC1, tmp.get());
-
-	ANN::LogisticRegression<float> lr;
-	const float learning_rate{ 0.00001f };
-	const int iterations{ 250 };
-	int reg_kinds = lr.REG_DISABLE; //ANN::LogisticRegression<float>::REG_L1;
-	int train_method = lr.MINI_BATCH; //ANN::LogisticRegression<float>::BATCH;
-	int mini_batch_size = 5;
-
-	int ret = lr.init((float*)data.data, (float*)labels.data, data.rows, data.cols/*,
-		reg_kinds, learning_rate, iterations, train_method, mini_batch_size*/);
-	if (ret != 0) {
-		fprintf(stderr, "logistic regression init fail: %d\n", ret);
-		return -1;
-	}
-
-	const std::string model{ "E:/GitCode/NN_Test/data/logistic_regression.model" };
-
-	ret = lr.train(model);
-	if (ret != 0) {
-		fprintf(stderr, "logistic regression train fail: %d\n", ret);
-		return -1;
-	}
-
-	return 0;
+    vector<float> score(class_set_size, 0);
+    for (int j = 0; j < class_set_size; j++)
+    {
+        for (size_t k = 0; k < samp_feat.id_vec.size(); k++) 
+        {
+            int feat_id = samp_feat.id_vec[k];
+            float feat_value = samp_feat.value_vec[k];
+            score[j] += omega[feat_id][j] * feat_value;
+        }
+    }
+    return score;
 }
 
-int test_logistic_regression_predict()
+vector<float> LR::score_to_prb(vector<float> &score)
+{   
+    //vector<float> prb(class_set_size, 0);
+    //for (int i = 0; i < class_set_size; i++) 
+    //{
+    //    float delta_prb_sum = 0.0;
+    //    for (int j = 0; j < class_set_size; j++) 
+    //    {
+    //        delta_prb_sum += exp(score[j] - score[i]);
+    //    }
+    //    prb[i] = 1 / delta_prb_sum;
+    //}
+    //return prb;
+
+    vector<float> softMaxVec(class_set_size);
+
+    float maxScore=*(max_element(score.begin(),score.end()));
+    float softMaxSum=0;
+
+    for (int j=0;j<class_set_size;j++)
+    {
+        softMaxVec[j]=exp(score[j]-maxScore);
+        softMaxSum+=softMaxVec[j];                             //同时除最大的score;
+    }
+    for (int k=0;k<class_set_size;k++)
+        softMaxVec[k]/=softMaxSum;
+
+    return softMaxVec;
+
+}
+
+
+int LR::score_to_class(vector<float> &score)
 {
-	const std::string image_path{ "E:/GitCode/NN_Test/data/images/digit/handwriting_0_and_1/" };
-	cv::Mat data, labels, result;
+    int pred_class = 0;    
+    float max_score = score[0];
+    for (int j = 1; j < class_set_size; j++) {
+        if (score[j] > max_score) {
+            max_score = score[j];
+            pred_class = j;
+        }
+    }
+    return pred_class;
+}
 
-	for (int i = 11; i < 21; ++i) {
-		const std::vector<std::string> label{ "0_", "1_" };
+float LR::classify_testing_file(string testing_file, string output_file, int output_format)
+{
+    cout << "Classifying testing file..." << endl;
+    vector<sparse_feat> test_feat_vec;
+    vector<int> test_class_vec;
+    vector<int> pred_class_vec;
+    read_samp_file(testing_file, test_feat_vec, test_class_vec);
+    ofstream fout(output_file.c_str());
+    for (size_t i = 0; i < test_class_vec.size(); i++) 
+    {
+        int samp_class = test_class_vec[i];
+        sparse_feat samp_feat = test_feat_vec[i];
+        vector<float> pred_score = calc_score(samp_feat);            
+        int pred_class = score_to_class(pred_score);
+        pred_class_vec.push_back(pred_class);
+        fout << pred_class << "\t"<<samp_class<<"\t";
+        if (output_format == 1) 
+        {
+            for (int j = 0; j < class_set_size; j++) 
+            {
+                fout << j << ":" << pred_score[j] << ' '; 
+            }        
+        }
+        else if (output_format == 2) 
+        {
+            vector<float> pred_prb = score_to_prb(pred_score);
+            for (int j = 0; j < class_set_size; j++)
+            {
+                fout << j << ":" << pred_prb[j] << ' '; 
+            }
+        }
 
-		for (const auto& value : label) {
-			std::string name = std::to_string(i);
-			name = image_path + value + name + ".jpg";
+        fout << endl;        
+    }
+    fout.close();
+    float acc = calc_acc(test_class_vec, pred_class_vec);
+    return acc;
+}
 
-			cv::Mat image = cv::imread(name, 0);
-			if (image.empty()) {
-				fprintf(stderr, "read image fail: %s\n", name.c_str());
-				return -1;
-			}
+float LR::calc_acc(vector<int> &test_class_vec, vector<int> &pred_class_vec)
+{
+    size_t len = test_class_vec.size();
+    if (len != pred_class_vec.size()) {
+        cerr << "Error: two vectors should have the same lenght." << endl;
+        exit(0);
+    }
+    int err_num = 0;
+    for (size_t id = 0; id != len; id++) {
+        if (test_class_vec[id] != pred_class_vec[id]) {
+            err_num++;
+        }
+    }
+    return 1 - ((float)err_num) / len;
+}
 
-			data.push_back(image.reshape(0, 1));
-		}
-	}
-	data.convertTo(data, CV_32F);
+float LR::sigmoid(float x) 
+{
+    double sgm = 1 / (1+exp(-(double)x));
+    return (float)sgm;
+}
 
-	std::unique_ptr<int[]> tmp(new int[20]);
-	for (int i = 0; i < 20; ++i) {
-		if (i % 2 == 0) tmp[i] = 0;
-		else tmp[i] = 1;
-	}
-	labels = cv::Mat(20, 1, CV_32SC1, tmp.get());
-
-	CHECK(data.rows == labels.rows);
-
-	const std::string model{ "E:/GitCode/NN_Test/data/logistic_regression.model" };
-
-	ANN::LogisticRegression<float> lr;
-	int ret = lr.load_model(model);
-	if (ret != 0) {
-		fprintf(stderr, "load logistic regression model fail: %d\n", ret);
-		return -1;
-	}
-
-	for (int i = 0; i < data.rows; ++i) {
-		float probability = lr.predict((float*)(data.row(i).data), data.cols);
-
-		fprintf(stdout, "probability: %.6f, ", probability);
-		if (probability > 0.5) fprintf(stdout, "predict result: 1, ");
-		else fprintf(stdout, "predict result: 0, ");
-		fprintf(stdout, "actual result: %d\n", ((int*)(labels.row(i).data))[0]);
-	}
-
-	return 0;
+vector<string> LR::string_split(string terms_str, string spliting_tag)
+{
+    vector<string> feat_vec;
+    size_t term_beg_pos = 0;
+    size_t term_end_pos = 0;
+    while ((term_end_pos = terms_str.find_first_of(spliting_tag, term_beg_pos)) != string::npos) 
+    {
+        if (term_end_pos > term_beg_pos)
+        {
+            string term_str = terms_str.substr(term_beg_pos, term_end_pos - term_beg_pos);
+            feat_vec.push_back(term_str);
+        }
+        term_beg_pos = term_end_pos + 1;
+    }
+    if (term_beg_pos < terms_str.size())
+    {
+        string end_str = terms_str.substr(term_beg_pos);
+        feat_vec.push_back(end_str);
+    }
+    return feat_vec;
 }
 
 /*
