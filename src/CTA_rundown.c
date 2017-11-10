@@ -28,6 +28,8 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     double sum_ivt = 0., sum_t = 0.;
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    //x: IV, z: y, y: treatment
+    double x1y1z_sum = 0., x1y0z_sum = 0., x0y1z_sum = 0., x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -101,6 +103,10 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         x2y_sum += *ct.ydata[j] * ct.treatment[j];
         x3y_sum += *ct.ydata[j] * ct.IV[j];  
         x4y_sum += *ct.ydata[j] * ct.IV[j] * ct.treatment[j];  
+	x1y1z_sum += *y[j] * IV[j] * treatment[j]; 
+        x1y0z_sum += *y[j] * IV[j] * (1-treatment[j]); 
+        x0y1z_sum += *y[j] * (1-IV[j]) * treatment[j];  
+        x0y0z_sum += *y[j] * (1-IV[j]) * (1-treatment[j]); 
             }
         }
         
@@ -272,7 +278,9 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
    //xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * effect_te;
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (x1y1z_sum - x1y0z_sum) - (x0y1z_sum - x0y0z_sum);
+    //bhat_3 = 0;
     }	    
      xtemp[i] = 2 * ct.max_y * ct.max_y + effect_tr * effect_tr  -  2 *  effect_tr * bhat_3;
     }
