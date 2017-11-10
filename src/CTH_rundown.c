@@ -32,6 +32,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     int n;
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    //x: IV, z: y, y: treatment
+    double x1y1z_sum = 0., x1y0z_sum = 0., x0y1z_sum = 0., x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -138,6 +140,10 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         x2y_sum += *ct.ydata[tmp_obs] * ct.treatment[tmp_obs];
         x3y_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs];  
         x4y_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs];  
+	x1y1z_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs] * ct.treatment[tmp_obs]; 
+        x1y0z_sum += *ct.ydata[tmp_obs] * ct.IV[tmp_obs] * (1-ct.treatment[tmp_obs]); 
+        x0y1z_sum += *ct.ydata[tmp_obs] * (1-ct.IV[tmp_obs]) * ct.treatment[tmp_obs];  
+        x0y0z_sum += *ct.ydata[tmp_obs] * (1-ct.IV[tmp_obs]) * (1-ct.treatment[tmp_obs]);
             }
         }
 
@@ -335,7 +341,9 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     //}
     var3 = error2 * invOut[15];   
     } else{
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (x1y1z_sum - x1y0z_sum) - (x0y1z_sum - x0y0z_sum); 
+    //bhat_3 = 0;
     var3 = 1000000;
     }	
         xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * bhat_3 * bhat_3 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * var3;
