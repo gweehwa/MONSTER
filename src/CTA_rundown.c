@@ -103,10 +103,10 @@ CTA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         x2y_sum += *ct.ydata[j] * ct.treatment[j];
         x3y_sum += *ct.ydata[j] * ct.IV[j];  
         x4y_sum += *ct.ydata[j] * ct.IV[j] * ct.treatment[j];  
-	x1y1z_sum += *y[j] * IV[j] * treatment[j]; 
-        x1y0z_sum += *y[j] * IV[j] * (1-treatment[j]); 
-        x0y1z_sum += *y[j] * (1-IV[j]) * treatment[j];  
-        x0y0z_sum += *y[j] * (1-IV[j]) * (1-treatment[j]); 
+	x1y1z_sum += *ct.ydata[j] * ct.IV[j] * ct.treatment[j]; 
+        x1y0z_sum += *ct.ydata[j] * ct.IV[j] * (1-ct.treatment[j]); 
+        x0y1z_sum += *ct.ydata[j] * (1-ct.IV[j]) * ct.treatment[j]; 
+        x0y0z_sum += *ct.ydata[j] * (1-ct.IV[j]) * (1-ct.treatment[j]); 
             }
         }
         
