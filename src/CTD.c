@@ -761,7 +761,7 @@ CTD(int n, double *y[], double *x, int nclass,
 	x1y1z_sum_bucket[j] = 0.;
 	x1y0z_sum_bucket[j] = 0.;
 	x0y1z_sum_bucket[j] = 0.;
-	x0y0z_sum_bucekt[j] = 0.;
+	x0y0z_sum_bucket[j] = 0.;
         }
         
         for (i = 0; i < n; i++) {
