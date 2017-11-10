@@ -52,6 +52,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double numerator, denominator;
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    //x: IV, z: y, y: treatment
+    double x1y1z_sum = 0., x1y0z_sum = 0., x0y1z_sum = 0., x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -94,6 +96,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
+        x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
+        x1y0z_sum += *y[i] * IV[i] * (1-treatment[i]); 
+        x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
+        x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
     }
        
     
@@ -250,8 +256,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
            
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = 0;
-    var3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (x1y1z_sum - x1y0z_sum) - (x0y1z_sum - x0y0z_sum);      
+    //bhat_3 = 0;
+    var3 = 1000000;
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = bhat_3;
@@ -316,8 +324,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     double numerator, denominator;
     double right_x1x1_sum = 0., right_x1x2_sum = 0., right_x1x3_sum = 0., right_x1x4_sum = 0., right_x2x1_sum = 0., right_x2x2_sum = 0., right_x2x3_sum = 0., right_x2x4_sum = 0., right_x3x1_sum = 0., right_x3x2_sum = 0., right_x3x3_sum = 0., right_x3x4_sum = 0., right_x4x1_sum = 0., right_x4x2_sum = 0., right_x4x3_sum = 0., right_x4x4_sum = 0.;
     double right_x1y_sum = 0., right_x2y_sum = 0., right_x3y_sum = 0., right_x4y_sum = 0.;
+    double right_x1y1z_sum = 0., right_x1y0z_sum = 0., right_x0y1z_sum = 0., right_x0y0z_sum = 0.;
     double left_x1x1_sum = 0., left_x1x2_sum = 0., left_x1x3_sum = 0., left_x1x4_sum = 0., left_x2x1_sum = 0., left_x2x2_sum = 0., left_x2x3_sum = 0., left_x2x4_sum = 0., left_x3x1_sum = 0., left_x3x2_sum = 0., left_x3x3_sum = 0., left_x3x4_sum = 0., left_x4x1_sum = 0., left_x4x2_sum = 0., left_x4x3_sum = 0., left_x4x4_sum = 0.;
     double left_x1y_sum = 0., left_x2y_sum = 0., left_x3y_sum = 0., left_x4y_sum = 0.;
+    double left_x1y1z_sum = 0., left_x1y0z_sum = 0., left_x0y1z_sum = 0., left_x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -359,6 +369,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         right_x2y_sum += *y[i] * treatment[i];
         right_x3y_sum += *y[i] * IV[i];  
         right_x4y_sum += *y[i] * IV[i] * treatment[i];  
+        right_x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
+        right_x1y0z_sum += *y[i] * IV[i] * (1-treatment[i]); 
+        right_x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
+        right_x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
     }
         
     //finding determinant
@@ -515,8 +529,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = error2 * invOut[15]; 
 
     } else {
-    bhat_3 = 0;
-    var3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);       
+    //bhat_3 = 0;
+    var3 = 1000000;
     }    
         
 //    alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -631,6 +647,14 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             right_x3y_sum -= *y[i] * IV[i];
             left_x4y_sum += *y[i] * IV[i] * treatment[i];
             right_x4y_sum -= *y[i] * IV[i] * treatment[i];
+            left_x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
+            left_x1y0z_sum += *y[i] * IV[i] * (1-treatment[i]); 
+            left_x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
+            left_x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
+            right_x1y1z_sum -= *y[i] * IV[i] * treatment[i]; 
+            right_x1y0z_sum -= *y[i] * IV[i] * (1-treatment[i]); 
+            right_x0y1z_sum -= *y[i] * (1-IV[i]) * treatment[i];  
+            right_x0y0z_sum -= *y[i] * (1-IV[i]) * (1-treatment[i]); 
             
             if (x[i + 1] != x[i] && left_n >= edge &&
                 (int) left_tr >= min_node_size &&
@@ -783,7 +807,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum)/left_n;
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (left_x1y1z_sum - left_x1y0z_sum) - (left_x0y1z_sum - left_x0y0z_sum);  
+    //bhat_3 = 0;
     var3 = 1000000;
     }                    
                // alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
@@ -957,8 +983,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum 
               - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
     var3 = error2 * invOut[15];   
-    } else {     
-    bhat_3 = 0;
+    } else { 
+    //x: IV, z: y, y: treatment
+    bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);          
+    //bhat_3 = 0;
     var3 = 1000000;
     }                
                // alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
