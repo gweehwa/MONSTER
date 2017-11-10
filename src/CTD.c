@@ -54,6 +54,10 @@ static double *x1y_sum_bucket;
 static double *x2y_sum_bucket; 
 static double *x3y_sum_bucket;
 static double *x4y_sum_bucket;
+static double *x1y1z_sum_bucket;
+static double *x1y0z_sum_bucket;
+static double *x0y1z_sum_bucket;
+static double *x0y0z_sum_bucket;
 
 int
 CTDinit(int n, double *y[], int maxcat, char **error,
@@ -99,6 +103,7 @@ Rprintf("Entered CTD.c.");
     double numerator, denominator;
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
+    double x1y1z_sum = 0., x1y0z_sum = 0., x0y1z_sum = 0., x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -139,6 +144,10 @@ Rprintf("Entered CTD.c.");
         x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
+	x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
+        x1y0z_sum += *y[i] * IV[i] * (1-treatment[i]); 
+        x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
+        x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]);
     }
 
     m[0] = x1x1_sum;
@@ -281,13 +290,16 @@ Rprintf("Entered CTD.c.");
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
     bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
     bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
+    //below may need to change;	    
     for (i = 0; i < n; i++) {
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i])
 		* (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (x1y1z_sum - x1y0z_sum) - (x0y1z_sum - x0y0z_sum); 
+    //bhat_3 = 0;
     var3 = 1000000;
     }	
     //alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
@@ -368,6 +380,7 @@ CTD(int n, double *y[], double *x, int nclass,
     double right_x1y_sum = 0., right_x2y_sum = 0., right_x3y_sum = 0., right_x4y_sum = 0.;
     double left_x1x1_sum = 0., left_x1x2_sum = 0., left_x1x3_sum = 0., left_x1x4_sum = 0., left_x2x1_sum = 0., left_x2x2_sum = 0., left_x2x3_sum = 0., left_x2x4_sum = 0., left_x3x1_sum = 0., left_x3x2_sum = 0., left_x3x3_sum = 0., left_x3x4_sum = 0., left_x4x1_sum = 0., left_x4x2_sum = 0., left_x4x3_sum = 0., left_x4x4_sum = 0.;
     double left_x1y_sum = 0., left_x2y_sum = 0., left_x3y_sum = 0., left_x4y_sum = 0.;
+    double left_x1y1z_sum = 0., left_x1y0z_sum = 0., left_x0y1z_sum = 0., left_x0y0z_sum = 0.;
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
@@ -409,6 +422,10 @@ CTD(int n, double *y[], double *x, int nclass,
         right_x2y_sum += *y[i] * treatment[i];
         right_x3y_sum += *y[i] * IV[i];  
         right_x4y_sum += *y[i] * IV[i] * treatment[i];  
+	right_x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
+        right_x1y0z_sum += *y[i] * IV[i] * (1-treatment[i]); 
+        right_x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
+        right_x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
     }
     
     //finding determinant
@@ -552,13 +569,16 @@ CTD(int n, double *y[], double *x, int nclass,
     bhat_1 = invOut[4] * right_x1y_sum + invOut[5] * right_x2y_sum + invOut[6] * right_x3y_sum + invOut[7] * right_x4y_sum;
     bhat_2 = invOut[8] * right_x1y_sum + invOut[9] * right_x2y_sum + invOut[10] * right_x3y_sum + invOut[11] * right_x4y_sum;
     bhat_3 = invOut[12] * right_x1y_sum + invOut[13] * right_x2y_sum + invOut[14] * right_x3y_sum + invOut[15] * right_x4y_sum;
+    //below may need to change;
     for (i = 0; i < n; i++) {
         error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) 
 		* (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     }
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);
+    //bhat_3 = 0;
     var3 = 1000000; 
     }
 	
@@ -691,7 +711,11 @@ CTD(int n, double *y[], double *x, int nclass,
         x1y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
         x2y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double)); 
         x3y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
-        x4y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));    
+        x4y_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double)); 
+	x1y1z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+	x1y0z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+	x0y1z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
+	x0y0z_sum_bucket = (double *) ALLOC(Numbuckets + 1, sizeof(double));
 	    
         for (j = 0; j < Numbuckets + 1; j++) {
             n_bucket[j] = 0;
@@ -732,7 +756,11 @@ CTD(int n, double *y[], double *x, int nclass,
         x1y_sum_bucket[j] = 0.;
         x2y_sum_bucket[j] = 0.; 
         x3y_sum_bucket[j] = 0.;
-        x4y_sum_bucket[j] = 0.;  
+        x4y_sum_bucket[j] = 0.;
+	x1y1z_sum_bucket[j] = 0.;
+	x1y0z_sum_bucket[j] = 0.;
+	x0y1z_sum_bucket[j] = 0.;
+	x0y0z_sum_bucekt[j] = 0.;
         }
         
         for (i = 0; i < n; i++) {
@@ -774,6 +802,10 @@ CTD(int n, double *y[], double *x, int nclass,
         x2y_sum_bucket[j] += *y[i] * treatment[i];
         x3y_sum_bucket[j] += *y[i] * IV[i];  
         x4y_sum_bucket[j] += *y[i] * IV[i] * treatment[i];  
+	x1y1z_sum_bucket[j] += *y[i] * IV[i] * treatment[i]; 
+        x1y0z_sum_bucket[j] += *y[i] * IV[i] * (1-treatment[i]); 
+        x0y1z_sum_bucket[j] += *y[i] * (1-IV[i]) * treatment[i];  
+        x0y0z_sum_bucket[j] += *y[i] * (1-IV[i]) * (1-treatment[i]); 
             
             if (treatment[i] == 1) {
                 tr_end_bucket[j] = x[i];
@@ -873,6 +905,14 @@ CTD(int n, double *y[], double *x, int nclass,
             right_x3y_sum -= x3y_sum_bucket[j];
             left_x4y_sum += x4y_sum_bucket[j];
             right_x4y_sum -= x4y_sum_bucket[j];
+	    left_x1y1z_sum += x1y1z_sum_bucket[j]; 
+            left_x1y0z_sum += x1y0z_sum_bucket[j];
+            left_x0y1z_sum += x0y1z_sum_bucket[j];
+            left_x0y0z_sum += x0y0z_sum_bucket[j]; 
+            right_x1y1z_sum -= x1y1z_sum_bucket[j];  
+            right_x1y0z_sum -= x1y0z_sum_bucket[j]; 
+            right_x0y1z_sum -= x0y1z_sum_bucket[j];
+            right_x0y0z_sum -= x0y0z_sum_bucket[j]; 
             
             cut_point = (tr_end_bucket[j] + con_end_bucket[j]) / 2.0;
             if (left_n >= edge && right_n >= edge &&
@@ -1028,7 +1068,9 @@ CTD(int n, double *y[], double *x, int nclass,
     }
     var3 = error2 * invOut[15];  
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (left_x1y1z_sum - left_x1y0z_sum) - (left_x0y1z_sum - left_x0y0z_sum); 
+    //bhat_3 = 0;
     var3 = 1000000;
     }   
       //          alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
@@ -1199,7 +1241,9 @@ CTD(int n, double *y[], double *x, int nclass,
     }
     var3 = error2 * invOut[15];   
     } else {
-    bhat_3 = 0;
+    //x: IV, z: y, y: treatment
+    bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum); 
+    //bhat_3 = 0;
     var3 = 1000000;
     }
         //        alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
