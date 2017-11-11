@@ -342,8 +342,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     var3 = error2 * invOut[15];   
     } else{
     //x: IV, z: y, y: treatment
-    bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));       
-    //bhat_3 = 0;
+    //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));       
+    bhat_3 = 0;
     var3 = 1000000;
     }	
         xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * bhat_3 * bhat_3 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * var3;
