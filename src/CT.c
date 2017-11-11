@@ -257,8 +257,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = error2 * invOut[15];   
     } else {
     //x: IV, z: y, y: treatment
-    bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));      
-    //bhat_3 = 0;
+    //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));      
+    bhat_3 = 0;
     var3 = 1000000;
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
@@ -530,10 +530,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
     } else {
     //x: IV, z: y, y: treatment
-    bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
+    //bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
             - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
     //Rprintf("Node effect is %.2f", bhat_3);
-    //bhat_3 = 0;
+    bhat_3 = 0;
     var3 = 1000000;
     }   
         
@@ -810,10 +810,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = error2 * invOut[15];   
     } else {
     //x: IV, z: y, y: treatment
-    bhat_3 = (left_x1y1z_sum/(left_x1x4_sum) - left_x1y0z_sum/(left_x1x3_sum-left_x1x4_sum)) 
+    //bhat_3 = (left_x1y1z_sum/(left_x1x4_sum) - left_x1y0z_sum/(left_x1x3_sum-left_x1x4_sum)) 
             - (left_x0y1z_sum/(left_x1x2_sum-left_x1x4_sum) - left_x0y0z_sum/(left_x1x1_sum-left_x1x2_sum-left_x1x3_sum+left_x1x4_sum)); 
     //Rprintf("Left node effect is %.2f", bhat_3);
-    //bhat_3 = 0;
+    bhat_3 = 0;
     var3 = 1000000;
     }                    
                // alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
@@ -989,11 +989,11 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = error2 * invOut[15];   
     } else { 
     //x: IV, z: y, y: treatment
-    bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
+    //bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
             - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
   
     //Rprintf("Right node effect is %.2f", bhat_3);
-    //bhat_3 = 0;
+    bhat_3 = 0;
     var3 = 1000000;
     }                
                // alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
