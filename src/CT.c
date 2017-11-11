@@ -531,7 +531,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     } else {
     //x: IV, z: y, y: treatment
     bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);   
-    Rprintf("Node effect is %.2f", bhat_3);
+    //Rprintf("Node effect is %.2f", bhat_3);
     //bhat_3 = 0;
     var3 = 1000000;
     }    
@@ -543,9 +543,12 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 //    temp = alpha_1;
 //    numerator = right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum;
 //    denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
-       node_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
+      Rprintf("bhat3 is %.2f", bhat_3);
+      bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);  
+      Rprintf("bhat3 is %.2f", bhat_3);
+      node_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (var3);
-//      Rprintf("bhat0-3 are %.2f, %.2f, %.2f, %.2f", bhat_0, bhat_1, bhat_2, bhat_3);
+//    Rprintf("bhat0-3 are %.2f, %.2f, %.2f, %.2f", bhat_0, bhat_1, bhat_2, bhat_3);
       
         
 // PARAMETER!        
@@ -810,7 +813,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     } else {
     //x: IV, z: y, y: treatment
     bhat_3 = (left_x1y1z_sum - left_x1y0z_sum) - (left_x0y1z_sum - left_x0y0z_sum);  
-    Rprintf("Left node effect is %.2f", bhat_3);
+    //Rprintf("Left node effect is %.2f", bhat_3);
     //bhat_3 = 0;
     var3 = 1000000;
     }                    
@@ -988,7 +991,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     } else { 
     //x: IV, z: y, y: treatment
     bhat_3 = (right_x1y1z_sum - right_x1y0z_sum) - (right_x0y1z_sum - right_x0y0z_sum);   
-    Rprintf("Right node effect is %.2f", bhat_3);
+    //Rprintf("Right node effect is %.2f", bhat_3);
     //bhat_3 = 0;
     var3 = 1000000;
     }                
