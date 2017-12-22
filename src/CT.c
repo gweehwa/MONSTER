@@ -291,7 +291,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, double *split, 
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
-{
+{   
+    Rprintf("nclass is %.2d", nclass);
     int i, j, k;
     double temp;
     double left_sum, right_sum;
