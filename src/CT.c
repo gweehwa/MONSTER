@@ -1026,6 +1026,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 Rprintf("temp, left_effect, right_effect, node_effect and best are %.2d, %.2d, %.2d, %.2d, %.2d", temp, left_effect, right_effect, node_effect, best);
                 if (temp > best) {
                     best = temp;
+                    Rprintf("New best is %.2d", best);
                     where = i;               
                     if (left_temp < right_temp){
                         direction = LEFT;
