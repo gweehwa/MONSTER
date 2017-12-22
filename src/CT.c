@@ -1042,7 +1042,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         if (best > 0) {         /* found something */
         csplit[0] = direction;
             *split = (x[where] + x[where + 1]) / 2; 
-        //Rprintf("*split and where are %.2f, %.2d", *split, where);
+        Rprintf("*split and where are %.2f, %.2d", *split, where);
         }
 
 
