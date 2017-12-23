@@ -16,6 +16,7 @@ choose_surg(int n1, int n2, int *y, double *x, int *order,
 	    int ncat, double *agreement, double *split, int *csplit,
 	    double tleft, double tright, double *adj)
 {
+    Rprintf("Entered choose_surg.c\n");
     int *left = ct.left, *right = ct.right;
     double *lwt = ct.lwt, *rwt = ct.rwt;
     double llwt, lrwt, rrwt, rlwt;      /* sum of weights for each */
