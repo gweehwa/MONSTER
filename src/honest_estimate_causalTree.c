@@ -14,6 +14,7 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
                             const double *wt2, const double *treatment2, double *IV2, const double *y2,
                             const int *xmiss2, int *where)
 {
+    Rprintf("honest_estimate_causalTree.c -> honest_estimate_causalTree0\n");
     int i, j;
     int n;
     int ncat;
@@ -477,6 +478,7 @@ honest_estimate_causalTree(SEXP dimx, SEXP nnode,
                            SEXP xdata2, SEXP wt2, SEXP treatment2, SEXP IV2, SEXP y2,
                            SEXP xmiss2)
 {
+    Rprintf("honest_estimate_causalTree.c -> honest_estimate_causalTree\n");
     int n = asInteger(dimx);
     SEXP where = PROTECT(allocVector(INTSXP, n));
     honest_estimate_causalTree0(INTEGER(dimx), asInteger(nnode), asInteger(nsplit),
