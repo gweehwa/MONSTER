@@ -1245,6 +1245,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 double
     CTpred(double *y, double wt, double treatment, double *yhat, double propensity)
     {
+        Rprintf("Entered CT.c -> CTpred\n");
         double ystar;
         double temp;
         ystar = y[0] * (treatment - propensity) / (propensity * (1 - propensity));
