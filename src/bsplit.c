@@ -16,6 +16,7 @@ void
 bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int bucketnum, int bucketMax,
        double train_to_est_ratio)
 {
+    Rprintf("Entered bsplit.c\n");
     int i, j, k;
     int kk;
     int nc;
