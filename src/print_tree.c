@@ -22,6 +22,7 @@ static void print_tree2(pNode me, int id, int mydepth, int target);
 void
 print_tree(pNode me, int maxdepth)
 {
+    Rprintf("Entered print_tree\n");
     int i;
 
     printme(me, 1);
