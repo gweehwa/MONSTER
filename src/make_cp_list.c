@@ -33,6 +33,7 @@
 void
 make_cp_list(pNode me, double parent, CpTable cptable_head)
 {
+    Rprintf("Entered make_cp_list\n");
     double me_cp;
     CpTable cplist, cptemp = NULL;
 
