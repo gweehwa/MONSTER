@@ -32,6 +32,7 @@ pred_causalTree0(const int *dimx, int nnode, int nsplit, const int *dimc,
         const double *split2, const int *csplit2, const int *usesur,
         const double *xdata2, const int *xmiss2, int *where)
 {
+    Rprintf("Entered pred_causalTree0\n");
     int i, j;
     int n;
     int ncat;
