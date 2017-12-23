@@ -19,7 +19,7 @@
 pNode
 branch(pNode tree, int obs)
 {
-    Rprintf("Entered branch.c");
+    //Rprintf("Entered branch.c");
     int j, dir;
     int category;               /* for categorical variables */
     pNode me;
