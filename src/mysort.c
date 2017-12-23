@@ -12,6 +12,7 @@
 void
 mysort(int start, int stop, double *x, int *cvec)
 {
+    Rprintf("Entered mysort\n");
     int i, j, k;
     double temp, median;
     int tempd;
