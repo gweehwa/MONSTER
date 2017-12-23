@@ -34,7 +34,8 @@ graycode_init1(int numcat, int *count)
 
 void
 graycode_init2(int numcat, int *count, double *val)
-{
+{ 
+    Rprintf("Entered graycode.c -> graycode_init2\n");
     int i, j, k;
     double temp;
     maxc = numcat;
@@ -79,6 +80,7 @@ graycode_init2(int numcat, int *count, double *val)
 int
 graycode(void)
 {
+    Rprintf("Entered graycode\n");
     int i;
 
     if (gsave > -2) {           /* ordered data */
