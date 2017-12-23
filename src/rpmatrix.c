@@ -13,6 +13,7 @@ void
 ctmatrix(pNode me, int *numcat, double **dsplit,
 	 int **isplit, int **csplit, double **dnode, int **inode, int id)
 {
+     Rprintf("Entered rpmatrix.c -> ctmatrix\n");
     /*
      * dsplit  0: improvement
      *         1: split point if continuous; index into csplit if not
