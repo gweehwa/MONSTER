@@ -11,6 +11,7 @@
 void
 fix_cp(pNode me, double parent_cp)
 {
+    Rprintf("Entered fix_cp.c\n");
     if (me->complexity > parent_cp)
 	me->complexity = parent_cp;
 
