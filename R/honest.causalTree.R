@@ -9,7 +9,7 @@ honest.causalTree <- function(formula, data, weights, treatment, IV, subset,
 							  bucketMax = 40, cv.option, cv.Honest, minsize = 2L, model = FALSE,
 							  x = FALSE, y = TRUE, propensity, control, split.alpha = 0.5, 
 							  cv.alpha = 0.5,cv.gamma=0.5,split.gamma=0.5, cost, ...)  { 
-        print("Entered honest.causalTree.R\n")
+        print("Entered honest.causalTree.R")
 	Call <- match.call()
 
 	indx <- match(c("formula", "data", "weights", "subset"),
