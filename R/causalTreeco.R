@@ -1,6 +1,7 @@
 ## Compute the x-y coordinates for a tree
 causalTreeco <- function(tree, parms)
 {
+    print("Entered causalTreeco.R")
     if (missing(parms)) {
         pn <- paste0("device", dev.cur())
         if (!exists(pn, envir = causalTree_env, inherits = FALSE))
