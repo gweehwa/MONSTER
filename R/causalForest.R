@@ -1,4 +1,5 @@
 init.causalForest <- function(formula, data, treatment, weights=F, cost=F, num.trees,ncov_sample) { 
+  print("Entered causalForest.R")
   num.obs <- nrow(data)
   trees <- vector("list", num.trees)
   inbag <- matrix(0, num.obs, num.trees) 
