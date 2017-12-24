@@ -1,5 +1,6 @@
 causalTree.anova <- function(y, offset, wt)
 {
+    print("Entered causalTree.anova.R")
     if (!is.null(offset)) y <- y - offset
       list(y = y, numresp = 1L, numy = 1L,
 	 summary = function(yval, dev, wt, ylevel, digits) {
