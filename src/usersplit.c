@@ -12,6 +12,7 @@ int
 usersplit_init(int n, double *y[], int maxcat, char **error,
 	       double *parm, int *size, int who, double *wt)
 {
+    Rprintf("Entered usersplit.c\n");
     if (who == 1) {
 	/* If who==0 we are being called internally via xval, and don't
 	 *   need to rerun the initialization.
