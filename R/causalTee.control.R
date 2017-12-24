@@ -3,7 +3,7 @@ causalTree.control <-
              maxcompete = 4L, maxsurrogate = 5L, usesurrogate = 2L, xval = 10L,
              surrogatestyle = 0L, maxdepth = 30L, ...)
     {
-        
+        print("Entered causalTree.control.R")
         if (maxcompete < 0L) {
             warning("The value of 'maxcompete' supplied is < 0; the value 0 was used instead")
             maxcompete <- 0L
