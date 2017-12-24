@@ -4,6 +4,7 @@
 ## most likely this could simply default to branch = 1
 causalTree.branch <- function(x, y, node, branch)
 {
+    print("Entered causalTree.branch.R")
     if (missing(branch)) {
         pn <- paste0("device", dev.cur())
         if (!exists(pn, envir = causalTree_env, inherits = FALSE))
