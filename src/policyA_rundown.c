@@ -13,6 +13,7 @@
 void
 policyA_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k, double alpha, double gamma)
 {
+    Rprintf("Entered policyA_rundown.c\n");
     int i, obs2 = (obs < 0) ? -(1 + obs) : obs;
     int my_leaf_id;
     pNode otree =  tree;
