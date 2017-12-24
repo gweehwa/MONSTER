@@ -13,6 +13,7 @@
 static double INFTY = 9999999999; // infinity
 
 int findNeighbor(int obs, int k) { 
+  Rprintf("Entered xvalHelper.c\n");
   int i, j, temp, neighbor;
   int obs2 = (obs < 0)? -(1 + obs) : obs;
   double dist, min = INFTY;
