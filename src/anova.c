@@ -14,7 +14,7 @@ int
 anovainit(int n, double *y[], int maxcat, char **error,
         double *parm, int *size, int who, double *wt, double *treatment)
 {
-    Rprintf("Entered anova.c -> anovainit");
+    Rprintf("Entered anova.c -> anovainit\n");
     if (who == 1 && maxcat > 0) {
         graycode_init0(maxcat);
         countn = (int *) ALLOC(2 * maxcat, sizeof(int));
