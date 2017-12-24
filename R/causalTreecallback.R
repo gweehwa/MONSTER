@@ -3,6 +3,7 @@
 ##
 causalTreecallback <- function(mlist, nobs, init)
 {
+    print("Entered causalTreecallback.R")
     if (length(mlist) < 3L)
         stop("User written methods must have 3 functions")
     if (!is.function(mlist$init))
