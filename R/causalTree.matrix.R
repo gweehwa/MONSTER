@@ -1,5 +1,6 @@
 causalTree.matrix <- function(frame)
 {
+    print("Entered causalTree.matrix.R")
 
     if (!inherits(frame, "data.frame") ||
        is.null(attr(frame, "terms")))  return(as.matrix(frame))
