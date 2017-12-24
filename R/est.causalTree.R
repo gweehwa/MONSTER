@@ -3,6 +3,7 @@
 #
 est.causalTree <- function(fit, x)
 {
+    print("Entered est.causalTree.R")
     frame <- fit$frame
     if (nrow(frame) == 1L)                # root only tree
         return(structure(rep(1, nrow(x), names = rownames(x))))
