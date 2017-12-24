@@ -3,6 +3,7 @@
 #
 honest.est.causalTree <- function(fit, x, wt, treatment, IV, y)
 {
+    print("Entered honest.est.causalTree.R")
     frame <- fit$frame
     
     nc <- frame[, c("ncompete", "nsurrogate")]
