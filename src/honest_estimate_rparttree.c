@@ -36,6 +36,7 @@ honest_estimate_rparttree0(const int *dimx, int nnode, int nsplit, const int *di
 	    int *n1, double *wt1, double *dev1, double *yval1,
 	    const double *xdata2,const double *wt2,const double *y2, const int *xmiss2, int *where)
 {
+    Rprintf("honest_estimate_rparttree.c\n");
     int i, j;
     int n;
     int ncat;
@@ -235,7 +236,7 @@ honest_estimate_rparttree(SEXP dimx, SEXP nnode, SEXP nsplit, SEXP dimc,
 	   SEXP csplit2, SEXP usesur, SEXP xdata2, SEXP wt2, SEXP y2,
 	   SEXP xmiss2)
 {
-    Rprintf("inside honest C code wrapper fn\n");
+    Rprintf("Entered honest_estimate_rparttree.c -> honest_estimate_rparttree\n");
     int n = asInteger(dimx);
     SEXP where = PROTECT(allocVector(INTSXP, n));
     honest_estimate_rparttree0(INTEGER(dimx), asInteger(nnode), asInteger(nsplit),
