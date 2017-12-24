@@ -1,6 +1,7 @@
 # requirement when missing values are included in sample.
 na.causalTree <- function(x)
 {
+    print("Entered na.causalTree.R")
     Terms <- attr(x, "terms")
     if (!is.null(Terms)) yvar <- attr(Terms, "response") else yvar <- 0L
     if (yvar == 0L) {
