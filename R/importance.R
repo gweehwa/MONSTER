@@ -8,6 +8,7 @@
 #
 importance <- function(fit)
 {
+    print("Entered importance.R")
     ff <- fit$frame
     fpri <- which(ff$var != "<leaf>")  # points to primary splits in ff
     spri <- 1 + cumsum(c(0, 1 + ff$ncompete[fpri] + ff$nsurrogate[fpri]))
