@@ -12,6 +12,7 @@ int
 policysplit_init(int n, double *y[], int maxcat, char **error,
 	       double *parm, int *size, int who, double *wt)
 {
+    Rprintf("Entered policysplit.c -> policysplit_init\n");
     if (who == 1) {
 	/* If who==0 we are being called internally via xval, and don't
 	 *   need to rerun the initialization.
@@ -34,6 +35,7 @@ policysplit_init(int n, double *y[], int maxcat, char **error,
 void
 policysplit_eval(int n, double *y[], double *value, double *risk, double *wt)
 {
+    Rprintf("Entered policysplit.c -> policysplit_eval\n");
     int i;
 
     causalTree_callback1(n, y, wt, uscratch);
@@ -50,6 +52,7 @@ policysplit(int n, double *y[], double *x, int nclass, int edge,
 	  double *improve, double *split, int *csplit, double myrisk,
 	  double *wt)
 {
+    Rprintf("Entered policysplit.c -> policysplit\n");
     int i, j, k;
     int m;
     int left_n, right_n;
