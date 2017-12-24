@@ -14,6 +14,7 @@ int
 anovainit(int n, double *y[], int maxcat, char **error,
         double *parm, int *size, int who, double *wt, double *treatment)
 {
+    Rprintf("Entered anova.c -> anovainit");
     if (who == 1 && maxcat > 0) {
         graycode_init0(maxcat);
         countn = (int *) ALLOC(2 * maxcat, sizeof(int));
@@ -34,6 +35,7 @@ anovainit(int n, double *y[], int maxcat, char **error,
 void
 anovass(int n, double *y[], double *value, double *risk, double *wt, double *treatment, double max_y)
 {
+    Rprintf("Entered anova.c -> anovass");
     int i;
     double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
     double ttreat = 0.;
@@ -63,6 +65,7 @@ anova(int n, double *y[], double *x, int nclass,
         int edge, double *improve, double *split, int *csplit,
         double myrisk, double *wt, double *treatment, int minsize)
 {
+    Rprintf("Entered anova.c -> anova");
     int i, j;
     double temp;
     double left_sum, right_sum;
