@@ -16,6 +16,7 @@ userinit(int n, double *y[], int maxcat, char **error,
 		int *size, int who, double *wt, double *treatment, 
 		int bucketnum, int bucketMax, double *train_to_est_ratio)
 {
+	Rprintf("Entered user.c -> userinit\n");
 	if (who == 1 && maxcat > 0) {
 		graycode_init0(maxcat);
 		countn = (int *) ALLOC(2 * maxcat, sizeof(int));
@@ -40,6 +41,7 @@ userss(int n, double *y[], double *value,  double *con_mean, double *tr_mean,
 		double *risk, double *wt, double *treatment, double max_y,
 		double alpha, double train_to_est_ratio)
 {
+	Rprintf("Entered user.c -> userss\n");
 	int i;
 	double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
 	double ttreat = 0.;
@@ -72,6 +74,7 @@ void user(int n, double *y[], double *x, int nclass, int edge, double *improve, 
 		int *csplit, double myrisk, double *wt, double *treatment, int minsize, double alpha,
 		double train_to_est_ratio)
 {
+	Rprintf("Entered user.c -> user\n");
 	int i, j;
 	double temp;
 	double left_sum, right_sum;
