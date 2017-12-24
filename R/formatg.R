@@ -3,6 +3,7 @@
 formatg <- function(x, digits = getOption("digits"),
                     format = paste0("%.", digits, "g"))
 {
+    print("Entered formatg.R")
     if (!is.numeric(x)) stop("'x' must be a numeric vector")
 
     temp <- sprintf(format, x)
