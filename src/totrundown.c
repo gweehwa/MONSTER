@@ -8,6 +8,7 @@
 void
 totrundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp)
 {
+    Rprintf("Entered totrundown.c\n");
     int i, obs2 = (obs < 0) ? -(1 + obs) : obs;
     pNode otree =  tree;
     
