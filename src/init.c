@@ -41,6 +41,7 @@ static const R_CallMethodDef CallEntries[] = {
 void
 R_init_causalTree(DllInfo * dll)
 {
+    Rprintf("Entered init.c\n");
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, TRUE);//FALSE
 #if defined(R_VERSION) && R_VERSION >= R_Version(2, 16, 0)
