@@ -31,6 +31,7 @@ totDinit(int n, double *y[], int maxcat, char **error,
         int *size, int who, double *wt, double *treatment, 
         int bucketnum, int bucketMax, double *train_to_est_ratio)
 {
+    Rprintf("Entered totD.c -> totDinit\n");
     if (who == 1 && maxcat > 0) {
         graycode_init0(maxcat);
         countn = (int *) ALLOC(2 * maxcat, sizeof(int));
@@ -56,6 +57,7 @@ void
 totDss(int n, double *y[], double *value, double *con_mean, double *tr_mean, double *risk, 
        double *wt, double *treatment, double max_y, double propensity) 
 {
+    Rprintf("Entered totD.c -> totDss\n");
     int i;
     double temp = 0., twt = 0.;
     double mean, ss;
@@ -101,6 +103,7 @@ void totD(int n, double *y[], double *x, int nclass, int edge, double *improve,
          double *split, int *csplit, double myrisk, double *wt, double *treatment, 
          double propensity, int minsize, int bucketnum, int bucketMax)
 {
+    Rprintf("Entered totD.c -> totD\n");
     int i, j;
     double temp;
     double left_sum, right_sum;
