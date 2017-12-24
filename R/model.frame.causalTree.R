@@ -1,6 +1,7 @@
 # get model frame of causalTree, same as rpart
 model.frame.causalTree <- function(formula, ...)
 {
+    print("Entered model.frame.causalTree.R")
     m <- formula$model
     if (!is.null(m)) return(m)
     oc <- formula$call
