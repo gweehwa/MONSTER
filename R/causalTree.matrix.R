@@ -14,6 +14,8 @@ causalTree.matrix <- function(frame)
 
     colnames(X) <- sub("^`(.*)`", "\\1", colnames(X))
     class(X) <- c("causalTree.matrix", class(X)) 
+    print(colnames(X))
+    print(class(X))
     X
 }
 
