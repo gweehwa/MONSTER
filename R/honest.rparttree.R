@@ -5,6 +5,7 @@ honest.rparttree <-
     function(formula, data, weights, subset, est_data,est_weights, na.action = na.rpart, method,
              model = FALSE, x = FALSE, y = TRUE, parms, control, cost, ...)
 {
+    print("Entered honest.rparttree.R")
     Call <- match.call()
     if (is.data.frame(model)) {
         m <- model
