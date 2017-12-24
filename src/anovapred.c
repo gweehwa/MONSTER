@@ -5,7 +5,7 @@
 double
 anovapred(double *y, double wt, double treatment, double *yhat, double p) 
 {
-    Rprintf("Entered anovapred.c");
+    Rprintf("Entered anovapred.c\n");
     double temp;
     if (treatment == 1)  temp = y[0] / p;
     else temp = - y[0] / (1 - p);
