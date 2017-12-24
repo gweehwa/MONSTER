@@ -3,6 +3,7 @@
 #
 honest.est.rparttree <- function(fit, x, wt, y)
 {
+    print("Entered honest.est.rparttree.R")
     frame <- fit$frame
     
     nc <- frame[, c("ncompete", "nsurrogate")]
