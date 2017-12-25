@@ -581,7 +581,7 @@ CTD(int n, double *y[], double *x, int nclass,
     } else {
     //x: IV, z: y, y: treatment
     //bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
-            - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
+    //        - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
     bhat_3 = 0;
     var3 = 1000000; 
     }
@@ -1074,7 +1074,7 @@ CTD(int n, double *y[], double *x, int nclass,
     } else {
     //x: IV, z: y, y: treatment
     //bhat_3 = (left_x1y1z_sum/(left_x1x4_sum) - left_x1y0z_sum/(left_x1x3_sum-left_x1x4_sum)) 
-            - (left_x0y1z_sum/(left_x1x2_sum-left_x1x4_sum) - left_x0y0z_sum/(left_x1x1_sum-left_x1x2_sum-left_x1x3_sum+left_x1x4_sum)); 
+    //        - (left_x0y1z_sum/(left_x1x2_sum-left_x1x4_sum) - left_x0y0z_sum/(left_x1x1_sum-left_x1x2_sum-left_x1x3_sum+left_x1x4_sum)); 
     bhat_3 = 0;
     var3 = 1000000;
     }   
@@ -1248,7 +1248,7 @@ CTD(int n, double *y[], double *x, int nclass,
     } else {
     //x: IV, z: y, y: treatment
     //bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
-            - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
+    //        - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
     bhat_3 = 0;
     var3 = 1000000;
     }
