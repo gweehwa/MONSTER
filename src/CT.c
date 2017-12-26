@@ -341,7 +341,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     bhat_0 = (inv[0] * x1y_sum + inv[1] * x2y_sum + inv[2] * x3y_sum + inv[3] * x4y_sum)/det;
     bhat_1 = (inv[1] * x1y_sum + inv[5] * x2y_sum + inv[6] * x3y_sum + inv[7] * x4y_sum)/det;
     bhat_2 = (inv[2] * x1y_sum + inv[6] * x2y_sum + inv[10] * x3y_sum + inv[11] * x4y_sum)/det;
-    bhat_3 = (inv[3] * x1y_sum + inv[7] * x2y_sum + inv[11] * x3y_sum + inv[15] * x4y_sum/det;
+    bhat_3 = (inv[3] * x1y_sum + inv[7] * x2y_sum + inv[11] * x3y_sum + inv[15] * x4y_sum)/det;
 
 //    for (i = 0; i < n; i++) {
 //        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
