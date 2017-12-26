@@ -62,10 +62,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double error2 = 0., var3 = 0.;
 
     for (i = 0; i < n; i++) {
-        //temp1 += *y[i] * wt[i] * treatment[i];
-        //temp0 += *y[i] * wt[i] * (1 - treatment[i]);
-        //twt += wt[i];
-        //ttreat += wt[i] * treatment[i];
+        temp1 += *y[i] * wt[i] * treatment[i];
+        temp0 += *y[i] * wt[i] * (1 - treatment[i]);
+        twt += wt[i];
+        ttreat += wt[i] * treatment[i];
         //tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
         //con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
         
@@ -271,8 +271,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 //    beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
 //    beta_0 = (y_sum - beta_1 * x_sum) / n;
 //
-//    *tr_mean = temp1 / ttreat;
-//    *con_mean = temp0 / (twt - ttreat);
+    *tr_mean = temp1 / ttreat;
+    *con_mean = temp0 / (twt - ttreat);
     *value = effect;
         
 //    numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
