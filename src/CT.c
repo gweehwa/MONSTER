@@ -79,24 +79,24 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         //yy_sum += treatment[i] * treatment[i];
         //zz_sum += *y[i] * *y[i];
         //begin of dd
-        //x1x1_sum += 1 * 1;
-        //x1x2_sum += 1 * treatment[i];
+        x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * treatment[i];
         x1x3_sum += 1 * IV[i];   
         x1x4_sum += 1 * IV[i] * treatment[i]; 
-        //x2x1_sum += treatment[i] * 1;
-        //x2x2_sum += treatment[i] * treatment[i];
-        //x2x3_sum += treatment[i] * IV[i];   
-        //x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
-        //x3x1_sum += IV[i] * 1;
-        //x3x2_sum += IV[i] * treatment[i];
+        x2x1_sum += treatment[i] * 1;
+        x2x2_sum += treatment[i] * treatment[i];
+        x2x3_sum += treatment[i] * IV[i];   
+        x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        x3x1_sum += IV[i] * 1;
+        x3x2_sum += IV[i] * treatment[i];
         x3x3_sum += IV[i] * IV[i];   
         x3x4_sum += IV[i] * IV[i] * treatment[i];  
-        //x4x1_sum += IV[i] * treatment[i] * 1; 
-        //x4x2_sum += IV[i] * treatment[i] * treatment[i];
-        //x4x3_sum += IV[i] * treatment[i] * IV[i];   
-        //x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
-        //x1y_sum += *y[i];
-        //x2y_sum += *y[i] * treatment[i];
+        x4x1_sum += IV[i] * treatment[i] * 1; 
+        x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        x1y_sum += *y[i];
+        x2y_sum += *y[i] * treatment[i];
         x3y_sum += *y[i] * IV[i];  
         x4y_sum += *y[i] * IV[i] * treatment[i];  
         //x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
@@ -104,22 +104,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         //x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
         //x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
     }
-        x1x1_sum = n;
-        x1x2_sum = ttreat;
-        x2x1_sum = x1x2_sum;
-        x2x2_sum = x2x1_sum;
-        x2x3_sum = x1x4_sum;
-        x2x4_sum = x1x4_sum;
-        x3x1_sum = x1x3_sum;
-        x3x2_sum = x2x3_sum;
-        x4x1_sum = x1x4_sum;
-        x4x2_sum = x2x4_sum;
-        x4x3_sum = x3x4_sum;
-        x4x4_sum = x3x4_sum;
-        x1y_sum = temp0 + temp1;
-        x2y_sum = temp1;
-       
-    
+
+     
     //finding determinant
     m[0] = x1x1_sum;
     m[1] = x1x2_sum;
@@ -292,7 +278,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 //    denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
       *risk = 4 * twt * max_y * max_y - alpha * twt * bhat_3 * bhat_3 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
 //    *risk = - alpha * twt * bhat_3 * bhat_3 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
-    //Rprintf("CTss var3 is %.2f", var3 );
+    Rprintf("CTss bhat_3 and var3 is %.2f, %.2f", bhat_3, var3 );
 //  *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
 //    if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
@@ -371,24 +357,24 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         //right_xx_sum += IV[i] * IV[i];
         //right_yy_sum += treatment[i] * treatment[i];
         //right_zz_sum += *y[i] * *y[i];
-        //right_x1x1_sum += 1 * 1;
-        //right_x1x2_sum += 1 * treatment[i];
+        right_x1x1_sum += 1 * 1;
+        right_x1x2_sum += 1 * treatment[i];
         right_x1x3_sum += 1 * IV[i];   
         right_x1x4_sum += 1 * IV[i] * treatment[i]; 
-        //right_x2x1_sum += treatment[i] * 1;
-        //right_x2x2_sum += treatment[i] * treatment[i];
-        //right_x2x3_sum += treatment[i] * IV[i];   
-        //right_x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
-        //right_x3x1_sum += IV[i] * 1;
-        //right_x3x2_sum += IV[i] * treatment[i];
+        right_x2x1_sum += treatment[i] * 1;
+        right_x2x2_sum += treatment[i] * treatment[i];
+        right_x2x3_sum += treatment[i] * IV[i];   
+        right_x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        right_x3x1_sum += IV[i] * 1;
+        right_x3x2_sum += IV[i] * treatment[i];
         right_x3x3_sum += IV[i] * IV[i];   
         right_x3x4_sum += IV[i] * IV[i] * treatment[i];  
-        //right_x4x1_sum += IV[i] * treatment[i] * 1; 
-        //right_x4x2_sum += IV[i] * treatment[i] * treatment[i];
-        //right_x4x3_sum += IV[i] * treatment[i] * IV[i];   
-        //right_x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
-        //right_x1y_sum += *y[i];
-        //right_x2y_sum += *y[i] * treatment[i];
+        right_x4x1_sum += IV[i] * treatment[i] * 1; 
+        right_x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        right_x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        right_x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        right_x1y_sum += *y[i];
+        right_x2y_sum += *y[i] * treatment[i];
         right_x3y_sum += *y[i] * IV[i];  
         right_x4y_sum += *y[i] * IV[i] * treatment[i];  
         //right_x1y1z_sum += *y[i] * IV[i] * treatment[i]; 
@@ -396,21 +382,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         //right_x0y1z_sum += *y[i] * (1-IV[i]) * treatment[i];  
         //right_x0y0z_sum += *y[i] * (1-IV[i]) * (1-treatment[i]); 
     }
-        
-        right_x1x1_sum = n;
-        right_x1x2_sum = right_tr;
-        right_x2x1_sum = right_x1x2_sum;
-        right_x2x2_sum = right_x2x1_sum;
-        right_x2x3_sum = right_x1x4_sum;
-        right_x2x4_sum = right_x1x4_sum;
-        right_x3x1_sum = right_x1x3_sum;
-        right_x3x2_sum = right_x2x3_sum;
-        right_x4x1_sum = right_x1x4_sum;
-        right_x4x2_sum = right_x2x4_sum;
-        right_x4x3_sum = right_x3x4_sum;
-        right_x4x4_sum = right_x3x4_sum;
-        right_x1y_sum = right_sum;
-        right_x2y_sum = right_tr_sum;
+
         
     //finding determinant
     m[0] = right_x1x1_sum;
@@ -570,6 +542,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //bhat_3 = (right_x1y1z_sum/(right_x1x4_sum) - right_x1y0z_sum/(right_x1x3_sum-right_x1x4_sum)) 
     //        - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
     //Rprintf("Node effect is %.2f", bhat_3);
+    Rprintf("Node effect bhat_3 and var3 is %.2f, %.2f", bhat_3, var3 );
     bhat_3 = 0;
     var3 = 1000000;
     Rprintf("Denominator is zero.\n");
@@ -852,6 +825,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //bhat_3 = (left_x1y1z_sum/(left_x1x4_sum) - left_x1y0z_sum/(left_x1x3_sum-left_x1x4_sum)) 
     //        - (left_x0y1z_sum/(left_x1x2_sum-left_x1x4_sum) - left_x0y0z_sum/(left_x1x1_sum-left_x1x2_sum-left_x1x3_sum+left_x1x4_sum)); 
     //Rprintf("Left node effect is %.2f", bhat_3);
+    Rprintf("Left node bhat_3 and var3 is %.2f, %.2f", bhat_3, var3 );
     bhat_3 = 0;
     var3 = 1000000;
     Rprintf("Denominator is zero.\n");
@@ -1050,6 +1024,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * right_wt * (var3);
                 //Rprintf("CT right var3 is %.2f", var3 );
+                Rprintf("Right node bhat_3 and var3 is %.2f, %.2f", bhat_3, var3 );
 // PARAMETER!                    
 //                if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
 //                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
