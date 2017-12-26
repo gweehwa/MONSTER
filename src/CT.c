@@ -13,7 +13,7 @@ static double *wtsqrsums, *trsqrsums;
 static double *xz_sumc, *xy_sumc, *x_sumc, *y_sumc, *z_sumc, *yz_sumc, *xx_sumc, *yy_sumc, *zz_sumc; //declare double for categorical
 static double *x1x1_sumc, *x1x2_sumc, *x1x3_sumc, *x1x4_sumc, *x2x1_sumc, *x2x2_sumc, *x2x3_sumc, *x2x4_sumc, 
               *x3x1_sumc, *x3x2_sumc, *x3x3_sumc, *x3x4_sumc, *x4x1_sumc, *x4x2_sumc, *x4x3_sumc, *x4x4_sumc,
-              *x1y_sumc, *x3y_sumc, *x3y_sumc, *x4y_sumc;
+              *x1y_sumc, *x2y_sumc, *x3y_sumc, *x4y_sumc;
 
 int
 CTinit(int n, double *y[], int maxcat, char **error,
