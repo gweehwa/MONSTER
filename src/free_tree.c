@@ -8,7 +8,7 @@
 static void
 free_split(pSplit spl)
 {
-    Rprintf("Entered free_tree.c -> free_split\n");
+    //Rprintf("Entered free_tree.c -> free_split\n");
     if (spl) {
 	free_split(spl->nextsplit);
 	Free(spl);
