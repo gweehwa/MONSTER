@@ -19,7 +19,7 @@ free_split(pSplit spl)
 void
 free_tree(pNode node, int freenode)
 {
-    Rprintf("Entered free_tree.c -> free_tree\n");
+    //Rprintf("Entered free_tree.c -> free_tree\n");
     if (node->rightson)
 	free_tree(node->rightson, 1);
     if (node->leftson)
