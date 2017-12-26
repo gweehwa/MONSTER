@@ -62,12 +62,13 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double error2 = 0., var3 = 0.;
 
     for (i = 0; i < n; i++) {
-        temp1 += *y[i] * wt[i] * treatment[i];
-        temp0 += *y[i] * wt[i] * (1 - treatment[i]);
-        twt += wt[i];
-        ttreat += wt[i] * treatment[i];
-        tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
-        con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
+        //temp1 += *y[i] * wt[i] * treatment[i];
+        //temp0 += *y[i] * wt[i] * (1 - treatment[i]);
+        //twt += wt[i];
+        //ttreat += wt[i] * treatment[i];
+        //tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+        //con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
+        
         //xz_sum += *y[i] * IV[i];
         //xy_sum += treatment[i] * IV[i];
         //x_sum += IV[i];
@@ -270,8 +271,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 //    beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
 //    beta_0 = (y_sum - beta_1 * x_sum) / n;
 //
-    *tr_mean = temp1 / ttreat;
-    *con_mean = temp0 / (twt - ttreat);
+//    *tr_mean = temp1 / ttreat;
+//    *con_mean = temp0 / (twt - ttreat);
     *value = effect;
         
 //    numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
@@ -340,12 +341,13 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     double error2 = 0., var3 = 0.;
     //double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
     for (i = 0; i < n; i++) {
-        right_wt += wt[i];
-        right_tr += wt[i] * treatment[i];
-        right_sum += *y[i] * wt[i];
-        right_tr_sum += *y[i] * wt[i] * treatment[i];
-        right_sqr_sum += (*y[i]) * (*y[i]) * wt[i];
-        right_tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+        //right_wt += wt[i];
+        //right_tr += wt[i] * treatment[i];
+        //right_sum += *y[i] * wt[i];
+        //right_tr_sum += *y[i] * wt[i] * treatment[i];
+        //right_sqr_sum += (*y[i]) * (*y[i]) * wt[i];
+        //right_tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+        
         //right_xz_sum += *y[i] * IV[i];
         //right_xy_sum += treatment[i] * IV[i];
         //right_x_sum += IV[i];
@@ -580,23 +582,23 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         best = 0;
         
         for (i = 0; right_n > edge; i++) {
-            left_wt += wt[i];
-            right_wt -= wt[i];
-            left_tr += wt[i] * treatment[i];
-            right_tr -= wt[i] * treatment[i];
-            left_n++;
-            right_n--;
-            temp = *y[i] * wt[i] * treatment[i];
-            left_tr_sum += temp;
-            right_tr_sum -= temp;
-            left_sum += *y[i] * wt[i];
-            right_sum -= *y[i] * wt[i];
-            temp = (*y[i]) *  (*y[i]) * wt[i];
-            left_sqr_sum += temp;
-            right_sqr_sum -= temp;
-            temp = (*y[i]) * (*y[i]) * wt[i] * treatment[i];
-            left_tr_sqr_sum += temp;
-            right_tr_sqr_sum -= temp;
+            //left_wt += wt[i];
+            //right_wt -= wt[i];
+            //left_tr += wt[i] * treatment[i];
+            //right_tr -= wt[i] * treatment[i];
+            //left_n++;
+            //right_n--;
+            //temp = *y[i] * wt[i] * treatment[i];
+            //left_tr_sum += temp;
+            //right_tr_sum -= temp;
+            //left_sum += *y[i] * wt[i];
+            //right_sum -= *y[i] * wt[i];
+            //temp = (*y[i]) *  (*y[i]) * wt[i];
+            //left_sqr_sum += temp;
+            //right_sqr_sum -= temp;
+            //temp = (*y[i]) * (*y[i]) * wt[i] * treatment[i];
+            //left_tr_sqr_sum += temp;
+            //right_tr_sqr_sum -= temp;
                 
             //left_xz_sum += *y[i] * IV[i];
             //right_xz_sum -= *y[i] * IV[i];
