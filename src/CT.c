@@ -296,7 +296,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = 1000000;
     //Rprintf("Denominator is zero.\n");
     }   
-    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum)
+    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
 //    effect = bhat_3;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
