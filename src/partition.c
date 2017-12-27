@@ -22,7 +22,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
           int minsize, int split_Rule, double alpha, int bucketnum, int bucketMax,
           double train_to_est_ratio)
 {
-    Rprintf("Entered partition\n");
+    Rprintf("Entered partition and nodenum is %.2d\n", nodenum);
     pNode me;
     double tempcp;
     int i, j, k;
@@ -45,7 +45,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
     //fprintf(fptr,"test print\n");
     //fclose(fptr);
     R_FlushConsole();
-    Rprintf("test print\n");
+    //Rprintf("test print\n");
     //R_ShowMessage("R_show_message\n");
     
 //#endif
