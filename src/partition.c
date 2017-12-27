@@ -66,6 +66,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
           ttr += ct.treatment[j] * ct.wt[j];
 	      k++;
 	    }
+	   Rprintf("Entered ct_eval\n");
 	    if (split_Rule == 1) {
 	        // tot
 	        (*ct_eval) (n, ct.ytemp, me->response_est, me->controlMean, me->treatMean, 
