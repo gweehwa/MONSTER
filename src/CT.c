@@ -20,7 +20,7 @@ CTinit(int n, double *y[], int maxcat, char **error,
         int *size, int who, double *wt, double *treatment, 
         int bucketnum, int bucketMax, double *train_to_est_ratio)
 {
-    Rprintf("Entered CT.c -> CTinit\n");    
+    //Rprintf("Entered CT.c -> CTinit\n");    
     if (who == 1 && maxcat > 0) {
         graycode_init0(maxcat);
         countn = (int *) ALLOC(2 * maxcat, sizeof(int));
@@ -73,7 +73,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
      double *risk, double *wt, double *treatment, double *IV, double max_y,
      double alpha, double train_to_est_ratio)
 {
-    Rprintf("Entered CT.c -> CTss\n");    
+    //Rprintf("Entered CT.c -> CTss\n");    
     int i, k;
     double temp0 = 0., temp1 = 0., twt = 0.; /* sum of the weights */ 
     double ttreat = 0.;
@@ -294,7 +294,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));      
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Denominator is zero.\n");
+    //Rprintf("Denominator is zero.\n");
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = bhat_3;
@@ -328,7 +328,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
 {   
-    Rprintf("Entered CT.c -> CT, and nclass is %.2d\n", nclass);    
+    //Rprintf("Entered CT.c -> CT, and nclass is %.2d\n", nclass);    
     //Rprintf("nclass is %.2d", nclass);
     int i, j, k;
     double temp;
@@ -576,7 +576,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //Rprintf("Node effect is %.2f", bhat_3);
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Denominator is zero.\n");
+    //Rprintf("Denominator is zero.\n");
     }   
         
 //    alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -589,7 +589,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
       node_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (var3);
       //Rprintf("CT node var3 is %.2f", var3 );
-      Rprintf("CT node det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
+      //Rprintf("CT node det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
 //    Rprintf("bhat0-3 are %.2f, %.2f, %.2f, %.2f", bhat_0, bhat_1, bhat_2, bhat_3);
       
         
@@ -859,7 +859,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //Rprintf("Left node effect is %.2f", bhat_3);
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Denominator is zero.\n");
+    //Rprintf("Denominator is zero.\n");
     }                    
                // alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                // alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
@@ -1040,7 +1040,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //        - (right_x0y1z_sum/(right_x1x2_sum-right_x1x4_sum) - right_x0y0z_sum/(right_x1x1_sum-right_x1x2_sum-right_x1x3_sum+right_x1x4_sum)); 
   
     //Rprintf("Right node effect is %.2f", bhat_3);
-    Rprintf("Denominator is zero.\n");
+    //Rprintf("Denominator is zero.\n");
     bhat_3 = 0;
     var3 = 1000000;
     }                
@@ -1056,7 +1056,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_effect = alpha * bhat_3 * bhat_3 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * right_wt * (var3);
                 //Rprintf("CT right var3 is %.2f", var3 );
-                Rprintf("CT right det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
+                //Rprintf("CT right det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
 // PARAMETER!                    
 //                if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
 //                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
@@ -1103,7 +1103,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     * Categorical predictor
     */
     else {
-        Rprintf("Entered CT Categorical.\n");
+        //Rprintf("Entered CT Categorical.\n");
         for (i = 0; i < nclass; i++) {
             countn[i] = 0;
             wts[i] = 0;
@@ -1345,11 +1345,11 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //x: IV, z: y, y: treatment
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Node Denominator is zero.\n");
+    //Rprintf("Node Denominator is zero.\n");
     }   
 //    alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     treatment_effect[i] = bhat_3;
-    Rprintf("CT node det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
+    //Rprintf("CT node det, bhat_3 and var3 is %.2f, %.2f, %.2f", det, bhat_3, var3 );
         //treatment_effect[i] = (countn[j] * xz_sumc[j] - x_sumc[j] * z_sumc[j]) / (countn[j] * xy_sumc[j] - x_sumc[j] * y_sumc[j]); //alpha_1
         //treatment_effect[i] = (countn[i] * xz_sumc[i] - x_sumc[i] * z_sumc[i]) / (countn[i] * xy_sumc[i] - x_sumc[i] * y_sumc[i]); //is j or i?
         //treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
@@ -1778,7 +1778,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
     var3 = error2 * invOut[15];   
     } else { 
-    Rprintf("Right Denominator is zero.\n");
+    //Rprintf("Right Denominator is zero.\n");
     bhat_3 = 0;
     var3 = 1000000;
     }                
