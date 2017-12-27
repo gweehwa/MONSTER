@@ -29,6 +29,15 @@ CTinit(int n, double *y[], int maxcat, char **error,
         trsums = wtsums + maxcat;
         wtsqrsums = trsums + maxcat;
         trsqrsums = wtsqrsums + maxcat;
+        x_sumc = (double *) ALLOC(9 * maxcat, sizeof(double));
+        y_sumc = x_sumc + maxcat;
+        z_sumc = y_sumc + maxcat;
+        xy_sumc = z_sumc + maxcat;
+        xz_sumc = xy_sumc + maxcat;
+        yz_sumc = xz_sumc + maxcat;
+        xx_sumc = yz_sumc + maxcat;
+        yy_sumc = xx_sumc + maxcat;
+        zz_sumc = yy_sumc + maxcat;
     }
     *size = 1;
     *train_to_est_ratio = n * 1.0 / ct.NumHonest;
