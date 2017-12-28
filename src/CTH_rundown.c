@@ -163,36 +163,6 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
             con_var = con_sqr_sum / cons - con_mean * con_mean;
         }
         
-        //xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
-        //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
-	double alpha_1;
-// PARAMETER!	    
-	if (abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
-		alpha_1 = 0.;
-	}
-	else{
-		alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
-	}
-        double effect = alpha_1;
-        double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
-	double beta_1;
-	if (n * xx_sum - x_sum * x_sum == 0){
-		beta_1 = 0.;
-	}
-	else{
-		beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
-	}    
-        double beta_0 = (y_sum - beta_1 * x_sum) / n;
-
-	double numerator = (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]) * (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]);
-        //double numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
-        double denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
-	double tmp;
-	if (n > 2 && denominator!=0) {
-            tmp = numerator / denominator / (n - 2);
-        } else {
-            tmp = 0.;
-        }  
 	
     m[0] = x1x1_sum;
     m[1] = x1x2_sum;
@@ -345,7 +315,39 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     bhat_3 = 0;
     var3 = 1000000;
     }	    
-	    
+    	double alpha_1;
+// PARAMETER!	    
+	if (abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
+		alpha_1 = 0.;
+	}
+	else{
+		alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
+	}
+        //double effect = alpha_1;
+	double effect = bhat_3;    
+        double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
+	double beta_1;
+	if (n * xx_sum - x_sum * x_sum == 0){
+		beta_1 = 0.;
+	}
+	else{
+		beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
+	}    
+        double beta_0 = (y_sum - beta_1 * x_sum) / n;
+
+	double numerator = (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]) * (ct.ydata[obs2][0] - alpha_0 - alpha_1 * ct.treatment[obs2]);
+        //double numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
+        double denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+	double tmp;
+	if (n > 2 && denominator!=0) {
+            //tmp = numerator / denominator / (n - 2);
+	    tmp = var3;
+        } else {
+            tmp = 0.;
+        }  
+	//xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
+        //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
+        //xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
         xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
     }
     return;
