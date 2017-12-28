@@ -763,7 +763,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         /* rank the classes by treatment effect */
         for (i = 0; i < n; i++) {
             j = (int) x[i] - 1;
-            Rprintf("i, j is %.2d, %.2d\n", i, j);
+            //Rprintf("i, j is %.2d, %.2d\n", i, j);
             countn[j]++;
             wts[j] += wt[i];
             trs[j] += wt[i] * treatment[i];
@@ -804,7 +804,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             x3y_sumc[j] += *y[i] * IV[i];  
             x4y_sumc[j] += *y[i] * IV[i] * treatment[i];  
         
-        Rprintf("i, j, IV[i], treatment[i], x1x2_sumc[j], x1x3_sumc[j], x1x4_sumc[j], 1 * treatment[i], 1 * IV[i],  1 * IV[i] * treatment[i] is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f \n", i, j, IV[i], treatment[i], x1x2_sumc[j], x1x3_sumc[j], x1x4_sumc[j], 1 * treatment[i], 1 * IV[i],  1 * IV[i] * treatment[i]);
+        //Rprintf("i, j, IV[i], treatment[i], x1x2_sumc[j], x1x3_sumc[j], x1x4_sumc[j], 1 * treatment[i], 1 * IV[i],  1 * IV[i] * treatment[i] is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f \n", i, j, IV[i], treatment[i], x1x2_sumc[j], x1x3_sumc[j], x1x4_sumc[j], 1 * treatment[i], 1 * IV[i],  1 * IV[i] * treatment[i]);
         }
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
@@ -1426,7 +1426,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt *
                 //            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
                 temp = left_effect + right_effect - node_effect;
-    Rprintf("Temp and best are %.2f, %.2f\n", temp, best );  
+    //Rprintf("Temp and best are %.2f, %.2f\n", temp, best );  
                 
                 if (temp > best) {
                     best = temp;
