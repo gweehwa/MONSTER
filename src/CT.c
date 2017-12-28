@@ -1402,7 +1402,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_3 = 0;
     var3 = 1000000;
     }                
-    Rprintf("Right node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );              
+    //Rprintf("Right node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );              
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
