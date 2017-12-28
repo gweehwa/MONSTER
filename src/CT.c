@@ -949,9 +949,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //x: IV, z: y, y: treatment
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Node Denominator is zero.\n");
+    //Rprintf("Node Denominator is zero.\n");
     }         
-              
+    Rprintf("Node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );          
         //treatment_effect[i] = (countn[j] * xz_sumc[j] - x_sumc[j] * z_sumc[j]) / (countn[j] * xy_sumc[j] - x_sumc[j] * y_sumc[j]); //alpha_1
         treatment_effect[i] = (countn[i] - x_sumc[i] * z_sumc[i]) / (countn[i] - x_sumc[i] * y_sumc[i]); //is j or i?
                     //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]);
@@ -1211,8 +1211,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     } else {
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Left Denominator is zero.\n");
+    //Rprintf("Left Denominator is zero.\n");
     }                    
+           
+    Rprintf("Left node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );        
               
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
@@ -1382,11 +1384,11 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
     var3 = error2 * invOut[15];   
     } else { 
-    Rprintf("Right Denominator is zero.\n");
+    //Rprintf("Right Denominator is zero.\n");
     bhat_3 = 0;
     var3 = 1000000;
     }                
-              
+    Rprintf("Right node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );              
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
@@ -1408,7 +1410,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt *
                 //            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
                 temp = left_effect + right_effect - node_effect;
-            
+    Rprintf("Node left, right effects is %.2f, %.2f, %.2f, %.2f\n", node_effect, left_effect, right_effect, best );  
                 
                 if (temp > best) {
                     best = temp;
