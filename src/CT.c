@@ -82,6 +82,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
+    int k; 
     double x1x1_sum = 0., x1x2_sum = 0., x1x3_sum = 0., x1x4_sum = 0., x2x1_sum = 0., x2x2_sum = 0., x2x3_sum = 0., x2x4_sum = 0., x3x1_sum = 0., x3x2_sum = 0., x3x3_sum = 0., x3x4_sum = 0., x4x1_sum = 0., x4x2_sum = 0., x4x3_sum = 0., x4x4_sum = 0.;
     double x1y_sum = 0., x2y_sum = 0., x3y_sum = 0., x4y_sum = 0.;
     //x: IV, z: y, y: treatment
@@ -347,9 +348,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     double left_yz_sum = 0., left_xx_sum = 0., left_yy_sum = 0., left_zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
     double numerator, denominator;
+  
+    int k;
     double right_x1x1_sum = 0., right_x1x2_sum = 0., right_x1x3_sum = 0., right_x1x4_sum = 0., right_x2x1_sum = 0., right_x2x2_sum = 0., right_x2x3_sum = 0., right_x2x4_sum = 0., right_x3x1_sum = 0., right_x3x2_sum = 0., right_x3x3_sum = 0., right_x3x4_sum = 0., right_x4x1_sum = 0., right_x4x2_sum = 0., right_x4x3_sum = 0., right_x4x4_sum = 0.;
     double right_x1y_sum = 0., right_x2y_sum = 0., right_x3y_sum = 0., right_x4y_sum = 0.;
-    double right_x1y1z_sum = 0., right_x1y0z_sum = 0., right_x0y1z_sum = 0., right_x0y0z_sum = 0.;
     double left_x1x1_sum = 0., left_x1x2_sum = 0., left_x1x3_sum = 0., left_x1x4_sum = 0., left_x2x1_sum = 0., left_x2x2_sum = 0., left_x2x3_sum = 0., left_x2x4_sum = 0., left_x3x1_sum = 0., left_x3x2_sum = 0., left_x3x3_sum = 0., left_x3x4_sum = 0., left_x4x1_sum = 0., left_x4x2_sum = 0., left_x4x3_sum = 0., left_x4x4_sum = 0.;
     double left_x1y_sum = 0., left_x2y_sum = 0., left_x3y_sum = 0., left_x4y_sum = 0.;
     float m[16], inv[16], invOut[16];
