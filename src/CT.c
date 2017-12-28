@@ -98,8 +98,187 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         xx_sum += IV[i] * IV[i];
         yy_sum += treatment[i] * treatment[i];
         zz_sum += *y[i] * *y[i];
+        x1x1_sum += 1 * 1;
+        x1x2_sum += 1 * treatment[i];
+        x1x3_sum += 1 * IV[i];   
+        x1x4_sum += 1 * IV[i] * treatment[i]; 
+        x2x1_sum += treatment[i] * 1;
+        x2x2_sum += treatment[i] * treatment[i];
+        x2x3_sum += treatment[i] * IV[i];   
+        x2x4_sum += treatment[i] * IV[i] * treatment[i]; 
+        x3x1_sum += IV[i] * 1;
+        x3x2_sum += IV[i] * treatment[i];
+        x3x3_sum += IV[i] * IV[i];   
+        x3x4_sum += IV[i] * IV[i] * treatment[i];  
+        x4x1_sum += IV[i] * treatment[i] * 1; 
+        x4x2_sum += IV[i] * treatment[i] * treatment[i];
+        x4x3_sum += IV[i] * treatment[i] * IV[i];   
+        x4x4_sum += IV[i] * treatment[i] * IV[i] * treatment[i];  
+        x1y_sum += *y[i];
+        x2y_sum += *y[i] * treatment[i];
+        x3y_sum += *y[i] * IV[i];  
+        x4y_sum += *y[i] * IV[i] * treatment[i];  
     }
 
+      //finding determinant
+    m[0] = x1x1_sum;
+    m[1] = x1x2_sum;
+    m[2] = x1x3_sum;
+    m[3] = x1x4_sum;
+    m[4] = x2x1_sum;
+    m[5] = x2x2_sum;
+    m[6] = x2x3_sum;
+    m[7] = x2x4_sum;
+    m[8] = x3x1_sum;
+    m[9] = x3x2_sum;
+    m[10] = x3x3_sum;
+    m[11] = x3x4_sum;
+    m[12] = x4x1_sum;
+    m[13] = x4x2_sum;
+    m[14] = x4x3_sum;     
+    m[15] = x4x4_sum;   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+   
+    if (det != 0){
+//    det = 1.0 / det;
+
+    for (k = 0; k < 16; k++){
+        invOut[k] = inv[k] / det;
+    }
+    bhat_0 = invOut[0] * x1y_sum + invOut[1] * x2y_sum + invOut[2] * x3y_sum + invOut[3] * x4y_sum;
+    bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
+    bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
+    bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
+
+//    for (i = 0; i < n; i++) {
+//        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
+//    }
+    error2 = (bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum 
+              - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum 
+              - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum 
+              - 2*bhat_3*x4y_sum + yy_sum)/n;
+           
+    var3 = error2 * invOut[15];   
+    } else {
+    //x: IV, z: y, y: treatment
+    //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));      
+    bhat_3 = 0;
+    var3 = 1000000;
+    Rprintf("Denominator is zero.\n");
+    }   
+  
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     effect = alpha_1;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
