@@ -804,7 +804,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             x3y_sumc[j] += *y[i] * IV[i];  
             x4y_sumc[j] += *y[i] * IV[i] * treatment[i];  
         }
-        Rprintf("nclass, treatment8-11, iv8-11, x1x2_sumc[0], x1x2_sumc[1] is %.2d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f \n", nclass, treatment[8], treatment[9], treatment[10], treatment[11], IV[8], IV[9], IV[10], IV[11], x1x2_sumc[0], x4x4_sumc[0]);      
+        Rprintf("x1-3x1-3 is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f \n", x1x1_sumc[0], x1x2_sumc[0], x1x3_sumc[0], x1x4_sumc[0], x2x2_sumc[0], x2x3_sumc[0], x2x4_sumc[0], x3x3_sumc[0], x3x4_sumc[0], x4x4_sumc[0]);      
 
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
