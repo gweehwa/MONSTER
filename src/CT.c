@@ -714,6 +714,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     * Categorical predictor
     */
       else {
+        
+        Rprintf("Entered CT Categorical.\n");
+        
         for (i = 0; i < nclass; i++) {
             countn[i] = 0;
             wts[i] = 0;
@@ -934,7 +937,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12]; 
-                    
+    Rprintf("Node i, det, m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12] is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n", i, det, m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12]);                     
     if (det != 0){
 //  det = 1.0 / det;
     for (k = 0; k < 16; k++){
@@ -961,7 +964,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         //treatment_effect[i] = (countn[j] * xz_sumc[j] - x_sumc[j] * z_sumc[j]) / (countn[j] * xy_sumc[j] - x_sumc[j] * y_sumc[j]); //alpha_1
         //treatment_effect[i] = (countn[i] - x_sumc[i] * z_sumc[i]) / (countn[i] - x_sumc[i] * y_sumc[i]); //is j or i?
           treatment_effect[i] = bhat_3;
-                    //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]); //this is wrong
+        //        treatment_effect[i] = trsums[j] / trs[j] - (wtsums[j] - trsums[j]) / (wts[j] - trs[j]); //this is wrong
             } else
                 tsplit[i] = 0;
         }
