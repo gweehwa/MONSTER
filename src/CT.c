@@ -41,7 +41,7 @@ CTinit(int n, double *y[], int maxcat, char **error,
         xx_sumc = yz_sumc + maxcat;
         yy_sumc = xx_sumc + maxcat;
         zz_sumc = yy_sumc + maxcat;
-        x1x1_sumc = (double *) ALLOC(9 * maxcat, sizeof(double));
+        x1x1_sumc = (double *) ALLOC(20 * maxcat, sizeof(double));
         x1x2_sumc = x1x1_sumc + maxcat;
         x1x3_sumc = x1x2_sumc + maxcat;
         x1x4_sumc = x1x3_sumc + maxcat;
