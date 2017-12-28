@@ -194,7 +194,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
             tmp = 0.;
         }  
 	
-	    m[0] = x1x1_sum;
+    m[0] = x1x1_sum;
     m[1] = x1x2_sum;
     m[2] = x1x3_sum;
     m[3] = x1x4_sum;
