@@ -937,7 +937,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12]; 
-    Rprintf("Node i, det, m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12] is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n", i, det, m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12]);                     
+    Rprintf("m0-15 is %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n", m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);                     
     if (det != 0){
 //  det = 1.0 / det;
     for (k = 0; k < 16; k++){
