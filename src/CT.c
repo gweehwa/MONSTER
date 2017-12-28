@@ -285,7 +285,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));      
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Denominator is zero.\n");
+    Rprintf("CTss Denominator is zero.\n");
     }   
   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
@@ -558,7 +558,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //Rprintf("Node effect is %.2f", bhat_3);
     bhat_3 = 0;
     var3 = 1000000;
-    Rprintf("Denominator is zero.\n");
+    Rprintf("CT Denominator is zero.\n");
     }   
         
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
