@@ -42,6 +42,31 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     double *zz_sum = NULL;
     int nnodemax = -1;
     int *invertdx = NULL;
+     
+    double *x1x1_sum = NULL;
+    double *x1x2_sum = NULL;
+    double *x1x3_sum = NULL;  
+    double *x1x4_sum = NULL;
+    double *x2x1_sum = NULL;
+    double *x2x2_sum = NULL;
+    double *x2x3_sum = NULL;  
+    double *x2x4_sum = NULL;
+    double *x3x1_sum = NULL;
+    double *x3x2_sum = NULL;
+    double *x3x3_sum = NULL;
+    double *x3x4_sum = NULL;
+    double *x4x1_sum = NULL;
+    double *x4x2_sum = NULL;
+    double *x4x3_sum = NULL;
+    double *x4x4_sum = NULL; 
+    double *x1y_sum = NULL;
+    double *x2y_sum = NULL;
+    double *x3y_sum = NULL;
+    double *x4y_sum = NULL;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.;
     
     trs = (double *) ALLOC(nnode, sizeof(double));
     cons = (double *) ALLOC(nnode, sizeof(double));
@@ -58,6 +83,27 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     xx_sum = (double *) ALLOC(nnode, sizeof(double));
     yy_sum = (double *) ALLOC(nnode, sizeof(double));
     zz_sum = (double *) ALLOC(nnode, sizeof(double));
+     
+    x1x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x3_sum = (double *) ALLOC(nnode, sizeof(double)); 
+    x2x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4y_sum = (double *) ALLOC(nnode, sizeof(double));
 
     
     // initialize:
@@ -79,6 +125,27 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
         zz_sum[i] = 0.;
         n1[i] = 0;
         wt1[i] = 0.;
+     
+        x1x1_sum[i] = 0.;
+        x1x2_sum[i] = 0.;
+        x1x3_sum[i] = 0.;  
+        x1x4_sum[i] = 0.; 
+        x2x1_sum[i] = 0.;
+        x2x2_sum[i] = 0.;
+        x2x3_sum[i] = 0.;  
+        x2x4_sum[i] = 0.;
+        x3x1_sum[i] = 0.;
+        x3x2_sum[i] = 0.;
+        x3x3_sum[i] = 0.; 
+        x3x4_sum[i] = 0.; 
+        x4x1_sum[i] = 0.;
+        x4x2_sum[i] = 0.;
+        x4x3_sum[i] = 0.; 
+        x4x4_sum[i] = 0.; 
+        x1y_sum[i] = 0.;
+        x2y_sum[i] = 0.;
+        x3y_sum[i] = 0.; 
+        x4y_sum[i] = 0.; 
         if (nnum[i] > nnodemax) {
             nnodemax = nnum[i]; 
         }
