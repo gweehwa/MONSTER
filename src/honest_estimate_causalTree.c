@@ -44,6 +44,31 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     int nnodemax = -1;
     int *invertdx = NULL;
     
+    double *x1x1_sum = NULL;
+    double *x1x2_sum = NULL;
+    double *x1x3_sum = NULL;  
+    double *x1x4_sum = NULL;
+    double *x2x1_sum = NULL;
+    double *x2x2_sum = NULL;
+    double *x2x3_sum = NULL;  
+    double *x2x4_sum = NULL;
+    double *x3x1_sum = NULL;
+    double *x3x2_sum = NULL;
+    double *x3x3_sum = NULL;
+    double *x3x4_sum = NULL;
+    double *x4x1_sum = NULL;
+    double *x4x2_sum = NULL;
+    double *x4x3_sum = NULL;
+    double *x4x4_sum = NULL; 
+    double *x1y_sum = NULL;
+    double *x2y_sum = NULL;
+    double *x3y_sum = NULL;
+    double *x4y_sum = NULL;
+    float m[16], inv[16], invOut[16];
+    double det;
+    double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
+    double error2 = 0., var3 = 0.; 
+     
     trs = (double *) ALLOC(nnode, sizeof(double));
     cons = (double *) ALLOC(nnode, sizeof(double));
     trsums = (double *) ALLOC(nnode, sizeof(double));
@@ -60,6 +85,26 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     yy_sum = (double *) ALLOC(nnode, sizeof(double));
     zz_sum = (double *) ALLOC(nnode, sizeof(double));
 
+    x1x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2x3_sum = (double *) ALLOC(nnode, sizeof(double)); 
+    x2x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x1_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x2_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x3_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4x4_sum = (double *) ALLOC(nnode, sizeof(double));
+    x1y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x2y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x3y_sum = (double *) ALLOC(nnode, sizeof(double));
+    x4y_sum = (double *) ALLOC(nnode, sizeof(double));
     
     // initialize:
     for (i = 0; i < nnode; i++) {
@@ -80,6 +125,28 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
         zz_sum[i] = 0.;
         n1[i] = 0;
         wt1[i] = 0.;
+        
+        x1x1_sum[i] = 0.;
+        x1x2_sum[i] = 0.;
+        x1x3_sum[i] = 0.;  
+        x1x4_sum[i] = 0.; 
+        x2x1_sum[i] = 0.;
+        x2x2_sum[i] = 0.;
+        x2x3_sum[i] = 0.;  
+        x2x4_sum[i] = 0.;
+        x3x1_sum[i] = 0.;
+        x3x2_sum[i] = 0.;
+        x3x3_sum[i] = 0.; 
+        x3x4_sum[i] = 0.; 
+        x4x1_sum[i] = 0.;
+        x4x2_sum[i] = 0.;
+        x4x3_sum[i] = 0.; 
+        x4x4_sum[i] = 0.; 
+        x1y_sum[i] = 0.;
+        x2y_sum[i] = 0.;
+        x3y_sum[i] = 0.; 
+        x4y_sum[i] = 0.; 
+     
         if (nnum[i] > nnodemax) {
             nnodemax = nnum[i]; 
         }
@@ -138,7 +205,27 @@ next:
         xx_sum[npos] += IV2[i] * IV2[i];
         yy_sum[npos] += treatment2[i] * treatment2[i];
         zz_sum[npos] += y2[i] * y2[i];
-     
+
+        x1x1_sum[npos] += 1 * 1;
+        x1x2_sum[npos] += 1 * treatment2[i];
+        x1x3_sum[npos] += 1 * IV2[i];   
+        x1x4_sum[npos] += 1 * IV2[i] * treatment2[i]; 
+        x2x1_sum[npos] += treatment2[i] * 1;
+        x2x2_sum[npos] += treatment2[i] * treatment2[i];
+        x2x3_sum[npos] += treatment2[i] * IV2[i];   
+        x2x4_sum[npos] += treatment2[i] * IV2[i] * treatment2[i]; 
+        x3x1_sum[npos] += IV2[i] * 1;
+        x3x2_sum[npos] += IV2[i] * treatment2[i];
+        x3x3_sum[npos] += IV2[i] * IV2[i];   
+        x3x4_sum[npos] += IV2[i] * IV2[i] * treatment2[i];  
+        x4x1_sum[npos] += IV2[i] * treatment2[i] * 1; 
+        x4x2_sum[npos] += IV2[i] * treatment2[i] * treatment2[i];
+        x4x3_sum[npos] += IV2[i] * treatment2[i] * IV2[i];   
+        x4x4_sum[npos] += IV2[i] * treatment2[i] * IV2[i] * treatment2[i];  
+        x1y_sum[npos] += y2[i];
+        x2y_sum[npos] += y2[i] * treatment2[i];
+        x3y_sum[npos] += y2[i] * IV2[i];  
+        x4y_sum[npos] += y2[i] * IV2[i] * treatment2[i];     
         /* walk down the tree */
         nspl = nodes[2][npos] - 1;      /* index of primary split */
         if (nspl >= 0) {        /* not a leaf node */
@@ -211,14 +298,168 @@ next:
             //yval1[origindx] = tr_mean - con_mean;            
             //dev1[origindx] = trsqrsums[origindx] - trs[origindx] * tr_mean * tr_mean 
             //    + consqrsums[origindx] - cons[origindx] * con_mean * con_mean;
-            double alpha_1 = (n1[origindx] * xz_sum[origindx] - x_sum[origindx] * z_sum[origindx]) / (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]);
-            double alpha_0 = (z_sum[origindx] - alpha_1 * y_sum[origindx]) / n1[origindx];
-            double beta_1 = (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]) / (n1[origindx] * xx_sum[origindx] - x_sum[origindx] * x_sum[origindx]);
-            double beta_0 = (y_sum[origindx] - beta_1 * x_sum[origindx]) / n1[origindx];
-            yval1[origindx] = alpha_1;
-            double numerator = zz_sum[origindx] + n1[origindx] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[origindx] - 2 * alpha_0 * z_sum[origindx] - 2 * alpha_1 * yz_sum[origindx] + 2 * alpha_0 * alpha_1 * y_sum[origindx];
-            double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
-            dev1[origindx] = numerator / denominator;
+    m[0] = x1x1_sum[origindx];
+    m[1] = x1x2_sum[origindx];
+    m[2] = x1x3_sum[origindx];
+    m[3] = x1x4_sum[origindx];
+    m[4] = x2x1_sum[origindx];
+    m[5] = x2x2_sum[origindx];
+    m[6] = x2x3_sum[origindx];
+    m[7] = x2x4_sum[origindx];
+    m[8] = x3x1_sum[origindx];
+    m[9] = x3x2_sum[origindx];
+    m[10] = x3x3_sum[origindx];
+    m[11] = x3x4_sum[origindx];
+    m[12] = x4x1_sum[origindx];
+    m[13] = x4x2_sum[origindx];
+    m[14] = x4x3_sum[origindx];     
+    m[15] = x4x4_sum[origindx];   
+    inv[0] = m[5]  * m[10] * m[15] - 
+             m[5]  * m[11] * m[14] - 
+             m[9]  * m[6]  * m[15] + 
+             m[9]  * m[7]  * m[14] +
+             m[13] * m[6]  * m[11] - 
+             m[13] * m[7]  * m[10];
+
+    inv[4] = -m[4]  * m[10] * m[15] + 
+              m[4]  * m[11] * m[14] + 
+              m[8]  * m[6]  * m[15] - 
+              m[8]  * m[7]  * m[14] - 
+              m[12] * m[6]  * m[11] + 
+              m[12] * m[7]  * m[10];
+
+    inv[8] = m[4]  * m[9] * m[15] - 
+             m[4]  * m[11] * m[13] - 
+             m[8]  * m[5] * m[15] + 
+             m[8]  * m[7] * m[13] + 
+             m[12] * m[5] * m[11] - 
+             m[12] * m[7] * m[9];
+
+    inv[12] = -m[4]  * m[9] * m[14] + 
+               m[4]  * m[10] * m[13] +
+               m[8]  * m[5] * m[14] - 
+               m[8]  * m[6] * m[13] - 
+               m[12] * m[5] * m[10] + 
+               m[12] * m[6] * m[9];
+
+    inv[1] = -m[1]  * m[10] * m[15] + 
+              m[1]  * m[11] * m[14] + 
+              m[9]  * m[2] * m[15] - 
+              m[9]  * m[3] * m[14] - 
+              m[13] * m[2] * m[11] + 
+              m[13] * m[3] * m[10];
+
+    inv[5] = m[0]  * m[10] * m[15] - 
+             m[0]  * m[11] * m[14] - 
+             m[8]  * m[2] * m[15] + 
+             m[8]  * m[3] * m[14] + 
+             m[12] * m[2] * m[11] - 
+             m[12] * m[3] * m[10];
+
+    inv[9] = -m[0]  * m[9] * m[15] + 
+              m[0]  * m[11] * m[13] + 
+              m[8]  * m[1] * m[15] - 
+              m[8]  * m[3] * m[13] - 
+              m[12] * m[1] * m[11] + 
+              m[12] * m[3] * m[9];
+
+    inv[13] = m[0]  * m[9] * m[14] - 
+              m[0]  * m[10] * m[13] - 
+              m[8]  * m[1] * m[14] + 
+              m[8]  * m[2] * m[13] + 
+              m[12] * m[1] * m[10] - 
+              m[12] * m[2] * m[9];
+
+    inv[2] = m[1]  * m[6] * m[15] - 
+             m[1]  * m[7] * m[14] - 
+             m[5]  * m[2] * m[15] + 
+             m[5]  * m[3] * m[14] + 
+             m[13] * m[2] * m[7] - 
+             m[13] * m[3] * m[6];
+
+    inv[6] = -m[0]  * m[6] * m[15] + 
+              m[0]  * m[7] * m[14] + 
+              m[4]  * m[2] * m[15] - 
+              m[4]  * m[3] * m[14] - 
+              m[12] * m[2] * m[7] + 
+              m[12] * m[3] * m[6];
+
+    inv[10] = m[0]  * m[5] * m[15] - 
+              m[0]  * m[7] * m[13] - 
+              m[4]  * m[1] * m[15] + 
+              m[4]  * m[3] * m[13] + 
+              m[12] * m[1] * m[7] - 
+              m[12] * m[3] * m[5];
+
+    inv[14] = -m[0]  * m[5] * m[14] + 
+               m[0]  * m[6] * m[13] + 
+               m[4]  * m[1] * m[14] - 
+               m[4]  * m[2] * m[13] - 
+               m[12] * m[1] * m[6] + 
+               m[12] * m[2] * m[5];
+
+    inv[3] = -m[1] * m[6] * m[11] + 
+              m[1] * m[7] * m[10] + 
+              m[5] * m[2] * m[11] - 
+              m[5] * m[3] * m[10] - 
+              m[9] * m[2] * m[7] + 
+              m[9] * m[3] * m[6];
+
+    inv[7] = m[0] * m[6] * m[11] - 
+             m[0] * m[7] * m[10] - 
+             m[4] * m[2] * m[11] + 
+             m[4] * m[3] * m[10] + 
+             m[8] * m[2] * m[7] - 
+             m[8] * m[3] * m[6];
+
+    inv[11] = -m[0] * m[5] * m[11] + 
+               m[0] * m[7] * m[9] + 
+               m[4] * m[1] * m[11] - 
+               m[4] * m[3] * m[9] - 
+               m[8] * m[1] * m[7] + 
+               m[8] * m[3] * m[5];
+
+    inv[15] = m[0] * m[5] * m[10] - 
+              m[0] * m[6] * m[9] - 
+              m[4] * m[1] * m[10] + 
+              m[4] * m[2] * m[9] + 
+              m[8] * m[1] * m[6] - 
+              m[8] * m[2] * m[5];
+
+    det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+   
+    if (det != 0){
+//    det = 1.0 / det;
+
+    for (i = 0; i < 16; i++){
+        invOut[i] = inv[i] / det;
+    }
+    bhat_0 = invOut[0] * x1y_sum[origindx] + invOut[1] * x2y_sum[origindx] + invOut[2] * x3y_sum[origindx] + invOut[3] * x4y_sum[origindx];
+    bhat_1 = invOut[4] * x1y_sum[origindx] + invOut[5] * x2y_sum[origindx] + invOut[6] * x3y_sum[origindx] + invOut[7] * x4y_sum[origindx];
+    bhat_2 = invOut[8] * x1y_sum[origindx] + invOut[9] * x2y_sum[origindx] + invOut[10] * x3y_sum[origindx] + invOut[11] * x4y_sum[origindx];
+    bhat_3 = invOut[12] * x1y_sum[origindx] + invOut[13] * x2y_sum[origindx] + invOut[14] * x3y_sum[origindx] + invOut[15] * x4y_sum[origindx];
+
+//    for (i = 0; i < n; i++) {
+//        error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
+//    }
+    error2 = bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum[origindx] + 2*bhat_0*bhat_2*x1x3_sum[origindx] + 2*bhat_0*bhat_3*x1x4_sum[origindx] - 2*bhat_0*x1y_sum[origindx] + bhat_1*bhat_1*x2x2_sum[origindx] + 2*bhat_1*bhat_2*x2x3_sum[origindx] + 2*bhat_1*bhat_3*x2x4_sum[origindx] - 2*bhat_1*x2y_sum[origindx] + bhat_2*bhat_2*x3x3_sum[origindx] + 2*bhat_2*bhat_3*x3x4_sum[origindx] - 2*bhat_2*x3y_sum[origindx] + bhat_3*bhat_3*x4x4_sum[origindx] - 2*bhat_3*x4y_sum[origindx] + yy_sum[origindx];
+           
+    var3 = error2 * invOut[15];   
+    } else {
+    bhat_3 = 0;
+    var3 = 0;
+    }   
+         
+            //double alpha_1 = (n1[origindx] * xz_sum[origindx] - x_sum[origindx] * z_sum[origindx]) / (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]);
+            //double alpha_0 = (z_sum[origindx] - alpha_1 * y_sum[origindx]) / n1[origindx];
+            //double beta_1 = (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]) / (n1[origindx] * xx_sum[origindx] - x_sum[origindx] * x_sum[origindx]);
+            //double beta_0 = (y_sum[origindx] - beta_1 * x_sum[origindx]) / n1[origindx];
+            //yval1[origindx] = alpha_1;
+            yval1[origindx] = bhat_3;
+            //double numerator = zz_sum[origindx] + n1[origindx] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[origindx] - 2 * alpha_0 * z_sum[origindx] - 2 * alpha_1 * yz_sum[origindx] + 2 * alpha_0 * alpha_1 * y_sum[origindx];
+            //double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
+            //dev1[origindx] = numerator / denominator;
+            dev1[origindx] = var3;
         } else {
             int parentdx = invertdx[i / 2];
             yval1[origindx] = yval1[parentdx];
