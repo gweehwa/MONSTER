@@ -41,6 +41,7 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     double *xx_sum = NULL;
     double *yy_sum = NULL;
     double *zz_sum = NULL;
+    int k; 
     double *x1x1_sum = NULL;
     double *x1x2_sum = NULL;
     double *x1x3_sum = NULL;  
@@ -427,8 +428,8 @@ next:
     if (det != 0){
 //    det = 1.0 / det;
 
-    for (i = 0; i < 16; i++){
-        invOut[i] = inv[i] / det;
+    for (k = 0; k < 16; k++){
+        invOut[i] = inv[k] / det;
     }
     bhat_0 = invOut[0] * x1y_sum[origindx] + invOut[1] * x2y_sum[origindx] + invOut[2] * x3y_sum[origindx] + invOut[3] * x4y_sum[origindx];
     bhat_1 = invOut[4] * x1y_sum[origindx] + invOut[5] * x2y_sum[origindx] + invOut[6] * x3y_sum[origindx] + invOut[7] * x4y_sum[origindx];
