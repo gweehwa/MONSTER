@@ -763,7 +763,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         /* rank the classes by treatment effect */
         for (i = 0; i < n; i++) {
             j = (int) x[i] - 1;
-          
+            Rprintf("i, j is %.2d, %.2d\n", i, j);
             countn[j]++;
             wts[j] += wt[i];
             trs[j] += wt[i] * treatment[i];
