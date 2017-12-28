@@ -804,7 +804,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             x3y_sumc[j] += *y[i] * IV[i];  
             x4y_sumc[j] += *y[i] * IV[i] * treatment[i];  
         }
-        Rprintf("nclass, x0-4, intx0-4 is %.2d, %s, %s, %s, %s, %s, %.2d, %.2d, %.2d, %.2d, %.2d\n", nclass, x[0], x[1], x[2], x[3], x[4], (int)x[0], (int)x[1], (int)x[2], (int)x[3], (int)x[4]);      
+        Rprintf("nclass, treatment0-3, iv0-3, x1x2_sum[0], x1x2_sum[1] is %.2d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, 
+                %.2f, %.2f\n", nclass, treatment[0], treatment[1], treatment[2], treatment[3], 
+                IV[0], IV[1], IV[2], IV[3], x1x2_sum[0], x1x2_sum[1]);      
         for (i = 0; i < nclass; i++) {
             if (countn[i] > 0) {
                 tsplit[i] = RIGHT;
