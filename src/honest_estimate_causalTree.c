@@ -205,6 +205,27 @@ next:
         yy_sum[npos] += treatment2[i] * treatment2[i];
         zz_sum[npos] += y2[i] * y2[i];
      
+        x1x1_sum[npos] += 1 * 1;
+        x1x2_sum[npos] += 1 * treatment2[i];
+        x1x3_sum[npos] += 1 * IV2[i];   
+        x1x4_sum[npos] += 1 * IV2[i] * treatment2[i]; 
+        x2x1_sum[npos] += treatment2[i] * 1;
+        x2x2_sum[npos] += treatment2[i] * treatment2[i];
+        x2x3_sum[npos] += treatment2[i] * IV2[i];   
+        x2x4_sum[npos] += treatment2[i] * IV2[i] * treatment2[i]; 
+        x3x1_sum[npos] += IV2[i] * 1;
+        x3x2_sum[npos] += IV2[i] * treatment2[i];
+        x3x3_sum[npos] += IV2[i] * IV2[i];   
+        x3x4_sum[npos] += IV2[i] * IV2[i] * treatment2[i];  
+        x4x1_sum[npos] += IV2[i] * treatment2[i] * 1; 
+        x4x2_sum[npos] += IV2[i] * treatment2[i] * treatment2[i];
+        x4x3_sum[npos] += IV2[i] * treatment2[i] * IV2[i];   
+        x4x4_sum[npos] += IV2[i] * treatment2[i] * IV2[i] * treatment2[i];  
+        x1y_sum[npos] += y2[i];
+        x2y_sum[npos] += y2[i] * treatment2[i];
+        x3y_sum[npos] += y2[i] * IV2[i];  
+        x4y_sum[npos] += y2[i] * IV2[i] * treatment2[i]; 
+     
         /* walk down the tree */
         nspl = nodes[2][npos] - 1;      /* index of primary split */
         if (nspl >= 0) {        /* not a leaf node */
