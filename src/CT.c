@@ -287,7 +287,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = 1000000;
     Rprintf("CTss Denominator is zero.\n");
     }   
-    Rprintf("CTss det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );   
+    //Rprintf("CTss det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
     effect = bhat_3;
@@ -562,7 +562,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = 1000000;
     Rprintf("CT Denominator is zero.\n");
     }   
-    Rprintf("CT det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );       
+    //Rprintf("CT det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );       
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
     beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
@@ -715,7 +715,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     */
       else {
         
-        Rprintf("Entered CT Categorical.\n");
+        //Rprintf("Entered CT Categorical.\n");
         
         for (i = 0; i < nclass; i++) {
             countn[i] = 0;
@@ -960,9 +960,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //x: IV, z: y, y: treatment
     bhat_3 = 0;
     var3 = 1000000;
-    //Rprintf("Node Denominator is zero.\n");
+    Rprintf("Node Denominator is zero.\n");
     }         
-    Rprintf("Node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );          
+    //Rprintf("Node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );          
         //treatment_effect[i] = (countn[j] * xz_sumc[j] - x_sumc[j] * z_sumc[j]) / (countn[j] * xy_sumc[j] - x_sumc[j] * y_sumc[j]); //alpha_1
         //treatment_effect[i] = (countn[i] - x_sumc[i] * z_sumc[i]) / (countn[i] - x_sumc[i] * y_sumc[i]); //is j or i?
           treatment_effect[i] = bhat_3;
@@ -1223,10 +1223,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     } else {
     bhat_3 = 0;
     var3 = 1000000;
-    //Rprintf("Left Denominator is zero.\n");
+    Rprintf("Left Denominator is zero.\n");
     }                    
            
-    Rprintf("Left node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );        
+    //Rprintf("Left node det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );        
               
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
@@ -1398,7 +1398,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
     var3 = error2 * invOut[15];   
     } else { 
-    //Rprintf("Right Denominator is zero.\n");
+    Rprintf("Right Denominator is zero.\n");
     bhat_3 = 0;
     var3 = 1000000;
     }                
