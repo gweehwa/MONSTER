@@ -230,6 +230,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * left_wt * (numerator / denominator);
+                Rprintf("Entered CT.c. Left treatment effect, variace and effect are %.2f, %.2f, %.2f", left_temp, (numberator/denominator), left_effect);
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
                 left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
@@ -252,6 +253,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * right_wt * (numerator / denominator);
+                Rprintf("Entered CT.c. Right treatment effect, variace and effect are %.2f, %.2f, %.2f", right_temp, (numberator/denominator), right_effect);
+
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
@@ -268,6 +271,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 
                 temp = left_effect + right_effect - node_effect;
                 if (temp > best) {
+                Rprintf("Improved. Left, right and node effects are %.2f, %.2f, %.2f", left_effect, right_effect, node_effect);
                     best = temp;
                     where = i;               
                     if (left_temp < right_temp){
