@@ -48,7 +48,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
     //R_ShowMessage("R_show_message\n");
     
 //#endif
-    Rprintf("Entered partition.c.\n");
+    //Rprintf("Entered partition.c.\n");
     if (nodenum > 1) {
         twt = 0;
         ttr = 0;
