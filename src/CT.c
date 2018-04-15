@@ -235,11 +235,14 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
                 left_temp = alpha_1;
                 numerator = (left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum)/left_n;
-                //denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
+                denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
+                Rprintf("Entered CT.c. Left num, den, effect, variance and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", numerator, denominator, left_temp * left_temp, (numerator / denominator/left_wt), left_wt);
+                
                 denominator = (left_yy_sum / left_n - (left_y_sum / left_n) * (left_y_sum / left_n)) *
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n) * 
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n);                           
-                
+                Rprintf("Entered CT.c. Left num, den, effect, variance and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", numerator, denominator, left_temp * left_temp, (numerator / denominator/left_wt), left_wt);
+             
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                      * (numerator / denominator);
                 //Rprintf("Entered CT.c. Left a1, a0, b1, b0 are %.2f, %.2f, %.2f, %.2f.\n", alpha_1, alpha_0, beta_1, beta_0);
