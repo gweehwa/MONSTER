@@ -228,7 +228,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 left_temp = alpha_1;
                 numerator = (left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum)/left_n;
                 //denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
-                denominator = (left_yy_sum / left_n - (left_y / left_n) * (left_y / left_n)) *
+                denominator = (left_yy_sum / left_n - (left_y_sum / left_n) * (left_y_sum / left_n)) *
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n) * 
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n);                           
                 
