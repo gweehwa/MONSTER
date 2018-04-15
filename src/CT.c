@@ -79,8 +79,12 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *value = effect;
     
     numerator = (zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum)/n;
-    denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
-    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
+    //denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+    denominator = (yy_sum / n - (y_sum / n) * (y_sum / n)) *
+                  (xy_sum / n - x_sum/n * y_sum / n) * 
+                  (xy_sum / n - x_sum/n * y_sum / n);                           
+                
+    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) / twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
         effect = temp1 / ttreat - temp0 / (twt - ttreat);  
@@ -152,9 +156,13 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
     temp = alpha_1;
     numerator = (right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum)/right_n;
-    denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
+    //denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
+    denominator = (right_yy_sum / right_n - (right_y_sum / right_n) * (right_y_sum / right_n)) *
+                  (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n) * 
+                  (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n);                         
+                
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-        * right_wt * (numerator / denominator);
+        / right_wt * (numerator / denominator);
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
@@ -226,14 +234,14 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
                 beta_0 = (left_y_sum - beta_1 * left_x_sum) / left_n;
                 left_temp = alpha_1;
-                numerator = (left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum);
+                numerator = (left_zz_sum + left_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * left_yy_sum - 2 * alpha_0 * left_z_sum - 2 * alpha_1 * left_yz_sum + 2 * alpha_0 * alpha_1 * left_y_sum)/left_n;
                 //denominator = left_n * beta_0 * beta_0 + beta_1 * beta_1 * left_xx_sum + left_y_sum * left_y_sum / left_n + 2 * beta_0 * beta_1 * left_x_sum - 2 * beta_0 * left_y_sum - 2 * beta_1 * left_x_sum * left_y_sum / left_n;
                 denominator = (left_yy_sum / left_n - (left_y_sum / left_n) * (left_y_sum / left_n)) *
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n) * 
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n);                           
                 
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * left_wt * (numerator / denominator);
+                    / left_wt * (numerator / denominator);
                 Rprintf("Entered CT.c. Left a1, a0, b1, b0 are %.2f, %.2f, %.2f, %.2f.\n", alpha_1, alpha_0, beta_1, beta_0);
                 Rprintf("Entered CT.c. Left treatment effect, num, den, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_temp, numerator, denominator, left_effect, left_wt);
 // PARAMETER!                    
@@ -254,13 +262,13 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
                 beta_0 = (right_y_sum - beta_1 * right_x_sum) / right_n;
                 right_temp = alpha_1;
-                numerator = (right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum);
+                numerator = (right_zz_sum + right_n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * right_yy_sum - 2 * alpha_0 * right_z_sum - 2 * alpha_1 * right_yz_sum + 2 * alpha_0 * alpha_1 * right_y_sum)/right_n;
                 //denominator = right_n * beta_0 * beta_0 + beta_1 * beta_1 * right_xx_sum + right_y_sum * right_y_sum / right_n + 2 * beta_0 * beta_1 * right_x_sum - 2 * beta_0 * right_y_sum - 2 * beta_1 * right_x_sum * right_y_sum / right_n;
                 denominator = (right_yy_sum / right_n - (right_y_sum / right_n) * (right_y_sum / right_n)) *
                               (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n) * 
                               (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n);  
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    * right_wt * (numerator / denominator);
+                    / right_wt * (numerator / denominator);
                 Rprintf("Entered CT.c. Right treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", right_temp, numerator, denominator, right_effect, right_wt);
 
 // PARAMETER!                    
@@ -274,9 +282,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 right_effect = alpha * right_temp * right_temp * right_wt
                         - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
                             (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));}
-                
 
-                
                 temp = left_effect + right_effect - node_effect;
                 if (temp > best) {
                     best = temp;
