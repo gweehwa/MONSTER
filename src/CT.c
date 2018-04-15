@@ -84,7 +84,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
                   (xy_sum / n - x_sum/n * y_sum / n) * 
                   (xy_sum / n - x_sum/n * y_sum / n);                           
                 
-    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) / twt * (numerator / denominator);
+    *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
         effect = temp1 / ttreat - temp0 / (twt - ttreat);  
@@ -162,7 +162,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                   (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n);                         
                 
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-        / right_wt * (numerator / denominator);
+         * (numerator / denominator);
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
@@ -241,7 +241,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                               (left_xy_sum / left_n - left_x_sum/left_n * left_y_sum / left_n);                           
                 
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    / left_wt * (numerator / denominator);
+                     * (numerator / denominator);
                 Rprintf("Entered CT.c. Left a1, a0, b1, b0 are %.2f, %.2f, %.2f, %.2f.\n", alpha_1, alpha_0, beta_1, beta_0);
                 Rprintf("Entered CT.c. Left treatment effect, num, den, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_temp, numerator, denominator, left_effect, left_wt);
 // PARAMETER!                    
@@ -268,7 +268,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                               (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n) * 
                               (right_xy_sum / right_n - right_x_sum/right_n * right_y_sum / right_n);  
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                    / right_wt * (numerator / denominator);
+                     * (numerator / denominator);
                 Rprintf("Entered CT.c. Right treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", right_temp, numerator, denominator, right_effect, right_wt);
 
 // PARAMETER!                    
