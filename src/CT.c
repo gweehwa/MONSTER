@@ -99,7 +99,6 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
 {
-    Rprintf("Entered CT.c");
     int i, j;
     double temp;
     double left_sum, right_sum;
@@ -183,7 +182,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         left_sqr_sum = 0;
         left_tr_sqr_sum = 0;
         best = 0;
-        
+        Rprintf("Entered Continuous.");
         for (i = 0; right_n > edge; i++) {
             left_wt += wt[i];
             right_wt -= wt[i];
@@ -227,7 +226,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 (int) left_wt - (int) left_tr >= min_node_size &&
                 (int) right_tr >= min_node_size &&
                 (int) right_wt - (int) right_tr >= min_node_size) {                             
-                                            
+                Rprintf("Entered Node.");                           
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
