@@ -220,13 +220,12 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             right_yy_sum -= treatment[i] * treatment[i];
             left_zz_sum += *y[i] * *y[i];
             right_zz_sum -= *y[i] * *y[i];
-            
+            Rprintf("Entered CT.c. left_n, left_wt, left_tr, min_node_size, edge are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_n, left_wt, left_tr, min_node_size, edge);
             if (x[i + 1] != x[i] && left_n >= edge &&
                 (int) left_tr >= min_node_size &&
                 (int) left_wt - (int) left_tr >= min_node_size &&
                 (int) right_tr >= min_node_size &&
-                (int) right_wt - (int) right_tr >= min_node_size) {                             
-                Rprintf("Entered Node.");                           
+                (int) right_wt - (int) right_tr >= min_node_size) {                                                       
                 alpha_1 = (left_n * left_xz_sum - left_x_sum * left_z_sum) / (left_n * left_xy_sum - left_x_sum * left_y_sum);
                 alpha_0 = (left_z_sum - alpha_1 * left_y_sum) / left_n;
                 beta_1 = (left_n * left_xy_sum - left_x_sum * left_y_sum) / (left_n * left_xx_sum - left_x_sum * left_x_sum);
