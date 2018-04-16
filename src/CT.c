@@ -182,8 +182,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         left_sqr_sum = 0;
         left_tr_sqr_sum = 0;
         best = 0;
-        Rprintf("Entered Continuous.");
         for (i = 0; right_n > edge; i++) {
+            Rprintf("Entered Adding.");
             left_wt += wt[i];
             right_wt -= wt[i];
             left_tr += wt[i] * treatment[i];
