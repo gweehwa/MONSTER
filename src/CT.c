@@ -99,6 +99,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         int *csplit, double myrisk, double *wt, double *treatment, double *IV, int minsize, double alpha,
         double train_to_est_ratio)
 {
+    Rprintf("Entered CT.c");
     int i, j;
     double temp;
     double left_sum, right_sum;
@@ -276,7 +277,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
                 right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                      * right_wt * (numerator / denominator);
-                //Rprintf("Entered CT.c. Right treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", right_temp, numerator, denominator, right_effect, right_wt);
+                Rprintf("Entered CT.c. Right treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", right_temp, numerator, denominator, right_effect, right_wt);
 
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
