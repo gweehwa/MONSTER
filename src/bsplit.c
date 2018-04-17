@@ -28,12 +28,14 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
     double **ytemp;
     double *wtemp;
     double *trtemp;
+    double *tr1temp;
     double *IVtemp;
 
     xtemp = ct.xtemp;
     ytemp = ct.ytemp;
     wtemp = ct.wtemp;
     trtemp = ct.trtemp;
+    tr1temp = ct.tr1temp;
     IVtemp = ct.IVtemp;
 
     /*
@@ -55,6 +57,7 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
                 ytemp[k] = ct.ydata[kk];
                 wtemp[k] = ct.wt[kk];
                 trtemp[k] = ct.treatment[kk];
+                tr1temp[k] = ct.treatment1[kk];
                 IVtemp[k] = ct.IV[kk];
                 k++;
             }
@@ -70,7 +73,7 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
         } else if (split_Rule == 2) {
             //CT
             (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve, 
-             &split, ct.csplit, me->risk, wtemp, trtemp, IVtemp, minsize, alpha, train_to_est_ratio);
+             &split, ct.csplit, me->risk, wtemp, trtemp, tr1temp, IVtemp, minsize, alpha, train_to_est_ratio);
         } else if (split_Rule == 3) {
             //fit
             (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve, 
@@ -87,7 +90,7 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
         } else if (split_Rule == 6) {
             //CTD
             (*ct_choose) (k, ytemp, xtemp, nc, ct.min_node, &improve, 
-             &split, ct.csplit, me->risk, wtemp, trtemp, IVtemp, minsize, alpha,
+             &split, ct.csplit, me->risk, wtemp, trtemp, tr1temp, IVtemp, minsize, alpha,
              bucketnum, bucketMax, train_to_est_ratio);
         } else if (split_Rule == 7) {
             //fitD
