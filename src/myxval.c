@@ -92,6 +92,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
                 ct.ytemp[k] = ct.ydata[i];
                 ct.wtemp[k] = ct.wt[i];
                 ct.trtemp[k] = ct.treatment[i];
+                ct.tr1temp[k] = ct.treatment1[i];
                 ct.IVtemp[k] = ct.IV[i];
                 temp += ct.wt[i];
                 k++;
