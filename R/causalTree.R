@@ -307,6 +307,7 @@ causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset
 		storage.mode(X) <- "double"
 		storage.mode(wt) <- "double"
 		storage.mode(treatment) <- "double"
+		storage.mode(treatment1) <- "double"
 	 	storage.mode(IV) <- "double"
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
 ####
