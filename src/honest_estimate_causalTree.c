@@ -11,7 +11,7 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
                             const int *nnum, const int *nodes2, const int *vnum,
                             const double *split2, const int *csplit2, const int *usesur,
                             int *n1, double *wt1, double *dev1, double *yval1, const double *xdata2, 
-                            const double *wt2, const double *treatment2, double *IV2, const double *y2,
+                            const double *wt2, const double *treatment2, const double *treatment12, double *IV2, const double *y2,
                             const int *xmiss2, int *where)
 {
     int i, j;
@@ -237,7 +237,7 @@ honest_estimate_causalTree(SEXP dimx, SEXP nnode,
                            SEXP vnum, 
                            SEXP split2,
                            SEXP csplit2, SEXP usesur, 
-                           SEXP xdata2, SEXP wt2, SEXP treatment2, SEXP IV2, SEXP y2,
+                           SEXP xdata2, SEXP wt2, SEXP treatment2, SEXP treatment12, SEXP IV2, SEXP y2,
                            SEXP xmiss2)
 {
     int n = asInteger(dimx);
@@ -247,7 +247,7 @@ honest_estimate_causalTree(SEXP dimx, SEXP nnode,
             INTEGER(vnum), REAL(split2), INTEGER(csplit2),
             INTEGER(usesur), 
             INTEGER(n1), REAL(wt1), REAL(dev1), REAL(yval1), 
-            REAL(xdata2), REAL(wt2), REAL(treatment2), REAL(IV2), REAL(y2),
+            REAL(xdata2), REAL(wt2), REAL(treatment2), REAL(treatment12), REAL(IV2), REAL(y2),
             INTEGER(xmiss2), INTEGER(where));
     UNPROTECT(1);
     return where;
