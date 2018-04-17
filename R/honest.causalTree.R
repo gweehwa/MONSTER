@@ -2,8 +2,8 @@
 #  The honest re-estimation function.
 #
 
-honest.causalTree <- function(formula, data, weights, treatment, IV, subset, 
-							  est_data, est_weights, est_treatment, est_IV, est_subset,
+honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset, 
+							  est_data, est_weights, est_treatment, est_treatment1, est_IV, est_subset,
 							  na.action = na.causalTree, split.Rule, split.Honest,
 							  HonestSampleSize, split.Bucket, bucketNum = 10,
 							  bucketMax = 40, cv.option, cv.Honest, minsize = 2L, model = FALSE,
@@ -78,8 +78,8 @@ honest.causalTree <- function(formula, data, weights, treatment, IV, subset,
 	    stop("Not give the treatment status of honest estimation data set!\n ")
 	}
 	if (sum(est_treatment %in% c(0,1)) != est_nobs) {
-	    #stop("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
-            print("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
+	    stop("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
+            #print("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
 	}
 	if (sum(est_treatment) == 0 || sum(est_treatment) == est_nobs) {
 	    stop("The data only contains treated cases or controlled cases, please check 'est_treatment' again.") 
@@ -362,6 +362,7 @@ honest.causalTree <- function(formula, data, weights, treatment, IV, subset,
 					   X, # X features for model data
 					   wt, # for model data
 					   treatment, # for model data
+			                   treatment,
 			       		   IV,
 					   as.integer(init$numy),
 					   as.double(cost),
