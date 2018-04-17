@@ -59,6 +59,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
 		      j = -(1 + j);   /* if missing, value = -(1+ true index) */
 	      ct.wtemp[k] = ct.wt[j];
           ct.trtemp[k] = ct.treatment[j];
+	  ct.tr1temp[k] = ct.treatment1[j];
 	  ct.IVtemp[k] = ct.IV[j];
 	      ct.ytemp[k] = ct.ydata[j];
 	      twt += ct.wt[j];
@@ -72,7 +73,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
 	    } else if (split_Rule == 2) {
 	        // ct
 	        (*ct_eval) (n, ct.ytemp, me->response_est, me->controlMean, me->treatMean, 
-          &(me->risk), ct.wtemp, ct.trtemp, ct.IVtemp, ct.max_y, alpha, train_to_est_ratio);
+          &(me->risk), ct.wtemp, ct.trtemp, ct.tr1temp, ct.IVtemp, ct.max_y, alpha, train_to_est_ratio);
 	    } else if (split_Rule == 3) {
 	        // fit
 	        (*ct_eval) (n, ct.ytemp, me->response_est, me->controlMean, me->treatMean,
@@ -88,7 +89,7 @@ partition(int nodenum, pNode splitnode, double *sumrisk, int n1, int n2,
 	    } else if (split_Rule == 6) {
 	        // CTD
 	        (*ct_eval) (n, ct.ytemp, me->response_est, me->controlMean, me->treatMean, 
-          &(me->risk), ct.wtemp, ct.trtemp, ct.IVtemp, ct.max_y, alpha, train_to_est_ratio);
+          &(me->risk), ct.wtemp, ct.trtemp, ct.tr1temp, ct.IVtemp, ct.max_y, alpha, train_to_est_ratio);
 	    } else if (split_Rule == 7) {
 	        //fitD
 	        (*ct_eval) (n, ct.ytemp, me->response_est, me->controlMean, me->treatMean, 
