@@ -311,6 +311,7 @@ causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
 ####
 		save(list = ls(all.names = TRUE),file="all.Rdata")
+	        print("Entered causalTree.R")
 		ctfit <- .Call(C_causalTree,
 					   ncat = as.integer(cats * !isord),
 					   split_Rule = as.integer(split.Rule.int), # tot, ct, fit, tstats, totD, ctD, fitD, tstatsD
@@ -338,6 +339,7 @@ causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset
 					   as.integer(HonestSampleSize),
 					   as.double(cv.gamma)			       		 
 					   )
+	        print("Entered causalTree.R. After C_causalTree")
 
 		nsplit <- nrow(ctfit$isplit) # total number of splits, primary and surrogate
 		## total number of categorical splits
