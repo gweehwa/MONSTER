@@ -57,7 +57,7 @@ SEXP
 causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP method2, 
            SEXP crossmeth2, SEXP crosshonest2, SEXP opt2,
            SEXP minsize2, SEXP p2, SEXP xvals2, SEXP xgrp2,
-        SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP IV2, SEXP ny2, SEXP cost2, 
+        SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP treatment12, SEXP IV2, SEXP ny2, SEXP cost2, 
         SEXP xvar2, SEXP split_alpha2, SEXP cv_alpha2, SEXP NumHonest2, SEXP gamma2)
 {
     pNode tree;          /* top node of the tree */
@@ -82,6 +82,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
 
     double *wt;
     double *treatment;
+    double *treatment1;
     double *IV;
     int minsize;
     /* add propensity score: */
@@ -111,6 +112,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
     xvals = asInteger(xvals2);
     wt = REAL(wt2);
     treatment = REAL(treatment2);
+    treatment1 = REAL(treatment12);
     IV = REAL(IV2);
     minsize = asInteger(minsize2);
     propensity = asReal(p2);
@@ -173,6 +175,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
     ct.numcat = INTEGER(ncat2);
     ct.wt = wt;
     ct.treatment = treatment;
+    ct.treatment1 = treatment1;
     ct.IV = IV;
     ct.iscale = 0.0;
     ct.vcost = REAL(cost2);
@@ -211,6 +214,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
     ct.ytemp = (double **) ALLOC(n, sizeof(double *));
     ct.wtemp = (double *) ALLOC(n, sizeof(double));
     ct.trtemp = (double *) ALLOC(n, sizeof(double));
+    ct.tr1temp = (double *) ALLOC(n, sizeof(double));
     ct.IVtemp = (double *) ALLOC(n, sizeof(double));
     
     /*
@@ -304,7 +308,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
     } else if (split_Rule == 2) {
         // ct:
         (*ct_eval) (n, ct.ydata, tree->response_est, tree->controlMean, tree->treatMean, 
-         &(tree->risk), wt, treatment, IV, ct.max_y, split_alpha, train_to_est_ratio);
+         &(tree->risk), wt, treatment, treatment1, IV, ct.max_y, split_alpha, train_to_est_ratio);
     } else if (split_Rule == 3) {
         //fit
         (*ct_eval) (n, ct.ydata, tree->response_est, tree->controlMean, tree->treatMean, 
@@ -320,7 +324,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
     } else if (split_Rule == 6) {
         //CTD
         (*ct_eval) (n, ct.ydata, tree->response_est, tree->controlMean, tree->treatMean, 
-         &(tree->risk), wt, treatment, IV, ct.max_y, split_alpha, train_to_est_ratio);
+         &(tree->risk), wt, treatment, treatment1, IV, ct.max_y, split_alpha, train_to_est_ratio);
     } else if (split_Rule == 7) {
         // fitD
         (*ct_eval) (n, ct.ydata, tree->response_est, tree->controlMean, tree->treatMean, 
