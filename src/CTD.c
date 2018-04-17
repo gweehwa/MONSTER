@@ -63,7 +63,7 @@ CTDinit(int n, double *y[], int maxcat, char **error,
 
 void
 CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean, 
-     double *risk, double *wt, double *treatment, double *IV, double max_y,
+     double *risk, double *wt, double *treatment, double *treatment1, double *IV, double max_y,
      double alpha, double train_to_est_ratio)
 {
     int i;
@@ -124,7 +124,7 @@ CTDss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
 void
 CTD(int n, double *y[], double *x, int nclass,
     int edge, double *improve, double *split, int *csplit,
-    double myrisk, double *wt, double *treatment, double *IV, int minsize,
+    double myrisk, double *wt, double *treatment, double *treatment1, double *IV, int minsize,
     double alpha, int bucketnum, int bucketMax, double train_to_est_ratio)
 {
     int i, j;
