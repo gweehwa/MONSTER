@@ -3,7 +3,7 @@
 #
 # 
 
-causalTree <- function(formula, data, weights, treatment, IV, subset, 
+causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset, 
 					   na.action = na.causalTree, 
 					   split.Rule, split.Honest, HonestSampleSize, split.Bucket, bucketNum = 5,
 					   bucketMax = 100, cv.option, cv.Honest, minsize = 2L, 
@@ -328,6 +328,7 @@ causalTree <- function(formula, data, weights, treatment, IV, subset,
 					   X, # X features for model data
 					   wt, # for model data
 					   treatment, # for model data
+			                   treatment1, 
 			       		   IV,
 					   as.integer(init$numy),
 					   as.double(cost),
