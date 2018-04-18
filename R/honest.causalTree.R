@@ -340,6 +340,7 @@ honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV,
 		storage.mode(X) <- "double"
 		storage.mode(wt) <- "double"
 		storage.mode(treatment) <- "double"
+		storage.mode(treatment1) <- "double"
 		storage.mode(IV) <- "double"
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
 
@@ -360,6 +361,7 @@ honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV,
 					   X, # X features for model data
 					   wt, # for model data
 					   treatment, # for model data
+			       		   treatment1, # for model data
 			       		   IV,
 					   as.integer(init$numy),
 					   as.double(cost),
