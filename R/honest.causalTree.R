@@ -2,7 +2,7 @@
 #  The honest re-estimation function.
 #
 
-honest.causalTree <- function(formula, data, weights, treatment, IV, subset, 
+honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV, subset, 
 							  est_data, est_weights, est_treatment, est_IV, est_subset,
 							  na.action = na.causalTree, split.Rule, split.Honest,
 							  HonestSampleSize, split.Bucket, bucketNum = 10,
