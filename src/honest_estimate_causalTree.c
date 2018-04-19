@@ -129,13 +129,13 @@ next:
         trsqrsums[npos] +=  wt2[i] * treatment2[i] * y2[i] * y2[i];
         consqrsums[npos] += wt2[i] * (1 - treatment2[i]) * y2[i] * y2[i];
         x_sum[npos] += IV2[i];
-        y_sum[npos] += treatment2[i];
+        y_sum[npos] += treatment12[i];
         z_sum[npos] += y2[i];
-        xy_sum[npos] += IV2[i] * treatment2[i];
+        xy_sum[npos] += IV2[i] * treatment12[i];
         xz_sum[npos] += IV2[i] * y2[i];
-        yz_sum[npos] += treatment2[i] * y2[i];
+        yz_sum[npos] += treatment12[i] * y2[i];
         xx_sum[npos] += IV2[i] * IV2[i];
-        yy_sum[npos] += treatment2[i] * treatment2[i];
+        yy_sum[npos] += treatment12[i] * treatment12[i];
         zz_sum[npos] += y2[i] * y2[i];
      
         /* walk down the tree */
