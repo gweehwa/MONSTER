@@ -58,13 +58,13 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
         tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
         con_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * (1- treatment[i]);
         xz_sum += *y[i] * IV[i];
-        xy_sum += treatment[i] * IV[i];
+        xy_sum += treatment1[i] * IV[i];
         x_sum += IV[i];
-        y_sum += treatment[i];
+        y_sum += treatment1[i];
         z_sum += *y[i];
-        yz_sum += *y[i] * treatment[i];
+        yz_sum += *y[i] * treatment1[i];
         xx_sum += IV[i] * IV[i];
-        yy_sum += treatment[i] * treatment[i];
+        yy_sum += treatment1[i] * treatment1[i];
         zz_sum += *y[i] * *y[i];
     }
 
@@ -85,6 +85,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
+        Rprintf("Entered CT.c. Invalid IV.\n");
         effect = temp1 / ttreat - temp0 / (twt - ttreat);  
         *value = effect;
         tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
@@ -138,13 +139,13 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
         right_sqr_sum += (*y[i]) * (*y[i]) * wt[i];
         right_tr_sqr_sum += (*y[i]) * (*y[i]) * wt[i] * treatment[i];
         right_xz_sum += *y[i] * IV[i];
-        right_xy_sum += treatment[i] * IV[i];
+        right_xy_sum += treatment1[i] * IV[i];
         right_x_sum += IV[i];
-        right_y_sum += treatment[i];
+        right_y_sum += treatment1[i];
         right_z_sum += *y[i];
-        right_yz_sum += *y[i] * treatment[i];
+        right_yz_sum += *y[i] * treatment1[i];
         right_xx_sum += IV[i] * IV[i];
-        right_yy_sum += treatment[i] * treatment[i];
+        right_yy_sum += treatment1[i] * treatment1[i];
         right_zz_sum += *y[i] * *y[i];
     }
 
@@ -163,6 +164,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
          * right_wt * (numerator / denominator);
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
+            Rprintf("Entered CT.c. Invalid IV.\n");
             temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
             tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
             con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
@@ -204,20 +206,20 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 
             left_xz_sum += *y[i] * IV[i];
             right_xz_sum -= *y[i] * IV[i];
-            left_xy_sum += treatment[i] * IV[i];
-            right_xy_sum -= treatment[i] * IV[i];
+            left_xy_sum += treatment1[i] * IV[i];
+            right_xy_sum -= treatment1[i] * IV[i];
             left_x_sum += IV[i];
             right_x_sum -= IV[i];
-            left_y_sum += treatment[i];
-            right_y_sum -= treatment[i];
+            left_y_sum += treatment1[i];
+            right_y_sum -= treatment1[i];
             left_z_sum += *y[i];
             right_z_sum -= *y[i];
-            left_yz_sum += *y[i] * treatment[i];
-            right_yz_sum -= *y[i] * treatment[i];
+            left_yz_sum += *y[i] * treatment1[i];
+            right_yz_sum -= *y[i] * treatment1[i];
             left_xx_sum += IV[i] * IV[i];
             right_xx_sum -= IV[i] * IV[i];
-            left_yy_sum += treatment[i] * treatment[i];
-            right_yy_sum -= treatment[i] * treatment[i];
+            left_yy_sum += treatment1[i] * treatment1[i];
+            right_yy_sum -= treatment1[i] * treatment1[i];
             left_zz_sum += *y[i] * *y[i];
             right_zz_sum -= *y[i] * *y[i];
             //Rprintf("Entered CT.c. left_n, left_wt, left_tr, min_node_size, edge are %.2d, %.2f, %.2f, %.2d, %.2d.\n", left_n, left_wt, left_tr, min_node_size, edge);
@@ -248,6 +250,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //Rprintf("Entered CT.c. Left treatment effect, num, den, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_temp, numerator, denominator, left_effect, left_wt);
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
+                Rprintf("Entered CT.c. Invalid IV.\n");
                 left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
                 left_tr_var = left_tr_sqr_sum / left_tr - 
                     left_tr_sum  * left_tr_sum / (left_tr * left_tr);
@@ -279,6 +282,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
+                Rprintf("Entered CT.c. Invalid IV.\n");
                 right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
                 right_tr_var = right_tr_sqr_sum / right_tr -
                     right_tr_sum * right_tr_sum / (right_tr * right_tr);
