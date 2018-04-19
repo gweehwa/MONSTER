@@ -84,13 +84,13 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                 }
 		n++;
 		xz_sum += ct.IV[tmp_obs] * *ct.ydata[tmp_obs];
-                xy_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs];
+                xy_sum += ct.IV[tmp_obs] * ct.treatment1[tmp_obs];
 		x_sum += ct.IV[tmp_obs];
-                y_sum += ct.treatment[tmp_obs];
+                y_sum += ct.treatment1[tmp_obs];
                 z_sum += *ct.ydata[tmp_obs];
-                yz_sum += *ct.ydata[tmp_obs] * ct.treatment[tmp_obs];
+                yz_sum += *ct.ydata[tmp_obs] * ct.treatment1[tmp_obs];
                 xx_sum += ct.IV[tmp_obs] * ct.IV[tmp_obs];
-                yy_sum += ct.treatment[tmp_obs] * ct.treatment[tmp_obs];
+                yy_sum += ct.treatment1[tmp_obs] * ct.treatment1[tmp_obs];
                 zz_sum += *ct.ydata[tmp_obs] * *ct.ydata[tmp_obs];
             }
         }
@@ -149,6 +149,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 
 oops:;
     if (ct.usesurrogate < 2) {  /* must have hit a missing value */
+	Rprintf("Entered CTH_rundown.c. Double check.\n");
 	for (i = 0; i < ct.num_unique_cp; i++)
 	    xpred[i] = otree->response_est[0];
 
