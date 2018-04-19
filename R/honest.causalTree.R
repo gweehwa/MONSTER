@@ -346,7 +346,7 @@ honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV,
 	        storage.mode(treatment1) <- "double"
 		storage.mode(IV) <- "double"
 		minsize <- as.integer(minsize) # minimum number of obs for treated and control cases in one leaf node
-	        print("Entered honest.causalTree.R. Before ctfit.")
+	        #print("Entered honest.causalTree.R. Before ctfit.")
 		ctfit <- .Call(C_causalTree,
 					   ncat = as.integer(cats * !isord),
 					   split_Rule = as.integer(split.Rule.int), # tot, ct, fit, tstats, totD, ctD, fitD, tstatsD
@@ -374,7 +374,7 @@ honest.causalTree <- function(formula, data, weights, treatment, treatment1, IV,
 					   as.integer(HonestSampleSize),
 					   as.double(cv.gamma)
 					   )
-                print("Entered honest.causalTree.R. After ct.fit.")
+                #print("Entered honest.causalTree.R. After ct.fit.")
 		nsplit <- nrow(ctfit$isplit) # total number of splits, primary and surrogate
 		## total number of categorical splits
 		ncat <- if (!is.null(ctfit$csplit)) nrow(ctfit$csplit) else 0L
