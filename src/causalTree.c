@@ -57,7 +57,7 @@ SEXP
 causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP method2, 
            SEXP crossmeth2, SEXP crosshonest2, SEXP opt2,
            SEXP minsize2, SEXP p2, SEXP xvals2, SEXP xgrp2,
-        SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP test2, SEXP IV2, SEXP ny2, SEXP cost2, 
+        SEXP ymat2, SEXP xmat2, SEXP wt2, SEXP treatment2, SEXP IV2, SEXP ny2, SEXP cost2, 
         SEXP xvar2, SEXP split_alpha2, SEXP cv_alpha2, SEXP NumHonest2, SEXP gamma2)
 {
     pNode tree;          /* top node of the tree */
