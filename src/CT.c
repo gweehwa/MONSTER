@@ -863,8 +863,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. b0, b1, b2 and b3 are %.2f, %.2f, %.2f, %.2f.\n", bhat_0, bhat_1, bhat_2, bhat_3);
-
+ 
                     
     m[0] = right_x1x1_sum;
     m[1] = right_x1x2_sum;
@@ -1022,7 +1021,9 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_3 = 0;
     var3 = 1000000;
     }                
-Rprintf("Entered CT.c. right_x1y_sum, right_x2y_sum, right_x3y_sum, right_x4y_sum are %.2f, %.2f, %.2f, %.2f.\n", right_x1y_sum, right_x2y_sum, right_x3y_sum, right_x4y_sum);
+Rprintf("Entered CT.c. b0, b1, b2, b3, error2, invOut[15], right_n are %.2f, %.2f, %.2f, %.2f., %.2f, %.2f., %.2f.\n", bhat_0, bhat_1, bhat_2, bhat_3, error2, invOut[15], right_n);
+
+Rprintf("Entered CT.c. right_x1y_sum, right_x2y_sum, right_x3y_sum, right_x4y_sum , right_yy_sum are %.2f, %.2f, %.2f, %.2f., %.2f.\n", right_x1y_sum, right_x2y_sum, right_x3y_sum, right_x4y_sum, right_yy_sum);
 Rprintf("Entered CT.c. right_x1x2_sum, right_x1x3_sum, right_x1x4_sum, right_x2x2_sum, right_x2x3_sum, right_x2x4_sum,   right_x3x3_sum, right_x3x4_sum right_x4x4_sum are %.2f, %.2f, %.2f, %.2f., %.2f., %.2f., %.2f., %.2f., %.2f.\n",  right_x1x2_sum, right_x1x3_sum, right_x1x4_sum, right_x2x2_sum, right_x2x3_sum, right_x2x4_sum, right_x3x3_sum, right_x3x4_sum, right_x4x4_sum );
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
