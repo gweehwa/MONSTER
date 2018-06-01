@@ -863,7 +863,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. Left treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_temp, numerator, denominator, left_effect, left_wt);
+                Rprintf("Entered CT.c. Left treatment effect, var, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", left_temp, var3, left_effect, left_wt);
 
                     
     m[0] = right_x1x1_sum;
@@ -1048,7 +1048,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. Right treatment effect, num, dem, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", right_temp, numerator, denominator, right_effect, right_wt);
+                Rprintf("Entered CT.c. Right treatment effect, var, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", right_temp, var3, right_effect, right_wt);
 
 
                 
