@@ -549,7 +549,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     error2 = (right_n*bhat_0*bhat_0 + 2*bhat_0*bhat_1*right_x1x2_sum + 2*bhat_0*bhat_2*right_x1x3_sum + 2*bhat_0*bhat_3*right_x1x4_sum 
             - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum + 2*bhat_1*bhat_3*right_x2x4_sum 
             - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum 
-            + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
+            + bhat_3*bhat_3*right_x4x4_sum - 2*bhat_3*right_x4y_sum + right_zz_sum)/right_n;
            
     var3 = error2 * invOut[15]; 
 
@@ -826,7 +826,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     error2 = (left_n*bhat_0*bhat_0 + 2*bhat_0*bhat_1*left_x1x2_sum + 2*bhat_0*bhat_2*left_x1x3_sum + 2*bhat_0*bhat_3*left_x1x4_sum 
               - 2*bhat_0*left_x1y_sum + bhat_1*bhat_1*left_x2x2_sum + 2*bhat_1*bhat_2*left_x2x3_sum + 2*bhat_1*bhat_3*left_x2x4_sum 
               - 2*bhat_1*left_x2y_sum + bhat_2*bhat_2*left_x3x3_sum + 2*bhat_2*bhat_3*left_x3x4_sum - 2*bhat_2*left_x3y_sum 
-              + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_yy_sum)/left_n;
+              + bhat_3*bhat_3*left_x4x4_sum - 2*bhat_3*left_x4y_sum + left_zz_sum)/left_n;
     var3 = error2 * invOut[15];   
     } else {
     //x: IV, z: y, y: treatment
@@ -1009,7 +1009,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
               - 2*bhat_0*right_x1y_sum + bhat_1*bhat_1*right_x2x2_sum + 2*bhat_1*bhat_2*right_x2x3_sum 
               + 2*bhat_1*bhat_3*right_x2x4_sum - 2*bhat_1*right_x2y_sum + bhat_2*bhat_2*right_x3x3_sum 
               + 2*bhat_2*bhat_3*right_x3x4_sum - 2*bhat_2*right_x3y_sum + bhat_3*bhat_3*right_x4x4_sum 
-              - 2*bhat_3*right_x4y_sum + right_yy_sum)/right_n;
+              - 2*bhat_3*right_x4y_sum + right_zz_sum)/right_n;
     var3 = error2 * invOut[15];   
     } else { 
     //x: IV, z: y, y: treatment
