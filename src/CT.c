@@ -1022,6 +1022,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     bhat_3 = 0;
     var3 = 1000000;
     }                
+Rprintf("Entered CT.c. right_x1y_sum, right_x2y_sum, right_x2y_sum, right_x2y_sum are %.2f, %.2f, %.2f, %.2f.\n", right_x1y_sum, right_x2y_sum, right_x2y_sum, right_x2y_sum);
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
@@ -1048,8 +1049,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. Right treatment effect, error2, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", right_temp, error2, right_effect, right_wt);
-
+                
 
                 
                 temp = left_effect + right_effect - node_effect;
