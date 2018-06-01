@@ -863,7 +863,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. Left treatment effect, error2, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", left_temp, error2, left_effect, left_wt);
+                Rprintf("Entered CT.c. b0, b1, b2 and b3 are %.2f, %.2f, %.2f, %.2f.\n", bhat_0, bhat_1, bhat_2, bhat_3);
 
                     
     m[0] = right_x1x1_sum;
