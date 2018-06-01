@@ -1048,7 +1048,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));
                 //continue;
                 }
-                Rprintf("Entered CT.c. Right treatment effect, error2, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", right_temp, errors, right_effect, right_wt);
+                Rprintf("Entered CT.c. Right treatment effect, error2, effect and obs are %.2f, %.2f, %.2f, %.2f.\n", right_temp, error2, right_effect, right_wt);
 
 
                 
