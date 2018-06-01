@@ -1023,6 +1023,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = 1000000;
     }                
 Rprintf("Entered CT.c. right_x1y_sum, right_x2y_sum, right_x2y_sum, right_x2y_sum are %.2f, %.2f, %.2f, %.2f.\n", right_x1y_sum, right_x2y_sum, right_x2y_sum, right_x2y_sum);
+Rprintf("Entered CT.c. right_x1x2_sum, right_x1x3_sum, right_x1x4_sum, right_x2x2_sum, right_x2x3_sum, right_x2x4_sum, 
+        right_x3x3_sum, right_x3x4_sum right_x4x4_sum are %.2f, %.2f, %.2f, %.2f., %.2f., %.2f., %.2f., %.2f., %.2f.\n", 
+        right_x1x2_sum, right_x1x3_sum, right_x1x4_sum, right_x2x2_sum, right_x2x3_sum, right_x2x4_sum, 
+        right_x3x3_sum, right_x3x4_sum, right_x4x4_sum );
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
                 alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
