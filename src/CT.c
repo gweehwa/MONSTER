@@ -1060,17 +1060,16 @@ Rprintf("Entered CT.c. Right treatment effect, var3, effect and obs are %.2f, %.
                 if (temp > best) {
                     best = temp;
 Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
-
                     where = i;               
                     if (left_temp < right_temp){
                         direction = LEFT;
                     }
                     else{
-Rprintf("Not Improved. Left, right and node effects are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
-
                         direction = RIGHT;
                     }
-                }             
+                } 
+Rprintf("Not Improved. Left, right and node effects are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
+
             }
         }
         
