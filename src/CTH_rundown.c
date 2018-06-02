@@ -303,14 +303,15 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     bhat_1 = invOut[4] * x1y_sum + invOut[5] * x2y_sum + invOut[6] * x3y_sum + invOut[7] * x4y_sum;
     bhat_2 = invOut[8] * x1y_sum + invOut[9] * x2y_sum + invOut[10] * x3y_sum + invOut[11] * x4y_sum;
     bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
-    //error2 = (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2]) 
-    //	    * (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2])/n; 
+    error2 = (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2]) 
+    	    * (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2])/n;
+    Rprintf("Old error2 is %.2f.\n", error2);
     error2 = (n*bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum 
               - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum 
               - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum 
               - 2*bhat_3*x4y_sum + zz_sum)/n;
-	    
-    //Rprintf("Entered CTH_rundown.c. ct.ydata[obs2][0], ct.ydata[obs2], obs2 and ct.treatment[obs2] are %.2f, %.2f, %.2f, %.2f.\n", ct.ydata[obs2][0], ct.ydata[obs2], obs2, ct.treatment[obs2]);
+    Rprintf("New error2 is %.2f.\n", error2);
+    Rprintf("Entered CTH_rundown.c. ct.ydata[obs2][0], ct.ydata[obs2], obs2 and ct.treatment[obs2] are %.2f, %d, %d, %d.\n", ct.ydata[obs2][0], ct.ydata[obs2], obs2, ct.treatment[obs2]);
     //for (i = 0; i < n; i++) {
     //    error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     //}
