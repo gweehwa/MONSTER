@@ -6,6 +6,8 @@
 #include "causalTree.h"
 #include "causalTreeproto.h"
 
+Rprintf("Entered xevals.c.");
+
 double
 tot_xpred(double *y, double wt, double treatment, double *yhat, double propensity) 
 {
@@ -114,7 +116,7 @@ double userH_xpred(double *y, double wt, double treatment, double tr_mean,
     } 
     double effect = tr_mean - con_mean;
     
-rprintf("Entered xevals.c.");
+Rprintf("Entered xevals.c.");
     res = 4 * ct.max_y * ct.max_y - alpha *  effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) 
         * (1 - alpha) *  tmp; 
     
