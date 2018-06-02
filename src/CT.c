@@ -277,7 +277,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     error2 = (n*bhat_0*bhat_0 + 2*bhat_0*bhat_1*x1x2_sum + 2*bhat_0*bhat_2*x1x3_sum + 2*bhat_0*bhat_3*x1x4_sum 
               - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum 
               - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum 
-              - 2*bhat_3*x4y_sum + yy_sum)/n;
+              - 2*bhat_3*x4y_sum + zz_sum)/n;
            
     var3 = error2 * invOut[15];   
     } else {
