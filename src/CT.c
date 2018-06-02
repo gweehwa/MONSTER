@@ -575,7 +575,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //    * right_wt * (numerator / denominator);
     node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
         * right_wt * (var3);
-Rprintf("Entered CT.c. Node treatment effect, var3, effect and obs, error2, inOut[15] are %.2f, %.2f, %.2f, %.2f., %.2f, %.2f.\n", temp, var3, node_effect, right_wt, error2, inOut[15]);
+Rprintf("Entered CT.c. Node treatment effect, var3, effect and obs, error2, invOut[15] are %.2f, %.2f, %.2f, %.2f., %.2f, %.2f.\n", temp, var3, node_effect, right_wt, error2, invOut[15]);
 
     
 // PARAMETER!        
