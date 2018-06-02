@@ -852,7 +852,7 @@ Rprintf("Entered CT.c. Node treatment effect, var3, effect and obs, error2, invO
                 //    * left_wt * (numerator / denominator);
                 left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                     * left_wt * (var3);
- Rprintf("Entered CT.c. Left treatment effect, var3, effect and obs are %.4f, %.4f, %.6f, %.0f.\n", left_temp, var3, left_effect, left_wt);
+ Rprintf("Entered CT.c. Left treatment effect, var3, effect and obs are %.4f, %.6f, %.4f, %.0f.\n", left_temp, var3, left_effect, left_wt);
 
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
