@@ -305,7 +305,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     bhat_3 = invOut[12] * x1y_sum + invOut[13] * x2y_sum + invOut[14] * x3y_sum + invOut[15] * x4y_sum;
     error2 = (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2]) 
 	    * (ct.ydata[obs2][0] - bhat_0 - bhat_1 * ct.treatment[obs2] - bhat_2 * ct.IV[obs2] - bhat_3 * ct.IV[obs2] * ct.treatment[obs2])/n; 
-    Rprintf("Entered CTH_rundown.c. ct.ydata[obs2][0], ct.ydata[obs2] and ct.treatment[obs2] are %.2f, %.2f, %.2f.", ct.ydata[obs2][0], ct.ydata[obs2], ct.treatment[obs2]);
+    Rprintf("Entered CTH_rundown.c. ct.ydata[obs2][0], ct.ydata[obs2], ct.treatment[obs2][0] and ct.treatment[obs2] are %.2f, %.2f, %.2f, %.2f.\n", ct.ydata[obs2][0], ct.ydata[obs2], ct.treatment[obs2][0], ct.treatment[obs2]);
     //for (i = 0; i < n; i++) {
     //    error2 += (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) * (*y[i] - bhat_0 - bhat_1 * treatment[i] - bhat_2 * IV[i] - bhat_3 * IV[i] * treatment[i]) / (n - 4); 
     //}
