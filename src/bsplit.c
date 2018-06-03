@@ -41,7 +41,7 @@ bsplit(pNode me, int n1, int n2, int minsize, int split_Rule, double alpha, int 
      */
     me->primary = (pSplit) NULL;
     for (i = 0; i < ct.nvar; i++) {
-        Rprintf("Feature number %d.\n", i);
+    //    Rprintf("Feature number %d.\n", i);
         index = ct.sorts[i];
         nc = ct.numcat[i];
         /* extract x and y data */
