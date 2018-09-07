@@ -38,15 +38,15 @@ void R_add1(int alen, int a[])
 
     if (!errorOccurred)
     {
-        printf("R returned: ");
+        Rprintf("R returned: ");
         double *val = REAL(ret);
         for (int i = 0; i < LENGTH(ret); i++)
             printf("%0.1f, ", val[i]);
-        printf("\n");
+        Rprintf("\n");
     }
     else
     {
-        printf("Error occurred calling R\n");
+        Rprintf("Error occurred calling R\n");
     }
     
     UNPROTECT(2);
