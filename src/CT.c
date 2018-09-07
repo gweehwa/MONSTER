@@ -95,7 +95,7 @@ CTinit(int n, double *y[], int maxcat, char **error,
 
     // Invoke a function in R
     source("func.R");
-    R_add1(5, arg);
+    Rprintf("%d", R_add1(1, 1));
 
     // Release R environment
     Rf_endEmbeddedR(0);
