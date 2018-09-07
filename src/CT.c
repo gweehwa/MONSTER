@@ -41,7 +41,7 @@ void R_add1(int alen, int a[])
         Rprintf("R returned: ");
         double *val = REAL(ret);
         for (int i = 0; i < LENGTH(ret); i++)
-            printf("%0.1f, ", val[i]);
+            Rprintf("%0.1f, ", val[i]);
         Rprintf("\n");
     }
     else
