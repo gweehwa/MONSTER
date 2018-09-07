@@ -87,7 +87,21 @@ CTinit(int n, double *y[], int maxcat, char **error,
         int *size, int who, double *wt, double *treatment, 
         int bucketnum, int bucketMax, double *train_to_est_ratio)
 {
-    Rprintf("Entered CTinit.\n");
+    int r_argc = 2;
+    char *r_argv[] = { "R", "--silent" };
+    Rf_initEmbeddedR(r_argc, r_argv);
+    
+    int arg[] = { 1, 2, 3, 4, 5 };
+
+    // Invoke a function in R
+    source("func.R");
+    R_add1(5, arg);
+
+    // Release R environment
+    Rf_endEmbeddedR(0);
+    return(0);
+    
+    
     if (who == 1 && maxcat > 0) {
         graycode_init0(maxcat);
         countn = (int *) ALLOC(2 * maxcat, sizeof(int));
