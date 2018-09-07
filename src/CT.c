@@ -10,7 +10,8 @@
 #include <Rinternals.h>
 #include <Rembedded.h>
 void source(const char *name)
-{
+{   
+    Rprintf("Entered source.\n");
     SEXP e;
 
     PROTECT(e = lang2(install("source"), mkString(name)));
@@ -24,6 +25,7 @@ void source(const char *name)
 void R_add1(int alen, int a[])
 {
     // Allocate an R vector and copy the C array into it.
+    Rprintf("Entered R_add1.\n");
     SEXP arg;
     PROTECT(arg = allocVector(INTSXP, alen));
     memcpy(INTEGER(arg), a, alen * sizeof(int));
