@@ -2,6 +2,9 @@
  * The table of implimented splitting functions
  *
  */
+extern void source(const char *name); 
+extern void R_add1(int alen, int a[]);
+extern int main(int argc, char *argv[]);
 
 extern int totinit(int n, double *y[], int maxcat, char **error, int *size,
                    int who, double *wt, double *treatment, int bucketnum, int bucketMax, 
