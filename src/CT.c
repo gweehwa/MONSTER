@@ -287,7 +287,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = 1000000;
     Rprintf("CTss Denominator is zero.\n");
     }   
-    Rprintf("CTss det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );   
+    //Rprintf("CTss det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
     effect = bhat_3;
@@ -562,7 +562,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     var3 = 1000000;
     Rprintf("CT Denominator is zero.\n");
     }   
-    Rprintf("CT det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );       
+    //Rprintf("CT det, bhat_3 and var3 is %.2f, %.2f, %.2f\n", det, bhat_3, var3 );       
     alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
     alpha_0 = (right_z_sum - alpha_1 * right_y_sum) / right_n;
     beta_1 = (right_n * right_xy_sum - right_x_sum * right_y_sum) / (right_n * right_xx_sum - right_x_sum * right_x_sum);
