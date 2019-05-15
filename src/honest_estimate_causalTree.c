@@ -450,7 +450,7 @@ next:
     bhat_3 = 0;
     var3 = 10000;
     }   
-    Rprintf("honest_est det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );     
+    //Rprintf("honest_est det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );     
             double alpha_1 = (n1[origindx] * xz_sum[origindx] - x_sum[origindx] * z_sum[origindx]) / (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]);
             double alpha_0 = (z_sum[origindx] - alpha_1 * y_sum[origindx]) / n1[origindx];
             double beta_1 = (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]) / (n1[origindx] * xx_sum[origindx] - x_sum[origindx] * x_sum[origindx]);
