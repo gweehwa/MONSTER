@@ -295,8 +295,10 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
     beta_0 = (y_sum - beta_1 * x_sum) / n;
 
-    *tr_mean = temp1 / ttreat;
-    *con_mean = temp0 / (twt - ttreat);
+    //*tr_mean = temp1 / ttreat;
+    *tr_mean = bhat_3;
+    //*con_mean = temp0 / (twt - ttreat);
+    *con_mean = var3;
     *value = effect;
     
     numerator = zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum;
