@@ -89,7 +89,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
-    double error2 = 0., var3 = 0.;
+    double error2 = 0., , var1 = 0., var2 = 0., var3 = 0.;
   
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
@@ -365,7 +365,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
-    double error2 = 0., var3 = 0.;
+    double error2 = 0., var1 = 0., var2 = 0., var3 = 0.;
   
     //double *xz_sum, *xy_sum, *x_sum, *y_sum, *z_sum, *yz_sum, *xx_sum, *yy_sum, *zz_sum; //declare double for categorical
     for (i = 0; i < n; i++) {
