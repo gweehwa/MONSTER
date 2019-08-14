@@ -37,7 +37,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
-    double error2 = 0., var3 = 0.;
+    double error2 = 0., var1 = 0., var2 = 0., var3 = 0.;
 
     /*
      * Now, repeat the following: for the cp of interest, run down the tree
