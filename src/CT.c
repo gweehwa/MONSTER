@@ -278,7 +278,9 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
               - 2*bhat_0*x1y_sum + bhat_1*bhat_1*x2x2_sum + 2*bhat_1*bhat_2*x2x3_sum + 2*bhat_1*bhat_3*x2x4_sum 
               - 2*bhat_1*x2y_sum + bhat_2*bhat_2*x3x3_sum + 2*bhat_2*bhat_3*x3x4_sum - 2*bhat_2*x3y_sum + bhat_3*bhat_3*x4x4_sum 
               - 2*bhat_3*x4y_sum + zz_sum)/n;
-           
+    
+    var1 = error2 * invOut[5];
+    var2 = error2 * invOut[10];
     var3 = error2 * invOut[15];   
     } else {
     //x: IV, z: y, y: treatment
@@ -290,6 +292,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //Rprintf("CTss det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
+    ///effect = bhat_1 + bhat_2;
     effect = bhat_3;
     alpha_0 = (z_sum - alpha_1 * y_sum) / n;
     beta_1 = (n * xy_sum - x_sum * y_sum) / (n * xx_sum - x_sum * x_sum);
