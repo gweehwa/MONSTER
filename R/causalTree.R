@@ -42,7 +42,7 @@ causalTree <- function(formula, data, weights, treatment, IV, subset,
 			 1 represent treated and 0 represent controlled.")   
 	}
 	if (sum(treatment %in% c(0,1)) != nobs) {
-		stop("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
+	#	stop("The treatment status should be 1 or 0 only: 1 represent treated and 0 represent controlled.")
 	}
 
 	if (sum(treatment) == 0 || sum(treatment) == nobs) {
