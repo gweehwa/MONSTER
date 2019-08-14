@@ -66,7 +66,7 @@ honest_estimate_causalTree0(const int *dimx, int nnode, int nsplit, const int *d
     float m[16], inv[16], invOut[16];
     double det;
     double bhat_0 = 0., bhat_1 = 0., bhat_2 = 0., bhat_3 = 0.;
-    double error2 = 0., var3 = 0.;
+    double error2 = 0., var1 = 0., var2 = 0., var3 = 0.;
     
     trs = (double *) ALLOC(nnode, sizeof(double));
     cons = (double *) ALLOC(nnode, sizeof(double));
