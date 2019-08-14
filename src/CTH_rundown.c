@@ -358,8 +358,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
         //xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
         tmp = var3;
-	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
-	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2);
+	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
+	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2);
     }
     return;
 
