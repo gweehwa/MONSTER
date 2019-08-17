@@ -247,6 +247,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
     for (cplist = cptable_head; cplist; cplist = cplist->forward) {
         cplist->xstd = sqrt(cplist->xstd -
                 cplist->xrisk * cplist->xrisk / total_wt);
+        Rprintf("Entered myxval.c. xrisk and xstd are %f and %f.\n", cplist->xrisk, cplist->xstd);
 
     }
     ct.alpha = alphasave;
