@@ -599,7 +599,7 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
     }
     //Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
     if (nclass == 0) {
-     Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
+     //Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
         /* continuous predictor */
         left_wt = 0;
         left_tr = 0;
@@ -688,10 +688,10 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
             right_x3y_sum -= *y[i] * IV[i];
             left_x4y_sum += *y[i] * IV[i] * treatment[i];
             right_x4y_sum -= *y[i] * IV[i] * treatment[i];
-            Rprintf("Before if.\n");
+            //Rprintf("Before if.\n");
             if (x[i + 1] != x[i] && left_n >= edge) {    
               
-            Rprintf("After if.\n");
+            //Rprintf("After if.\n");
                 
     m[0] = left_x1x1_sum;
     m[1] = left_x1x2_sum;
@@ -822,9 +822,9 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-    Rprintf("Test: After det");
+    //Rprintf("Test: After det");
     if (det != 0){ 
-    Rprintf("Test: After det not equal to zero");
+    //Rprintf("Test: After det not equal to zero");
 //    det = 1.0 / det; //may need if(det = 0)
 
     for (k = 0; k < 16; k++){
