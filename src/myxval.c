@@ -168,7 +168,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
         }
         
         xtree->complexity = xtree->risk;
-        Rprintf("Entered myxval.c. xtree_complexity is %.4f.\n", xtree->complexity);
+        //Rprintf("Entered myxval.c. xtree_complexity is %.4f.\n", xtree->complexity);
 
         partition(1, xtree, &temp, 0, k, minsize, split_Rule, split_alpha, bucketnum, bucketMax, 
                   xtrain_to_est_ratio);
@@ -237,6 +237,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
 #endif
                 cplist = cplist->forward;
             }
+            Rprintf("Entered myxval.c. xrisk and xstad are %.4f and %.4f.\n", cplist->xrisk, cplist->xstd);
         }
 
         free_tree(xtree, 1);    // Calloc-ed
