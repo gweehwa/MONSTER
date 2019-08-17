@@ -597,7 +597,7 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
             //node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
             //    * right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));
     }
-    
+    Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
     if (nclass == 0) {
         /* continuous predictor */
         left_wt = 0;
