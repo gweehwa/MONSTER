@@ -24,7 +24,8 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
     alphasave = ct.alpha;
     double xtrain_to_est_ratio = 0.;
     
-
+    Rprintf("Entered myxval.c.\n");
+       
     /*
      * Allocate a set of temporary arrays
      */
