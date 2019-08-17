@@ -289,7 +289,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = 1000000;
     Rprintf("CTss Denominator is zero.\n");
     }   
-    //Rprintf("CTss det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );   
+    Rprintf("CTss bhat1, var1, bhat_2 and var2 is %.2f, %.2f, %.4f, %.4f\n", bhat1, var1, bhat_2, var2 );   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
     ///effect = bhat_1 + bhat_2;
