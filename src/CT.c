@@ -1079,7 +1079,7 @@ Rprintf("Entered CT.c. Right effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.
                 temp = left_effect + right_effect - node_effect;
                 if (temp > best) {
                     best = temp;
-//Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
+Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
                     where = i;               
                     if (left_temp < right_temp){
                         direction = LEFT;
