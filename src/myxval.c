@@ -237,7 +237,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
 #endif
                 cplist = cplist->forward;
             }
-            Rprintf("Entered myxval.c. xrisk and xstad are %.4f and %.4f.\n", cplist->xrisk, cplist->xstd);
+            Rprintf("Entered myxval.c. xrisk and xstad are %f and %f.\n", cplist->xrisk, cplist->xstd);
         }
 
         free_tree(xtree, 1);    // Calloc-ed
