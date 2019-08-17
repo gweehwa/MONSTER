@@ -599,6 +599,7 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
     }
     //Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
     if (nclass == 0) {
+     Rprintf("Entered CT.c. Node nclass is %.4f.\n", nclass);
         /* continuous predictor */
         left_wt = 0;
         left_tr = 0;
