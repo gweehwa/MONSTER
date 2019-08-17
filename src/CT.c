@@ -584,7 +584,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     ////node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var3);
     node_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * right_wt - (1 - alpha) * (1 + train_to_est_ratio)  * right_wt * (var1 + var2);
   
-//Rprintf("Entered CT.c. Node treatment effect, var3, effect and obs, error2, invOut[15] are %.4f, %.6f, %.4f, %.0f., %.4f, %.4f.\n", temp, var3, node_effect, right_wt, error2, invOut[15]);
+Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
 
     
 // PARAMETER!        
@@ -864,7 +864,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //    * left_wt * (numerator / denominator);
                 ////left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio)* left_wt * (var3);
                 left_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * left_wt - (1 - alpha) * (1 + train_to_est_ratio) * left_wt * (var1 + var2);
- //Rprintf("Entered CT.c. Left treatment effect, var3, effect and obs are %.4f, %.6f, %.4f, %.0f.\n", left_temp, var3, left_effect, left_wt);
+ Rprintf("Entered CT.c. Left treatment effect is %.4f.\n", left_effect);
 
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
@@ -1058,7 +1058,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 ////right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)* right_wt * (var3);
                 right_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var1 + var2);
 
-//Rprintf("Entered CT.c. Right treatment effect, var3, effect and obs are %.4f, %.6f, %.4f, %.0f.\n", right_temp, var3, right_effect, right_wt);
+Rprintf("Entered CT.c. Right treatment effect is %.4f.\n", right_effect);
 
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
