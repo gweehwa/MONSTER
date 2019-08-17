@@ -309,7 +309,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
     ////*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
     *risk = 4 * twt * max_y * max_y - alpha * twt * (bhat_1*bhat_1 + bhat_2*bhat_2) + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var1 + var2);
-// PARAMETER!    
+// PARAMETER! 
+    Rprintf("CT.c risk is %.4f.\n", *risk);
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
         //effect = temp1 / ttreat - temp0 / (twt - ttreat);  
         //*value = effect;
