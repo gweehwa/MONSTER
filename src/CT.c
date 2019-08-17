@@ -289,7 +289,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     var3 = 1000000;
     Rprintf("CTss Denominator is zero.\n");
     }   
-    Rprintf("CTss bhat_1, var1, bhat_2 and var2 is %.2f, %.2f, %.4f, %.4f\n", bhat_1, var1, bhat_2, var2 );   
+    //Rprintf("CTss bhat_1, var1, bhat_2 and var2 is %.2f, %.2f, %.4f, %.4f\n", bhat_1, var1, bhat_2, var2 );   
     alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
     //effect = alpha_1;
     ///effect = bhat_1 + bhat_2;
@@ -584,7 +584,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     ////node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var3);
     node_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * right_wt - (1 - alpha) * (1 + train_to_est_ratio)  * right_wt * (var1 + var2);
   
-Rprintf("Entered CT.c. Node treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", node_effect, bhat_1, var1, bhat_2, var2);
+//Rprintf("Entered CT.c. Node treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", node_effect, bhat_1, var1, bhat_2, var2);
 
     
 // PARAMETER!        
@@ -864,7 +864,7 @@ Rprintf("Entered CT.c. Node treatment effect, bhat1, var1, bhat2, var2 are %.4f,
                 //    * left_wt * (numerator / denominator);
                 ////left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio)* left_wt * (var3);
                 left_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * left_wt - (1 - alpha) * (1 + train_to_est_ratio) * left_wt * (var1 + var2);
- Rprintf("Entered CT.c. Left treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", left_effect, bhat_1, var1, bhat_2, var2);
+ //Rprintf("Entered CT.c. Left treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", left_effect, bhat_1, var1, bhat_2, var2);
 
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
@@ -1058,7 +1058,7 @@ Rprintf("Entered CT.c. Node treatment effect, bhat1, var1, bhat2, var2 are %.4f,
                 ////right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)* right_wt * (var3);
                 right_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var1 + var2);
 
-Rprintf("Entered CT.c. Right effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", right_effect, bhat_1, var1, bhat_2, var2);
+//Rprintf("Entered CT.c. Right effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", right_effect, bhat_1, var1, bhat_2, var2);
 
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
@@ -1079,7 +1079,7 @@ Rprintf("Entered CT.c. Right effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.
                 temp = left_effect + right_effect - node_effect;
                 if (temp > best) {
                     best = temp;
-Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
+//Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
                     where = i;               
                     if (left_temp < right_temp){
                         direction = LEFT;
