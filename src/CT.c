@@ -689,11 +689,7 @@ Rprintf("Entered CT.c. Node treatment effect is %.4f.\n", node_effect);
             left_x4y_sum += *y[i] * IV[i] * treatment[i];
             right_x4y_sum -= *y[i] * IV[i] * treatment[i];
             Rprintf("Before if.\n");
-            if (x[i + 1] != x[i] && left_n >= edge &&
-                (int) left_tr >= min_node_size &&
-                (int) left_wt - (int) left_tr >= min_node_size &&
-                (int) right_tr >= min_node_size &&
-                (int) right_wt - (int) right_tr >= min_node_size) {    
+            if (x[i + 1] != x[i] && left_n >= edge) {    
               
             Rprintf("After if.\n");
                 
