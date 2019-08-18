@@ -321,8 +321,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     } else{
     //x: IV, z: y, y: treatment
     //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));       
-    bhat_3 = 0;
-    var3 = 1000000;
+    bhat_1 = 0;
+    var1 = 1000000;
     }	    
     	//double alpha_1;
 // PARAMETER!	    
@@ -333,7 +333,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	//	alpha_1 = (n * xz_sum - x_sum * z_sum) / (n * xy_sum - x_sum * y_sum);
 	//}
         //double effect = alpha_1;
-	double effect = bhat_3;    
+	double effect = bhat_1;    
         //double alpha_0 = (z_sum - alpha_1 * y_sum) / n;
 	//double beta_1;
 	//if (n * xx_sum - x_sum * x_sum == 0){
@@ -357,9 +357,9 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	//xtemp[i] = (*ct_xeval)(ct.ydata[obs2], ct.wt[obs2], ct.treatment[obs2], tr_mean, 
         //            con_mean, trs, cons, alpha, xtrain_to_est_ratio, propensity);
         //xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
-        tmp = var3;
+        tmp = var1;
 	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
-	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2) + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2);
+	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2)/2;
     }
     return;
 
