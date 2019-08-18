@@ -35,6 +35,7 @@ make_cp_table(pNode me, double parent, int nsplit)
 
     while (cplist->cp < parent) {
 	cplist->risk += me->risk;
+	    Rprintf("Entered make_cp_table. cplist_risk and me_risk are %.4f and %.4f.\n", cplist->risk, me->risk);    
 	cplist->nsplit += nsplit;
 	cplist = cplist->back;
     }
