@@ -19,7 +19,6 @@ CpTable
 make_cp_table(pNode me, double parent, int nsplit)
 {
     CpTable cplist;
-    Rprintf("Entered make_cp_table.\n");
     if (me->leftson) {          /* if there are splits below */
 	/*
 	 * The 2 lines below are perhaps devious
