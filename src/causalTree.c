@@ -390,7 +390,7 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
         if (xvals > 1) {
             dptr[i++] = cp->xrisk * scale ;
             dptr[i++] = cp->xstd * scale ;
-Rprintf("Entered causalTree.c. cp_xrisk and cp_xstd are %.4f and %.4f.\n,  cp->xrisk, cp->xstd);
+Rprintf("Entered causalTree.c. cp_xrisk and cp_xstd are %.4f and %.4f.\n",  cp->xrisk, cp->xstd);
         }
     }
 
