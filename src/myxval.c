@@ -232,7 +232,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
             for (jj = 0; jj < ct.num_unique_cp; jj++) {
                 cplist->xrisk += xtemp[jj] * ct.wt[j];
                 cplist->xstd += xtemp[jj] * xtemp[jj] * ct.wt[j];
-        Rprintf("Entered myxval.c. ct.num_unique_cp, xtemp, ct.wt, and cplist_xrisk are %d, %f, %d, and %f.\n", ct.num_unique_cp, xtemp[jj], ct.wt[j], cplist->xrisk);                
+        Rprintf("Entered myxval.c. ct.num_unique_cp, xtemp, ct.wt, and cplist_xrisk are %d, %f, %f, and %f.\n", ct.num_unique_cp, xtemp[jj], ct.wt[j], cplist->xrisk);                
 #if DEBUG > 1
                 //	if (debug > 1)
                 Rprintf("  cp=%f, pred=%f, xtemp=%f\n",
