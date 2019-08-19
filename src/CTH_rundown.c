@@ -101,6 +101,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                 tree_tmp = branch(tree_tmp, tmp_obs);
             }
             tmp_id = tree_tmp->id;
+	Rprintf("Entered CTH_rundown. tmp_obs and temp_id are %d and %d.\n", tmp_obs, temp_id);   
+		
             if (tmp_id == my_leaf_id) {
                 if (ct.treatment[tmp_obs] == 0) {
                     cons += ct.wt[tmp_obs];
