@@ -326,6 +326,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
     //bhat_3 = (x1y1z_sum/(x1x4_sum) - x1y0z_sum/(x1x3_sum-x1x4_sum)) - (x0y1z_sum/(x1x2_sum-x1x4_sum) - x0y0z_sum/(x1x1_sum-x1x2_sum-x1x3_sum+x1x4_sum));       
     bhat_1 = 0;
     var1 = 1000000;
+	    Rprintf("CTH_rundown. Det = 0.\n");
     }	    
     	//double alpha_1;
 // PARAMETER!	    
@@ -363,7 +364,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         tmp = var1;
 	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
 	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2)/2;
-	Rprintf("Entered CTH_rundown. xtemp is %f.\n", xtemp[i]);    
+	Rprintf("Entered CTH_rundown. bhat_1, bhat_2, and xtemp is %f, %f, and %f.\n", bhat_1, bhat_2, xtemp[i]);    
     
     }
     return;
