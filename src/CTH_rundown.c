@@ -296,6 +296,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
+    Rpintf("Entered CTH_rundown. det is %f.\n", det);
     if (det != 0){
     det = 1.0 / det;
 
