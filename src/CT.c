@@ -259,7 +259,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-   
+    Rprintf("Entered CT.c. det is %f.\n", det);
     if (det != 0){
 //    det = 1.0 / det;
 
