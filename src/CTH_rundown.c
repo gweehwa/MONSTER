@@ -92,7 +92,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	    }
 	    xpred[i] = tree->response_est[0];
         my_leaf_id = tree->id;
-	//Rprintf("Entered CTH_rundown. xpred_i and my_leaf_id are %d and %d.\n", xpred[i], my_leaf_id);   
+	Rprintf("Entered CTH_rundown. xpred_i and my_leaf_id are %d and %d.\n", xpred[i], my_leaf_id);   
         
         for (s = k; s < ct.n; s++) {
             tree_tmp = otree_tmp;
