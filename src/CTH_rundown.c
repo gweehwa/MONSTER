@@ -99,12 +99,11 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
             tree_tmp = otree_tmp;
             j = ct.sorts[0][s];
             tmp_obs = (j < 0) ? -(1 + j) : j;
-            while (cp[i] < tree_tmp->complexity) {
-	Rprintf("Entered CTH_rundown. Check while loop.\n");       
+            while (cp[i] < tree_tmp->complexity) {      
                 tree_tmp = branch(tree_tmp, tmp_obs);
             }
             tmp_id = tree_tmp->id;
-	Rprintf("Entered CTH_rundown. tmp_obs and temp_id are %d and %d.\n", tmp_obs, tmp_id);   
+	Rprintf("Entered CTH_rundown. cp_i and tmp_id are %f and %d.\n", cp[i], tmp_id);   
 		
             if (tmp_id == my_leaf_id) {
                 if (ct.treatment[tmp_obs] == 0) {
