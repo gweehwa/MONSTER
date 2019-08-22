@@ -299,6 +299,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
     Rprintf("Entered CTH_rundown. m0, inv0, m1, inv4, m2, inv8, m3, inv12 are %f, %f, %f, %f, %f, %f, %f, %f.\n", m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12]);
+    Rprintf("Entered CTH_rundown. m4-15 are %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f.\n", m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);
     if (det != 0){
     det = 1.0 / det;
 
