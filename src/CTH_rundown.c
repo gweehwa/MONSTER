@@ -166,7 +166,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //    con_mean = consums / cons;
         //    tree->xcontrolMean[0] = con_mean;
         //    con_var = con_sqr_sum / cons - con_mean * con_mean;
-        //}
+        }
         
 	
     m[0] = x1x1_sum;
@@ -367,8 +367,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
         tmp = var1;
 	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
-	}
-		xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2)/2;
+	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2)/2;
 	//Rprintf("Entered CTH_rundown. bhat_1, bhat_2, and xtemp is %f, %f, and %f.\n", bhat_1, bhat_2, xtemp[i]);    
 	
     }
