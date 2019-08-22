@@ -89,23 +89,23 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
 	        if (tree == 0)
 		        goto oops;
 	        otree = tree;
-	Rprintf("Entered CTH_rundown. cp_i is %f.\n", cp[i]);
+	//Rprintf("Entered CTH_rundown. cp_i is %f.\n", cp[i]);
 	    }
 	    xpred[i] = tree->response_est[0];
         my_leaf_id = tree->id;
-	Rprintf("Entered CTH_rundown. xpred_i and my_leaf_id are %d and %d.\n", xpred[i], my_leaf_id);   
+	//Rprintf("Entered CTH_rundown. xpred_i and my_leaf_id are %d and %d.\n", xpred[i], my_leaf_id);   
         
         for (s = k; s < ct.n; s++) {
             tree_tmp = otree_tmp;
             j = ct.sorts[0][s];
             tmp_obs = (j < 0) ? -(1 + j) : j;
-	    Rprintf("Entered CTH_rundown. k, ct.n, ct.sorts[0][k], ct.sorts[0][ct.n] are %d, %d, %d and %d.\n", k, ct.n, ct.sorts[0][k], ct.sorts[0][ct.n]);
-	    Rprintf("Entered CTH_rundown. j and tmp_obs are %d and %d.\n", j, tmp_obs);
+	    //Rprintf("Entered CTH_rundown. k, ct.n, ct.sorts[0][k], ct.sorts[0][ct.n] are %d, %d, %d and %d.\n", k, ct.n, ct.sorts[0][k], ct.sorts[0][ct.n]);
+	    //Rprintf("Entered CTH_rundown. j and tmp_obs are %d and %d.\n", j, tmp_obs);
             while (cp[i] < tree_tmp->complexity) {      
                 tree_tmp = branch(tree_tmp, tmp_obs);
             }
             tmp_id = tree_tmp->id;
-	Rprintf("Entered CTH_rundown. cp_i and tmp_id are %f and %d.\n", cp[i], tmp_id);   
+	//Rprintf("Entered CTH_rundown. cp_i and tmp_id are %f and %d.\n", cp[i], tmp_id);   
 		
             if (tmp_id == my_leaf_id) {
                 if (ct.treatment[tmp_obs] == 0) {
@@ -118,7 +118,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                     tr_sqr_sum += (*ct.ydata[tmp_obs]) * (*ct.ydata[tmp_obs]) * ct.wt[tmp_obs];
                 }
 		n++;
-  	Rprintf("Entered CTH_rundown. ct.treatment1, ct.treatment2, ct.treatment3, ct.treatment_obs are %f, %f, %f and %f.\n", ct.treatment[1], ct.treatment[2], ct.treatment[3], ct.treatment[tmp_obs]);      
+  	//Rprintf("Entered CTH_rundown. ct.treatment1, ct.treatment2, ct.treatment3, ct.treatment_obs are %f, %f, %f and %f.\n", ct.treatment[1], ct.treatment[2], ct.treatment[3], ct.treatment[tmp_obs]);      
 		xz_sum += ct.IV[tmp_obs] * *ct.ydata[tmp_obs];
                 xy_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs];
 		x_sum += ct.IV[tmp_obs];
@@ -300,8 +300,8 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
               m[8] * m[2] * m[5];
 
     det = m[0] * inv[0] + m[1] * inv[4] + m[2] * inv[8] + m[3] * inv[12];
-    Rprintf("Entered CTH_rundown. m0, inv0, m1, inv4, m2, inv8, m3, inv12 are %f, %f, %f, %f, %f, %f, %f, %f.\n", m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12]);
-    Rprintf("Entered CTH_rundown. m4-15 are %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f.\n", m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);
+    //Rprintf("Entered CTH_rundown. m0, inv0, m1, inv4, m2, inv8, m3, inv12 are %f, %f, %f, %f, %f, %f, %f, %f.\n", m[0], inv[0], m[1], inv[4], m[2], inv[8], m[3], inv[12]);
+    //Rprintf("Entered CTH_rundown. m4-15 are %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f.\n", m[4], m[5], m[6], m[7], m[8], m[9], m[10], m[11], m[12], m[13], m[14], m[15]);
     if (det != 0){
     det = 1.0 / det;
 
