@@ -117,7 +117,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
                     tr_sqr_sum += (*ct.ydata[tmp_obs]) * (*ct.ydata[tmp_obs]) * ct.wt[tmp_obs];
                 }
 		n++;
-  	Rprintf("Entered CTH_rundown. ct.treatment1, ct.treatment2, ct.treatment3 are %f, %f and %f.\n", ct.treatment[1], ct.treatment[2], ct.treatment[3]);      
+  	Rprintf("Entered CTH_rundown. ct.treatment1, ct.treatment2, ct.treatment3, ct.treatment_obs are %f, %f, %f and %f.\n", ct.treatment[1], ct.treatment[2], ct.treatment[3], ct.treatment[tmp_obs]);      
 		xz_sum += ct.IV[tmp_obs] * *ct.ydata[tmp_obs];
                 xy_sum += ct.IV[tmp_obs] * ct.treatment[tmp_obs];
 		x_sum += ct.IV[tmp_obs];
