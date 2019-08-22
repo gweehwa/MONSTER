@@ -33,12 +33,12 @@ make_cp_table(pNode me, double parent, int nsplit)
 	cplist = cptable_tail;
 
     while (cplist->cp < parent) {
-	    Rprintf("Entered make_cp_table. Before cplist_cp, cplist_risk and me_risk are %.4f, %.4f and %.4f.\n", cplist->cp, cplist->risk, me->risk);   
+	   // Rprintf("Entered make_cp_table. Before cplist_cp, cplist_risk and me_risk are %.4f, %.4f and %.4f.\n", cplist->cp, cplist->risk, me->risk);   
 	cplist->risk += me->risk;
-	    Rprintf("Entered make_cp_table. After cplist_risk and me_risk are %.4f and %.4f.\n", cplist->risk, me->risk);    
+	   // Rprintf("Entered make_cp_table. After cplist_risk and me_risk are %.4f and %.4f.\n", cplist->risk, me->risk);    
 	cplist->nsplit += nsplit;
 	cplist = cplist->back;
     }
-	Rprintf("Entered make_cp_table. Out of loop.\n");  
+	//Rprintf("Entered make_cp_table. Out of loop.\n");  
     return cplist;
 }
