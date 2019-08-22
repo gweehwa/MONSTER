@@ -99,6 +99,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
             tree_tmp = otree_tmp;
             j = ct.sorts[0][s];
             tmp_obs = (j < 0) ? -(1 + j) : j;
+	    Rprintf("Entered CTH_rundown. j and tmp_obs are %d and %d.\n", j, tmp_obs);
             while (cp[i] < tree_tmp->complexity) {      
                 tree_tmp = branch(tree_tmp, tmp_obs);
             }
