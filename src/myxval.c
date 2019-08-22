@@ -24,7 +24,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
     alphasave = ct.alpha;
     double xtrain_to_est_ratio = 0.;
     
-    Rprintf("Entered myxval.c.\n");
+    //Rprintf("Entered myxval.c.\n");
        
     /*
      * Allocate a set of temporary arrays
@@ -168,7 +168,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
         }
         
         xtree->complexity = xtree->risk;
-        Rprintf("Entered myxval.c. xtree_complexity is %f.\n", xtree->complexity);
+        //Rprintf("Entered myxval.c. xtree_complexity is %f.\n", xtree->complexity);
 
         partition(1, xtree, &temp, 0, k, minsize, split_Rule, split_alpha, bucketnum, bucketMax, 
                   xtrain_to_est_ratio);
@@ -232,7 +232,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
             for (jj = 0; jj < ct.num_unique_cp; jj++) {
                 cplist->xrisk += xtemp[jj] * ct.wt[j];
                 cplist->xstd += xtemp[jj] * xtemp[jj] * ct.wt[j];
-        Rprintf("Entered myxval.c. ct.num_unique_cp, xtemp, ct.wt, and cplist_xrisk are %d, %f, %f, and %f.\n", ct.num_unique_cp, xtemp[jj], ct.wt[j], cplist->xrisk);                
+        //Rprintf("Entered myxval.c. ct.num_unique_cp, xtemp, ct.wt, and cplist_xrisk are %d, %f, %f, and %f.\n", ct.num_unique_cp, xtemp[jj], ct.wt[j], cplist->xrisk);                
 #if DEBUG > 1
                 //	if (debug > 1)
                 Rprintf("  cp=%f, pred=%f, xtemp=%f\n",
@@ -250,7 +250,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
     for (cplist = cptable_head; cplist; cplist = cplist->forward) {
         cplist->xstd = sqrt(cplist->xstd -
                 cplist->xrisk * cplist->xrisk / total_wt);
-        Rprintf("Entered myxval.c. xrisk and xstd are %f and %f.\n", cplist->xrisk, cplist->xstd);
+        //Rprintf("Entered myxval.c. xrisk and xstd are %f and %f.\n", cplist->xrisk, cplist->xstd);
 
     }
     ct.alpha = alphasave;
