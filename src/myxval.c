@@ -183,7 +183,7 @@ myxval(int n_xval, CpTable cptable_head, int *x_grp, int maxcat, char **errmsg,
         for(i = k; i < ct.n; i++) {
             j = ct.sorts[0][i];
                
-            Rprintf("Entered myxval.c. i, j, cp, ct.n are %d, %d, %d, and %d.\n", i, j, cp, ct.n);
+            //Rprintf("Entered myxval.c. i, j, cp, ct.n are %d, %d, %d, and %d.\n", i, j, cp, ct.n);
                
             if (crossmeth == 1) {
                 // tot
