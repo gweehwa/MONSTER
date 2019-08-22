@@ -84,7 +84,7 @@ double CTH_xpred(double *y, double wt, double treatment, double tr_mean,
    //tmp = con_mean;
    res = 4 * ct.max_y * ct.max_y - alpha *  effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) 
        * (1 - alpha) *  tmp; 
-   Rprintf("Entered xevals.c.");  
+   //Rprintf("Entered xevals.c.");  
    return res;
 }
 
@@ -117,7 +117,7 @@ double userH_xpred(double *y, double wt, double treatment, double tr_mean,
     } 
     double effect = tr_mean - con_mean;
     
-Rprintf("Entered xevals.c.");
+//Rprintf("Entered xevals.c.");
     res = 4 * ct.max_y * ct.max_y - alpha *  effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) 
         * (1 - alpha) *  tmp; 
     
