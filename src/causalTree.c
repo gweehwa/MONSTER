@@ -384,14 +384,14 @@ causalTree(SEXP ncat2, SEXP split_Rule2, SEXP bucketnum2, SEXP bucketMax2, SEXP 
                 ct.num_unique_cp));
     dptr = REAL(cptable3);
     for (cp = cptable; cp; cp = cp->forward) {
-Rprintf("Entered causalTree.c. cp_cp is %.4f.\n",  cp->cp);
+//Rprintf("Entered causalTree.c. cp_cp is %.4f.\n",  cp->cp);
         dptr[i++] = cp->cp * scale;
         dptr[i++] = cp->nsplit;
         dptr[i++] = cp->risk * scale;
         if (xvals > 1) {
             dptr[i++] = cp->xrisk * scale ;
             dptr[i++] = cp->xstd * scale ;
-Rprintf("Entered causalTree.c. cp_xrisk and cp_xstd are %.4f and %.4f.\n",  cp->xrisk, cp->xstd);
+//Rprintf("Entered causalTree.c. cp_xrisk and cp_xstd are %.4f and %.4f.\n",  cp->xrisk, cp->xstd);
         }
     }
 
