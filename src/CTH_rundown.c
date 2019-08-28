@@ -372,7 +372,7 @@ CTH_rundown(pNode tree, int obs, double *cp, double *xpred, double *xtemp, int k
         //xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
         tmp = var1;
 	////xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * effect * effect + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * tmp;
-	xtemp[i] = 4 * ct.max_y * ct.max_y - alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (1 - alpha) * (var1 + var2)/2;
+	xtemp[i] = 4 * ct.max_y * ct.max_y - (alpha * bhat_1 * bhat_1 + (1 - alpha) * bhat_2 * bhat_2) + (1 + xtrain_to_est_ratio / (ct.NumXval - 1)) * (alpha * var1 + (1 - alpha) * var2);
 	//Rprintf("Entered CTH_rundown. bhat_1, bhat_2, and xtemp is %f, %f, and %f.\n", bhat_1, bhat_2, xtemp[i]);    
 	
     }
