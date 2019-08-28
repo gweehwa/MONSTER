@@ -449,20 +449,22 @@ next:
     var2 = error2 * invOut[10];   
     var3 = error2 * invOut[15];  
     } else {
-    bhat_3 = 0;
-    var3 = 10000;
+    bhat_1 = 0;
+    var1 = 10000;
+    bhat_2 = 0;
+    var2 = 10000;
     }   
-    //Rprintf("honest_est det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );     
+    Rprintf("honest_est det, bhat_3 and var3 is %.2f, %.4f, %.4f\n", det, bhat_3, var3 );     
             double alpha_1 = (n1[origindx] * xz_sum[origindx] - x_sum[origindx] * z_sum[origindx]) / (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]);
             double alpha_0 = (z_sum[origindx] - alpha_1 * y_sum[origindx]) / n1[origindx];
             double beta_1 = (n1[origindx] * xy_sum[origindx] - x_sum[origindx] * y_sum[origindx]) / (n1[origindx] * xx_sum[origindx] - x_sum[origindx] * x_sum[origindx]);
             double beta_0 = (y_sum[origindx] - beta_1 * x_sum[origindx]) / n1[origindx];
             //yval1[origindx] = alpha_1;
-            yval1[origindx] = bhat_3;
+            yval1[origindx] = bhat_1;
             double numerator = zz_sum[origindx] + n1[origindx] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[origindx] - 2 * alpha_0 * z_sum[origindx] - 2 * alpha_1 * yz_sum[origindx] + 2 * alpha_0 * alpha_1 * y_sum[origindx];
             double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
             //dev1[origindx] = numerator / denominator;
-            dev1[origindx] = var3;
+            dev1[origindx] = var1;
         } else {
             int parentdx = invertdx[i / 2];
             yval1[origindx] = yval1[parentdx];
