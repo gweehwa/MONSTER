@@ -1463,10 +1463,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             right_x4y_sum -= x4y_sumc[j];
           
             if (left_n >= edge && right_n >= edge &&
-                (int) left_tr >= min_node_size &&
-                (int) left_wt - (int) left_tr >= min_node_size &&
-                (int) right_tr >= min_node_size &&
-                (int) right_wt - (int) right_tr >= min_node_size) {
+                (int) left_wt >= min_node_size &&
+                (int) right_wt >= min_node_size) {
                 
               
     m[0] = left_x1x1_sum;
