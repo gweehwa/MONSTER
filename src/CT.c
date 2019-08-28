@@ -693,7 +693,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
             //Rprintf("Before if.\n");
             if (x[i + 1] != x[i] && left_n >= edge &&
                 (int) left_wt >= min_node_size &&
-                (int) right_wt >= min_node_size) ) {    
+                (int) right_wt >= min_node_size) {    
               
             //Rprintf("After if.\n");
                 
