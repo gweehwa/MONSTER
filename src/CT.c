@@ -308,7 +308,8 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
     //*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
     ////*risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var3);
-    *risk = 4 * twt * max_y * max_y - alpha * twt * (bhat_1*bhat_1 + bhat_2*bhat_2)/2 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var1 + var2)/2;
+    ////*risk = 4 * twt * max_y * max_y - alpha * twt * (bhat_1*bhat_1 + bhat_2*bhat_2)/2 + (1 - alpha) * (1 + train_to_est_ratio) * twt * (var1 + var2)/2;
+    *risk = 4 * twt * max_y * max_y - twt * (alpha * bhat_1*bhat_1 + (1 - alpha) * bhat_2*bhat_2) +  (1 + train_to_est_ratio) * twt * (alpha * var1 + (1 - alpha) * var2);
 // PARAMETER! 
     //Rprintf("CT.c risk is %.4f.\n", *risk);
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
@@ -583,8 +584,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
     //node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
     //    * right_wt * (numerator / denominator);
     ////node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var3);
-    node_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 * right_wt - (1 - alpha) * (1 + train_to_est_ratio)  * right_wt * (var1 + var2)/2;
-  
+    ////node_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 * right_wt - (1 - alpha) * (1 + train_to_est_ratio)  * right_wt * (var1 + var2)/2;
+    node_effect = (alpha * bhat_1 * bhat_1 + (1 - alpha) * bhat_2 * bhat_2) * right_wt - (1 + train_to_est_ratio)  * right_wt * (alpha * var1 + (1 - alpha) * var2);
 //Rprintf("Entered CT.c. Node treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", node_effect, bhat_1, var1, bhat_2, var2);
 
     
@@ -864,7 +865,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                 //    * left_wt * (numerator / denominator);
                 ////left_effect = alpha * left_temp * left_temp * left_wt - (1 - alpha) * (1 + train_to_est_ratio)* left_wt * (var3);
-                left_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 * left_wt - (1 - alpha) * (1 + train_to_est_ratio) * left_wt * (var1 + var2)/2;
+                left_effect = (alpha * bhat_1 * bhat_1 + (1 - alpha) * bhat_2 * bhat_2) * left_wt - (1 + train_to_est_ratio) * left_wt * (alpha * var1 + (1 - alpha) * var2);
  //Rprintf("Entered CT.c. Left treatment effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", left_effect, bhat_1, var1, bhat_2, var2);
 
 // PARAMETER!                    
@@ -1057,7 +1058,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
                 //    * right_wt * (numerator / denominator);
                 ////right_effect = alpha * right_temp * right_temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio)* right_wt * (var3);
-                right_effect = alpha * (bhat_1 * bhat_1 + bhat_2 * bhat_2)/2 * right_wt - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * (var1 + var2)/2;
+                right_effect = (alpha * bhat_1 * bhat_1 + (1 - alpha) * bhat_2 * bhat_2) * right_wt - (1 + train_to_est_ratio) * right_wt * (alpha * var1 + (1 - alpha) * var2);
 
 //Rprintf("Entered CT.c. Right effect, bhat1, var1, bhat2, var2 are %.4f, %.4f, %.4f, %.4f, %.4f.\n", right_effect, bhat_1, var1, bhat_2, var2);
 
