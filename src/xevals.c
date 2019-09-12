@@ -68,6 +68,7 @@ double CTH_xpred(double *y, double wt, double treatment, double tr_mean,
    double tr_var;
    double con_var;
    double tmp;
+   Rprintf("Entered xeval\n");
    if (treatment == 0) {
        // con
        con_var = wt * (y[0] - con_mean) *  (y[0] - con_mean);
