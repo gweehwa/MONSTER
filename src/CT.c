@@ -49,7 +49,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     double xz_sum = 0., xy_sum = 0., x_sum = 0., y_sum = 0., z_sum = 0.;
     double yz_sum = 0., xx_sum = 0., yy_sum = 0., zz_sum = 0.;
     double alpha_1 = 0., alpha_0 = 0., beta_1 = 0., beta_0 = 0.;
-    double numerator, denominator;
+    double numerator, denominator, numerator1, demoninator1;
     for (i = 0; i < n; i++) {
         temp1 += *y[i] * wt[i] * treatment[i];
         temp0 += *y[i] * wt[i] * (1 - treatment[i]);
@@ -85,7 +85,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //denominator = (yy_sum / n - (y_sum / n) * (y_sum / n)) *
     //              (xy_sum / n - x_sum/n * y_sum / n) * 
     //              (xy_sum / n - x_sum/n * y_sum / n);                           
-    Rprintf("Numerator, denominator, numberator1, and denominator1 are %.4f, %.4f, %.4f, and %.4f", numerator, demoninator, numerator1, denominator1);            
+    Rprintf("Numerator, denominator, numberator1, and denominator1 are %.4f, %.4f, %.4f, and %.4f.\n", numerator, demoninator, numerator1, denominator1);            
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
