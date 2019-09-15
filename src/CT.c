@@ -80,10 +80,12 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     
     numerator = (zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum);
     denominator = n * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum + y_sum * y_sum / n + 2 * beta_0 * beta_1 * x_sum - 2 * beta_0 * y_sum - 2 * beta_1 * x_sum * y_sum / n;
+    numerator1 = (zz_sum + n * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum - 2 * alpha_0 * z_sum - 2 * alpha_1 * yz_sum + 2 * alpha_0 * alpha_1 * y_sum)/n;
+    denominator1 = 1 / (xx_sum / n - (x_sum / n) * (x_sum / n)) * (xy_sum / n - x_sum/n * y_sum / n) * (xy_sum / n - x_sum/n * y_sum / n) * n;   
     //denominator = (yy_sum / n - (y_sum / n) * (y_sum / n)) *
     //              (xy_sum / n - x_sum/n * y_sum / n) * 
     //              (xy_sum / n - x_sum/n * y_sum / n);                           
-                
+    Rprintf("Numerator, denominator, numberator1, and denominator1 are %.4f, %.4f, %.4f, and %.4f", numerator, demoninator, numerator1, denominator1);            
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
