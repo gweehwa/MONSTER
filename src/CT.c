@@ -85,7 +85,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     //denominator = (yy_sum / n - (y_sum / n) * (y_sum / n)) *
     //              (xy_sum / n - x_sum/n * y_sum / n) * 
     //              (xy_sum / n - x_sum/n * y_sum / n);                           
-    Rprintf("Numerator, denominator, numberator1, and denominator1 are %.4f, %.4f, %.4f, and %.4f.\n", numerator, demoninator, numerator1, denominator1);            
+    Rprintf("Numerator, denominator, numberator1, and denominator1 are %.4f, %.4f, %.4f, and %.4f.\n", numerator, denominator, numerator1, denominator1);            
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
