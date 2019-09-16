@@ -216,7 +216,10 @@ next:
             double beta_0 = (y_sum[origindx] - beta_1 * x_sum[origindx]) / n1[origindx];
             yval1[origindx] = alpha_1;
             double numerator = (zz_sum[origindx] + n1[origindx] * alpha_0 * alpha_0 + alpha_1 * alpha_1 * yy_sum[origindx] - 2 * alpha_0 * z_sum[origindx] - 2 * alpha_1 * yz_sum[origindx] + 2 * alpha_0 * alpha_1 * y_sum[origindx])/(n1[origindx]-2);
-            double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
+            double denominator = 1/(xx_sum[origindx] / n1[origindx] - (x_sum[origindx] / n1[origindx]) * (x_sum[origindx] / n1[origindx]) *
+                              (xy_sum[origindx] / n1[origindx] - x_sum[origindx]/n1[origindx] * y_sum[origindx] / n1[origindx]) * 
+                              (xy_sum[origindx] / n1[origindx] - x_sum[origindx]/n1[origindx] * y_sum[origindx] / n1[origindx]) * n1[origindx];  
+            //double denominator = n1[origindx] * beta_0 * beta_0 + beta_1 * beta_1 * xx_sum[origindx] + y_sum[origindx] * y_sum[origindx] / n1[origindx] + 2 * beta_0 * beta_1 * x_sum[origindx] - 2 * beta_0 * y_sum[origindx] - 2 * beta_1 * x_sum[origindx] * y_sum[origindx] / n1[origindx];
             dev1[origindx] = numerator / denominator;
         } else {
             int parentdx = invertdx[i / 2];
