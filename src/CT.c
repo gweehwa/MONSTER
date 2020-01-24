@@ -165,7 +165,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
             Rprintf("Entered CT.c. Invalid Node IV.\n");
-            node_effect = -1000;
+            node_effect = -INFINITY;
     }
     
     if (nclass == 0) {
@@ -245,7 +245,7 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
                 Rprintf("Entered CT.c. Invalid Left IV.\n");   
-                left_effect = -10000;}
+                left_effect = -INFINITY;}
                 
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -269,10 +269,10 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
                 Rprintf("Entered CT.c. Invalid Right IV.\n");
-                right_effect = -10000;}
+                right_effect = -INFINITY;}
 
                 temp = left_effect + right_effect - node_effect;
-                if (temp > best) {
+                if (temp > best && left_effect != -INFINITY && right_effect != -INFINITY && node_effect != -INFINITY ) {
                     best = temp;
                 //Rprintf("Improved. Left, right, node effects and best are %.2f, %.2f, %.2f, %.2f.\n", left_effect, right_effect, node_effect, best);
                     where = i;               
