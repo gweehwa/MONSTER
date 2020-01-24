@@ -1,4 +1,4 @@
-
+//If IV is invlid, do not split.
 /*
  * split.Rule = CT
  */
@@ -85,7 +85,7 @@ CTss(int n, double *y[], double *value, double *con_mean, double *tr_mean,
     *risk = 4 * twt * max_y * max_y - alpha * twt * effect * effect + (1 - alpha) * (1 + train_to_est_ratio) * twt * (numerator / denominator);
 // PARAMETER!    
     if(abs(n * xy_sum - x_sum * y_sum) <= 0 * n * n){
-        Rprintf("Entered CT.c. Invalid IV.\n");
+        Rprintf("Entered CTss.c. Invalid IV.\n");
         effect = temp1 / ttreat - temp0 / (twt - ttreat);  
         *value = effect;
         tr_var = tr_sqr_sum / ttreat - temp1 * temp1 / (ttreat * ttreat);
@@ -164,14 +164,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
          * right_wt * (numerator / denominator);
 // PARAMETER!        
     if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
-            Rprintf("Entered CT.c. Invalid IV.\n");
-            temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-            tr_var = right_tr_sqr_sum / right_tr - right_tr_sum * right_tr_sum / (right_tr * right_tr);
-            con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-                - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
-                / ((right_wt - right_tr) * (right_wt - right_tr));
-            node_effect = alpha * temp * temp * right_wt - (1 - alpha) * (1 + train_to_est_ratio) 
-                * right_wt * (tr_var / right_tr  + con_var / (right_wt - right_tr));
+            Rprintf("Entered CT.c. Invalid Node IV.\n");
+            node_effect = -1000;
     }
     
     if (nclass == 0) {
@@ -250,16 +244,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
                 //Rprintf("Entered CT.c. Left treatment effect, num, den, effect and obs are %.2f, %.2f, %.2f, %.2f, %.2f.\n", left_temp, numerator, denominator, left_effect, left_wt);
 // PARAMETER!                    
                 if(abs(left_n * left_xy_sum - left_x_sum * left_y_sum) <= 0 * left_n * left_n){
-                Rprintf("Entered CT.c. Invalid IV.\n");
-                left_temp = left_tr_sum / left_tr - (left_sum - left_tr_sum) / (left_wt - left_tr);
-                left_tr_var = left_tr_sqr_sum / left_tr - 
-                    left_tr_sum  * left_tr_sum / (left_tr * left_tr);
-                left_con_var = (left_sqr_sum - left_tr_sqr_sum) / (left_wt - left_tr)  
-                    - (left_sum - left_tr_sum) * (left_sum - left_tr_sum)
-                    / ((left_wt - left_tr) * (left_wt - left_tr));        
-                left_effect = alpha * left_temp * left_temp * left_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * left_wt 
-                    * (left_tr_var / left_tr + left_con_var / (left_wt - left_tr));}
+                Rprintf("Entered CT.c. Invalid Left IV.\n");   
+                left_effect = -10000;}
                 
 
                 alpha_1 = (right_n * right_xz_sum - right_x_sum * right_z_sum) / (right_n * right_xy_sum - right_x_sum * right_y_sum);
@@ -282,16 +268,8 @@ void CT(int n, double *y[], double *x, int nclass, int edge, double *improve, do
 
 // PARAMETER!                    
                 if(abs(right_n * right_xy_sum - right_x_sum * right_y_sum) <= 0 * right_n * right_n){
-                Rprintf("Entered CT.c. Invalid IV.\n");
-                right_temp = right_tr_sum / right_tr - (right_sum - right_tr_sum) / (right_wt - right_tr);
-                right_tr_var = right_tr_sqr_sum / right_tr -
-                    right_tr_sum * right_tr_sum / (right_tr * right_tr);
-                right_con_var = (right_sqr_sum - right_tr_sqr_sum) / (right_wt - right_tr)
-                    - (right_sum - right_tr_sum) * (right_sum - right_tr_sum) 
-                    / ((right_wt - right_tr) * (right_wt - right_tr));
-                right_effect = alpha * right_temp * right_temp * right_wt
-                        - (1 - alpha) * (1 + train_to_est_ratio) * right_wt * 
-                            (right_tr_var / right_tr + right_con_var / (right_wt - right_tr));}
+                Rprintf("Entered CT.c. Invalid Right IV.\n");
+                right_effect = -10000;}
 
                 temp = left_effect + right_effect - node_effect;
                 if (temp > best) {
